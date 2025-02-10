@@ -1,0 +1,26 @@
+<div class="quiz-container">
+    <h1>French Beginner Quiz</h1>
+  
+    <!-- Afișează întrebările -->
+    <div *ngIf="!showResult">
+      <p>Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}</p>
+      <h2>{{ questions[currentQuestionIndex].question }}</h2>
+  
+      <div class="options">
+        <button 
+          *ngFor="let option of questions[currentQuestionIndex].options" 
+          (click)="answerQuestion(option)">
+          {{ option }}
+        </button>
+      </div>
+    </div>
+  
+    <!-- Afișează rezultatul final -->
+    <div *ngIf="showResult">
+      <h2>Quiz Completed!</h2>
+      <p>Your Score: {{ score }} / {{ questions.length }}</p>
+      <button (click)="resetQuiz()">Retry Quiz</button>
+      <button routerLink="/beginner" class="back-button">Back to Beginner</button>
+    </div>
+  </div>
+  

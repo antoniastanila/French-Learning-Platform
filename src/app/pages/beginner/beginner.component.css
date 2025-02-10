@@ -1,0 +1,110 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f9f0f7;
+  color: #4a154b;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+.content {
+  /* width: 100%; */
+  max-width: 600px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 10px;
+  margin-left: 30%;
+  margin-top: 3%;
+
+}
+
+/* Titlul */
+h1 {
+  font-size: 32px;
+  color: #d72672;
+ text-align: center;
+}
+
+
+/* Secțiune Progress Bar */
+.progress-section {
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffebf0;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.progress-section > h2,p{
+  text-align: center;
+}
+
+
+
+.progress-bar-container {
+  width: 100%;
+  background-color: #e0d4e3;
+  border-radius: 10px;
+  height: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background-color: #b10f2e;
+  border-radius: 10px;
+}
+
+/* Secțiunea Test */
+.test-section {
+  margin: 30px auto;
+  padding: 20px;
+  background: #fbe4f1;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.test-section button {
+  background-color: #d72672;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  color: white;
+  margin-top: 10px;
+}
+
+.test-section button:hover {
+  background-color: #b10f2e;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+  transform: scale(1.05);
+}
+
+.back-button {
+  text-decoration: none;
+  color: white;
+  background-color: #6a0572;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  margin-left: 35%;
+}
+
+.back-button:hover {
+  background-color: #4a154b;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+  transform: scale(1.05);
+}
