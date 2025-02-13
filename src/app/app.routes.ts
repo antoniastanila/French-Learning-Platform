@@ -7,6 +7,8 @@ import { BeginnerComponent } from './pages/beginner/beginner.component';
 import { BeginnerTestComponent } from './pages/beginner-test/beginner-test.component';
 import { IntermediateComponent } from './pages/intermediate/intermediate.component';
 import { AdvancedComponent } from './pages/advanced/advanced.component';
+import { LessonListComponent } from './components/lesson-list/lesson-list.component';
+import { LessonDetailComponent } from './pages/lesson-detail/lesson-detail.component';
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, 
   { path: 'home', component: HomePageComponent }, 
@@ -17,5 +19,7 @@ export const appRoutes: Routes = [
   { path: 'beginner-test', component: BeginnerTestComponent },
   { path: 'intermediate', component: IntermediateComponent },
   { path: 'advanced', component: AdvancedComponent },
-
+  { path: 'lessons', component: LessonListComponent },
+  { path: '', component: LessonListComponent },
+  { path: 'lesson/:id', component: LessonDetailComponent }
 ];
