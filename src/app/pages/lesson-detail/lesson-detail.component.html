@@ -1,0 +1,11 @@
+<div *ngIf="lesson">
+    <h2>{{ lesson.title }}</h2>
+    <p>{{ lesson.description }}</p>
+    <ul>
+      <li *ngFor="let phrase of lesson.content">
+        <b>{{ phrase.phrase }}</b>: {{ phrase.translation }}
+      </li>
+    </ul>
+    <p><strong>Difficulty:</strong> {{ lesson.difficulty }}</p>
+  </div>
+  
