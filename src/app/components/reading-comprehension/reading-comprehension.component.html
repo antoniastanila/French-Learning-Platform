@@ -1,0 +1,15 @@
+<h2>Reading Comprehension</h2>
+<p>{{ passage }}</p>  <!-- Textul de citit -->
+
+<h3>{{ question }}</h3>
+
+<div *ngFor="let option of options">
+  <button 
+    (click)="selectAnswer(option)" 
+    [ngClass]="{'selected-answer': selectedOption === option}"
+    [disabled]="isAnswered">
+    {{ option }}
+  </button>
+</div>
+
+

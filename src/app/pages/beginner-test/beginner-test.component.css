@@ -1,3 +1,8 @@
+h1{
+  font-size: 3rem;
+  text-align: center;
+}
+
 .quiz-container {
     max-width: 600px;
     margin: 0 auto;
@@ -43,3 +48,68 @@
     background-color: #4a154b;
   }
   
+  .result-container{
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    background-color:#fbe4f1;
+    max-width: 600px;
+    margin-left:29%;
+  }
+
+  .result-container button{
+    background-color: #d72672;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    color: white;
+    margin-top: 10px;
+  }
+
+  .result-container button:hover{
+    background-color: #b10f2e;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+    transform: scale(1.05);
+  }
+
+  .correct-answer {
+    color: rgb(38, 101, 82);
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+  
+  .wrong-answer {
+    color: rgb(118, 29, 29);
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+
+  button {
+    background-color: #5c215e;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    margin: 10px;
+    transition: all 0.3s ease;
+    width: 200px;
+  }
+  
+  button:hover {
+    background-color: #b10f2e;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+    transform: scale(1.05);
+  }
+
+  .selected-answer {
+    background-color: yellow !important;
+    color: black !important;
+  }

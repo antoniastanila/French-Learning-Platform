@@ -1,0 +1,14 @@
+<h2>Fill in the blank</h2>
+<p>{{ question }}</p>
+  
+<div *ngFor="let option of options">
+  <button 
+    (click)="selectAnswer(option)" 
+    [ngClass]="{'selected-answer': selectedOption === option}"
+    [disabled]="isAnswered">
+    {{ option }}
+  </button>
+</div>
+
+
+  

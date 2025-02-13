@@ -1,0 +1,16 @@
+<h2>Listening Exercise</h2>
+<audio controls>
+  <source [src]="audioUrl" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<h3>{{ question }}</h3>
+
+<div *ngFor="let option of options">
+  <button 
+    (click)="selectAnswer(option)" 
+    [ngClass]="{'selected-answer': selectedOption === option}"
+    [disabled]="isAnswered">
+    {{ option }}
+  </button>
+</div>
