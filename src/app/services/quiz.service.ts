@@ -208,4 +208,8 @@ export class QuizService {
   getQuestions() {
     return this.questions;
   }
+
+  getTotalQuestions(): number {
+    return this.questions.length;
+  }
 }
