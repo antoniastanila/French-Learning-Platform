@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { QuizService } from '../../services/quiz.service';
 import { CommonModule } from '@angular/common';
 import { MultipleChoiceQuestionComponent } from '../../components/multiple-choice-question/multiple-choice-question.component';
@@ -17,6 +18,10 @@ import { ReadingComprehensionComponent } from '../../components/reading-comprehe
             CommonModule]
 })
 export class BeginnerTestComponent implements OnInit {
+  correctAnswers = 0;
+  totalQuestions = 0;
+  lessonId: string = '';
+
   currentQuestionIndex = 0;  
   score = 0; 
   showResult = false;  
@@ -27,10 +32,11 @@ export class BeginnerTestComponent implements OnInit {
   selectedAnswer: string | null = null; 
   isAnswered = false;  
 
-  constructor(private quizService: QuizService) {}
+  constructor(private quizService: QuizService, private router: Router) {}
 
   ngOnInit(): void {
     this.questions = this.quizService.getQuestions();
+    this.totalQuestions = this.quizService.getTotalQuestions();
   }
 
   onAnswerSelected(selectedOption: string) {
@@ -63,6 +69,25 @@ nextQuestion() {
     this.currentQuestionIndex++;
   } else {
     this.showResult = true;
+    this.determineLesson();
+  }
+}
+
+determineLesson() {
+  const scorePercentage = (this.score / this.totalQuestions) * 100;
+
+  if (scorePercentage <= 30) {
+    this.lessonId = '67adff85ba1cb07465fad7fe'; // Lecția 1
+  } else if (scorePercentage > 30 && scorePercentage <= 50) {
+    this.lessonId = '67b30efdbf5bcc73adb8f79b'; // Lecția 5
+  } else if (scorePercentage > 60) {
+    this.lessonId = '67b30f52bf5bcc73adb8f7a5'; // Lecția 10
+  }
+}
+
+goToLesson() {
+  if (this.lessonId) {
+    this.router.navigate(['/lesson', this.lessonId]);
   }
 }
 

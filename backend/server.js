@@ -7,12 +7,10 @@ app.use(cors());
 app.use(express.json()); // 🔹 Permite trimiterea de JSON în request-uri
 
 // Conectare la MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/FrenchLessonDB', { 
-    useNewUrlParser: true,
-    useUnifiedTopology: true 
-  }).then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Error connecting to MongoDB:', err));
-
+mongoose.connect('mongodb://127.0.0.1:27017/FrenchLessonDB')
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch(err => console.error('❌ MongoDB connection error:', err));
+  
   const LessonSchema = new mongoose.Schema({
     title: String,
     description: String,

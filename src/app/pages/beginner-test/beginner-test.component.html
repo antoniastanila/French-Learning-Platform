@@ -61,6 +61,7 @@
     <h2>Test Completed!</h2>
     <p>Your final score is: {{ score }}/{{ questions.length }}</p>
     <button (click)="resetQuiz()">Retake Test</button>
+    <button *ngIf="lessonId" (click)="goToLesson()">Go to Lesson</button>
   </div>
 </ng-template>
 
