@@ -1,1 +1,17 @@
-<p>signup-page works!</p>
+<div class="signup-container">
+    <h2>Sign Up</h2>
+    <form (ngSubmit)="onSubmit()" [formGroup]="signupForm">
+      <label for="username">Username:</label>
+      <input id="username" formControlName="username" type="text" required />
+  
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" type="email" required />
+  
+      <label for="password">Password:</label>
+      <input id="password" formControlName="password" type="password" required />
+  
+      <button type="submit" [disabled]="signupForm.invalid">Sign Up</button>
+    </form>
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  </div>
+  

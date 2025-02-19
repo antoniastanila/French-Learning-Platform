@@ -56,7 +56,7 @@ export class BeginnerTestComponent implements OnInit {
     this.isCorrect = false;
   }
 
-  this.isAnswered = true; // Marchez întrebarea ca fiind verificată
+  this.isAnswered = true; 
 }
 
 nextQuestion() {
@@ -90,6 +90,11 @@ goToLesson() {
     this.router.navigate(['/lesson', this.lessonId]);
   }
 }
+
+goToMainPage() {
+  this.router.navigate(['/main-page']);
+}
+
 
 resetQuiz() {
   this.currentQuestionIndex = 0;

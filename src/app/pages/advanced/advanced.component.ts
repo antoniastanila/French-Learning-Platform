@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-
+import { Router
+  
+ } from '@angular/router';
 @Component({
   selector: 'app-advanced',
   imports: [],
@@ -7,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './advanced.component.css'
 })
 export class AdvancedComponent {
+constructor(private router: Router) {}
 
+  goBack() {
+    this.router.navigate(['/start-page']); 
+  }
 }

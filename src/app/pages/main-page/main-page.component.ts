@@ -1,24 +1,35 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
+import { LessonService } from '../../services/lesson.service';
+import { Lesson } from '../../models/lesson.model';
 @Component({
   selector: 'app-main-page',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.css']
+  styleUrls: ['./main-page.component.css'],
+  imports: [CommonModule]
 })
-export class MainPageComponent {
-  constructor(private router: Router) {}
+export class MainPageComponent implements OnInit {
+  lessons: Lesson[] = [];
 
-  navigateToBeginner() {
-    this.router.navigate(['/beginner']); 
+  constructor(private lessonService: LessonService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.lessonService.getLessons().subscribe(data => {
+      this.lessons = data.map((lesson: Lesson, index: number) => ({
+        ...lesson,
+        isUnlocked: index === 0 || this.checkIfLessonIsUnlocked(index)
+      }));
+    });
   }
-  navigateToIntermediate() {
-    this.router.navigate(['/intermediate']); 
+
+  goToLesson(lessonId: string) {
+    this.router.navigate(['/lesson', lessonId]);
   }
-  navigateToAdvanced() {
-    this.router.navigate(['/advanced']); 
+
+  checkIfLessonIsUnlocked(index: number): boolean {
+    return index <= 1; 
   }
 }
