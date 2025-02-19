@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    background-color: #af4c9b;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+  
+  /* Container pentru secțiuni */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* Stilizare secțiuni */
+  .section {
+    background: white;
+    width: 80%;
+    max-width: 600px;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .section h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #333;
+  }
+  
+  .section p {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .section a {
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: white;
+    background-color: #744caf;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .section a:hover {
+    background-color: #a0457b;
+  }
+  
+  button {
+    background-color: #b9619b; /* Culoare mov-rozalie */
+    color: white; /* Text alb pentru contrast */
+    font-family: 'Arial', sans-serif; /* Schimbă fontul dacă vrei un aspect mai prietenos */
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px; /* Colțuri rotunjite */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Umbră ușoară */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Trecere lină pentru efectul hover */
+  }
+  
+  button:hover {
+    background-color: #a11871; /* Culoare mai deschisă la hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Intensifică umbra la hover */
+    transform: scale(1.05); /* Mărire ușoară la hover */
+  }
+  

@@ -17,6 +17,6 @@ export class BeginnerComponent {
   }
 
   navigateBackToMain() {
-    this.router.navigate(['/main-page']); 
+    this.router.navigate(['/start-page']); 
   }
 }

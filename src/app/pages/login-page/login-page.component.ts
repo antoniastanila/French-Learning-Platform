@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service'; 
 
 declare var FB: any;
 
@@ -16,8 +17,9 @@ declare var FB: any;
 export class LoginPageComponent implements OnInit {
   email: string = '';
   password: string = '';
-
-  constructor(private router: Router) {}
+  errorMessage: string = ''; 
+  
+  constructor(private authService: AuthService,private router: Router) {}
 
   ngOnInit(): void {
     this.loadFacebookSDK();
@@ -52,18 +54,19 @@ export class LoginPageComponent implements OnInit {
 
   onSubmit(form: NgForm): void {
     if (form.invalid) {
-      alert('Please fix the errors in the form before submitting.');
+      this.errorMessage = 'Please enter a valid email and password.';
       return;
     }
 
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
-
-    if (this.email === 'test@example.com' && this.password === 'password123') {
-      this.router.navigate(['/main-page']);
-    } else {
-      alert('Invalid email or password.');
-    }
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
+      next: (response) => {
+        localStorage.setItem('token', response.token); // 🔹 Salvăm token-ul
+        this.router.navigate(['/start-page']); // 🔹 Redirecționăm utilizatorul după autentificare
+      },
+      error: (err) => {
+        this.errorMessage = err.error.message || 'Invalid email or password.';
+      }
+    });
   }
 
   loginWithFacebook(): void {

@@ -1,11 +1,19 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-intermediate',
-  imports: [],
+  standalone: true,
   templateUrl: './intermediate.component.html',
-  styleUrl: './intermediate.component.css'
+  styleUrls: ['./intermediate.component.css'],
+  imports: [CommonModule]
 })
 export class IntermediateComponent {
 
+  constructor(private router: Router) {}
+
+  goBack() {
+    this.router.navigate(['/start-page']); 
+  }
 }
