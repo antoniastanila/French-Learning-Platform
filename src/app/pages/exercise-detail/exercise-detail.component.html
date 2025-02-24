@@ -1,0 +1,26 @@
+<div class="exercise-container" *ngFor="let exercise of exercises">
+  <h3>{{ exercise.question }}</h3>
+
+  <div *ngFor="let option of exercise.options">
+      <label>
+          <input 
+              type="radio" 
+              name="answer-{{ exercise._id }}" 
+              [value]="option" 
+              [(ngModel)]="selectedAnswer[exercise._id]" />
+          {{ option }}
+      </label>
+  </div>
+
+  <button (click)="validateAnswer(exercise._id, selectedAnswer[exercise._id])">
+      Trimite răspunsul
+  </button>
+
+  <p class="feedback-message" *ngIf="feedbackMessage[exercise._id]">{{ feedbackMessage[exercise._id] }}</p>
+
+  <div class="exercise-actions" *ngIf="allExercisesCompleted">
+      <button (click)="goToNextLesson()">Go to Next Lesson</button>
+      <button (click)="completeLesson()" *ngIf="!lessonCompleted">Mark as Completed</button>
+      <button (click)="goToMainPage()">Go to Main Page</button>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+/* Stilizare generală */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f9f0f7;
+    color: #4a154b;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+  }
+  
+  /* Containerul exercițiilor */
+  .exercise-container {
+    max-width: 600px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
+  /* Titlul exercițiului */
+  .exercise-container h3 {
+    font-size: 22px;
+    color: #d72672;
+    margin-bottom: 10px;
+  }
+  
+  /* Opțiunile de răspuns */
+  .exercise-container label {
+    display: block;
+    background-color: #fbe4f1;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 5px 0;
+  }
+  
+  .exercise-container input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  /* Efect vizual când utilizatorul trece cu mouse-ul peste opțiuni */
+  .exercise-container label:hover {
+    background-color: #e0d4e3;
+  }
+  
+  /* Butonul de trimitere a răspunsului */
+  .exercise-container button {
+    background-color: #d72672;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+  }
+  
+  .exercise-container button:hover {
+    background-color: #b10f2e;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
+  }
+  
+  /* Mesaj de feedback pentru răspuns */
+  .feedback-message {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #b10f2e;
+  }
+  
+  /* Containerul butoanelor finale */
+  .exercise-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* Butoanele de navigare */
+  .exercise-actions button {
+    flex: 1;
+    margin: 5px;
+  }
+  

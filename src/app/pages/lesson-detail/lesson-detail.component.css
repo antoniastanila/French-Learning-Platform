@@ -1,0 +1,87 @@
+/* Stilizare generală */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f9f0f7;
+    color: #4a154b;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+  }
+  
+  /* Containerul lecției */
+  .lesson-container {
+    margin-left: 29%;
+    margin-top: 5%;
+    max-width: 600px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
+  /* Titlul lecției */
+  .lesson-container h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #d72672;
+    margin-bottom: 15px;
+  }
+  
+  /* Descrierea lecției */
+  .lesson-container p {
+    font-size: 18px;
+    color: #4a154b;
+    margin-bottom: 10px;
+  }
+  
+  /* Lista de fraze */
+  .lesson-container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .lesson-container li {
+    background-color: #fbe4f1;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #4a154b;
+  }
+  
+  /* Text îngroșat pentru fraze */
+  .lesson-container li b {
+    color: #b10f2e;
+  }
+  
+  /* Dificultatea lecției */
+  .lesson-container p strong {
+    color: #6a0572;
+  }
+  
+  /* Butoane */
+  .lesson-container button {
+    background-color: #d72672;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-right: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .lesson-container button:hover {
+    background-color: #b10f2e;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
+  }
+  

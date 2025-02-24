@@ -47,20 +47,62 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            return res.status(404).json({ message: 'Utilizatorul nu a fost găsit.' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            return res.status(401).json({ message: 'Parola este incorectă.' });
         }
 
-        // 🔹 Generăm un token JWT și îl trimitem utilizatorului
         const token = jwt.sign({ userId: user._id, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
 
-        res.json({ message: 'Login successful', token });
+        res.json({ 
+            message: 'Login successful', 
+            token,
+            user: { 
+                _id: user._id, 
+                username: user.username, 
+                completedLessons: user.completedLessons 
+            } 
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error logging in', details: error.message });
+        res.status(500).json({ message: 'Eroare la autentificare', details: error.message });
+    }
+});
+
+router.get('/:userId/progress', async (req, res) => {
+    console.log("🔍 Request pentru progresul utilizatorului:", req.params.userId);
+
+    try {
+        const user = await User.findById(req.params.userId);
+        if (!user) {
+            console.log("❌ Utilizatorul nu a fost găsit!");
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        console.log("✅ Lecții completate:", user.completedLessons);
+        res.json({ completedLessons: user.completedLessons });
+    } catch (error) {
+        console.error("❌ Eroare la obținerea progresului:", error);
+        res.status(500).json({ message: 'Error getting progress', error: error.message });
+    }
+});
+router.post('/:userId/complete-lesson', async (req, res) => {
+    try {
+        const { lessonId } = req.body;
+        const user = await User.findById(req.params.userId);
+
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        if (!user.completedLessons.includes(lessonId)) {
+            user.completedLessons.push(lessonId); 
+            await user.save();
+        }
+
+        res.status(200).json({ message: 'Lesson marked as completed' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating progress', error });
     }
 });
 

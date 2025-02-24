@@ -54,20 +54,27 @@ export class LoginPageComponent implements OnInit {
 
   onSubmit(form: NgForm): void {
     if (form.invalid) {
-      this.errorMessage = 'Please enter a valid email and password.';
-      return;
+        this.errorMessage = 'Please enter a valid email and password.';
+        return;
     }
 
     this.authService.login({ email: this.email, password: this.password }).subscribe({
-      next: (response) => {
-        localStorage.setItem('token', response.token); // 🔹 Salvăm token-ul
-        this.router.navigate(['/start-page']); // 🔹 Redirecționăm utilizatorul după autentificare
-      },
-      error: (err) => {
-        this.errorMessage = err.error.message || 'Invalid email or password.';
-      }
+        next: (response) => {
+            localStorage.setItem('token', response.token); // 🔹 Salvăm token-ul
+            this.router.navigate(['/main-page']); // 🔹 Redirecționăm utilizatorul după autentificare
+        },
+        error: (err) => {
+            if (err.status === 404) {
+                this.errorMessage = 'Utilizatorul nu a fost găsit.'; // 🛑 Utilizatorul nu există
+            } else if (err.status === 401) {
+                this.errorMessage = 'Parola este incorectă.'; // 🛑 Parolă greșită
+            } else {
+                this.errorMessage = 'Autentificare eșuată. Încercați din nou.'; // ❌ Alte erori
+            }
+        }
     });
   }
+
 
   loginWithFacebook(): void {
     if (typeof FB === 'undefined') {
