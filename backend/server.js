@@ -2,11 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
+const exerciseRoutes = require('./routes/exerciseRoutes');
 
 const app = express();
 app.use(cors());
 app.use(express.json()); // 🔹 Permite trimiterea de JSON în request-uri
 app.use('/api/users', userRoutes);
+app.use('/api/exercises', exerciseRoutes);
 
 // Conectare la MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/FrenchLessonDB')

@@ -23,12 +23,14 @@
       name="password" 
       placeholder="Password" 
       required 
-      minlength="6"
       #passwordField="ngModel"
     />
     <div *ngIf="passwordField.invalid && passwordField.touched" class="error-message">
       <small *ngIf="passwordField.errors?.['required']">Password is required.</small>
-      <small *ngIf="passwordField.errors?.['minlength']">Password must be at least 6 characters long.</small>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
     </div>
 
     <!-- Submit Button -->
@@ -38,4 +40,7 @@
 
   <h2>Or Log In with Facebook</h2>
   <button class="facebook-button" (click)="loginWithFacebook()">Log In with Facebook</button>
+
+  
+
 </div>

@@ -8,8 +8,17 @@
       <input id="email" formControlName="email" type="email" required />
   
       <label for="password">Password:</label>
-      <input id="password" formControlName="password" type="password" required />
-  
+      <input 
+        id="password" 
+        formControlName="password" 
+        type="password" 
+        required 
+      />
+
+      <div *ngIf="signupForm.get('password')?.errors?.['minlength'] && signupForm.get('password')?.touched" class="error-message">
+        <small>Password must be at least 6 characters long.</small>
+      </div>
+
       <button type="submit" [disabled]="signupForm.invalid">Sign Up</button>
     </form>
     <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
