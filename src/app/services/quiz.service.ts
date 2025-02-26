@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class QuizService {
   constructor() {}
-  private questions = [
+  private beginnerQuestions = [
     // Basic Vocabulary
     {
       type: 'multiple-choice',
@@ -205,11 +205,31 @@ export class QuizService {
     // }
   ];
 
-  getQuestions() {
-    return this.questions;
-  }
+  private intermediateQuestions = [
+    {
+      type: 'multiple-choice',
+      question: "Quelle est la traduction de 'I used to go'?",
+      options: ['Je suis allé', 'J’allais', 'J’irais', 'Je vais aller'],
+      correctAnswer: 'J’allais',
+    },
+    {
+      type: 'reading-comprehension',
+      passage: "Les Français adorent le pain. Ils en mangent tous les jours.",
+      question: "Que mangent les Français tous les jours?",
+      options: ['Du fromage', 'Du pain', 'Du vin', 'Des fruits'],
+      correctAnswer: 'Du pain',
+    },
+  ];
 
-  getTotalQuestions(): number {
-    return this.questions.length;
+  getQuestions(level: string) {
+    if (level === 'beginner') {
+      return this.beginnerQuestions;
+    } else if (level === 'intermediate') {
+      return this.intermediateQuestions;
+    }
+    return [];
+  }
+  getTotalQuestions(level: string) {
+    return this.getQuestions(level).length;
   }
 }

@@ -40,7 +40,8 @@ export class MainPageComponent implements OnInit {
           return {
             ...lesson,
             isCompleted: isCompleted,
-            isUnlocked: isCompleted || index === 0 // ✅ Lecțiile finalizate și prima lecție sunt deblocate
+            isUnlocked: isCompleted || index === 0, // ✅ Lecțiile finalizate și prima lecție sunt deblocate
+            level: lesson.level ?? 'beginner'
           };
         });
 
@@ -60,20 +61,25 @@ export class MainPageComponent implements OnInit {
   }
 
 updateProgress(): void {
-  console.log("📌 Lecții finalizate:", this.completedLessons);
-  console.log("📌 Total lecții:", this.totalLessons);
-
-    if (this.totalLessons > 0) {
+     if (this.totalLessons > 0) {
       this.progress = (this.completedLessons.length / this.totalLessons) * 100;
     }
-    console.log("📌 Progres calculat:", this.progress);
-
-  }
+}
   
-  goToLesson(lessonId: string) {
-    if (!this.lessons.find(lesson => lesson._id === lessonId)?.isUnlocked) return;
-    this.router.navigate(['/lesson', lessonId]);
-  }
+goToLesson(lessonId: string) {
+  console.log("🔹 goToLesson() called with lessonId:", lessonId); // ✅ Verifică dacă metoda este apelată
+  const lesson = this.lessons.find(lesson => lesson._id === lessonId);
+
+  console.log("🔹 Found lesson:", lesson);
+  if (!lesson?.isUnlocked) return;
+
+  const level = lesson.level; // 🔹 Extrage nivelul lecției
+  console.log("🔹 goToLesson() called with:", { lessonId, level, fullPath: `/lesson/${level}/${lessonId}` });
+
+  this.router.navigate([`/lesson/${level}/${lessonId}`]);
+}
+
+
 
   checkIfLessonIsUnlocked(index: number): boolean {
     return index <= 1; 

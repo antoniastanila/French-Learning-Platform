@@ -13,7 +13,11 @@ export class IntermediateComponent {
 
   constructor(private router: Router) {}
 
-  goBack() {
+  navigateToIntermediateTest() {
+    this.router.navigate(['/intermediate-test']); 
+  }
+
+  navigateBackToMain() {
     this.router.navigate(['/start-page']); 
   }
 }

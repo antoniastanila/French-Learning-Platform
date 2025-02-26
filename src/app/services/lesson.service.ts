@@ -18,7 +18,10 @@ export class LessonService {
     return this.http.post(this.apiUrl, lesson);
   }
 
-  getLessonById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  getLessonById(lessonId: string, level: string) {
+    const collection = level === 'intermediate' ? 'intermediate_lessons' : 'beginner_lessons';
+    console.log(`Fetching from: ${this.apiUrl}/${collection}/${lessonId}`);
+    return this.http.get(`${this.apiUrl}/${collection}/${lessonId}`);
   }
+  
 }

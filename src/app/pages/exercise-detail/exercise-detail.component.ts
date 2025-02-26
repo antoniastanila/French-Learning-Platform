@@ -72,6 +72,7 @@ export class ExerciseDetailComponent implements OnInit {
   
 
   goToNextLesson() {
+    const level = 'beginner';
     if (!this.lessonId) return;
   
     const lessonIds = [
@@ -92,7 +93,9 @@ export class ExerciseDetailComponent implements OnInit {
     const currentIndex = lessonIds.indexOf(this.lessonId);
     if (currentIndex !== -1 && currentIndex < lessonIds.length - 1) {
       const nextLessonId = lessonIds[currentIndex + 1];
-      this.router.navigate(['/lesson', nextLessonId]); // Navighează la următoarea lecție
+      const level = 'beginner'; // 🔹 Adaptează la nivelul lecției curente
+      console.log("🔍 Navigating to next lesson:", `/lesson/${level}/${nextLessonId}`);
+      this.router.navigate([`/lesson/${level}/${nextLessonId}`]);
     }
   }
   

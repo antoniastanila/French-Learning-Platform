@@ -1,0 +1,117 @@
+h1 {
+    font-size: 3rem;
+    text-align: center;
+  }
+  
+  .quiz-container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      background: #f8e1f4; /* O nuanță ușor diferită */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+    
+  .quiz-container h1 {
+      color: #c2185b; /* Roz mai intens */
+      margin-bottom: 20px;
+  }
+    
+  .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: #8e24aa; /* Mov mai închis */
+      color: white;
+      cursor: pointer;
+  }
+    
+  .options button:hover {
+      background-color: #6a1b9a;
+  }
+    
+  .back-button {
+      margin-top: 20px;
+      background-color: #8e24aa;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+  }
+    
+  .back-button:hover {
+      background-color: #6a1b9a;
+  }
+    
+  .result-container {
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #f8e1f4;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+  }
+  
+  .result-container button {
+      background-color: #c2185b;
+      padding: 10px 20px;
+      border-radius: 15px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+      color: white;
+      margin-top: 10px;
+  }
+  
+  .result-container button:hover {
+      background-color: #b10f2e;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+      transform: scale(1.05);
+  }
+  
+  .correct-answer {
+      color: rgb(38, 101, 82);
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 15px;
+  }
+    
+  .wrong-answer {
+      color: rgb(118, 29, 29);
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 15px;
+  }
+  
+  button {
+      background-color: #6a1b9a;
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      color: white;
+      margin: 10px;
+      transition: all 0.3s ease;
+      width: 200px;
+  }
+    
+  button:hover {
+      background-color: #b10f2e;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+      transform: scale(1.05);
+  }
+  
+  .selected-answer {
+      background-color: yellow !important;
+      color: black !important;
+  }
+  
