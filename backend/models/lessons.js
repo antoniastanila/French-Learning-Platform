@@ -14,4 +14,8 @@ const lessonSchema = new mongoose.Schema({
     isUnlocked: { type: Boolean, default: false } 
 }, { timestamps: true });
 
-module.exports = mongoose.model('Lesson', lessonSchema);
+// 🔹 Definim modele pentru fiecare colecție
+const BeginnerLesson = mongoose.model('BeginnerLesson', lessonSchema, 'beginner_lessons');
+const IntermediateLesson = mongoose.model('IntermediateLesson', lessonSchema, 'intermediate_lessons');
+
+module.exports = { BeginnerLesson, IntermediateLesson };

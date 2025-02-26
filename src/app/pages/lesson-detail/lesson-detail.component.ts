@@ -13,25 +13,36 @@ import { CommonModule } from '@angular/common';
 export class LessonDetailComponent implements OnInit {
   lesson: any;
   lessonId: string | null = null;
-  userId: string = '654321abc'; // Ar trebui să fie preluat din autentificare (hardcodat temporar)
+  level: string = 'beginner'; 
 
   constructor(private route: ActivatedRoute, private router: Router, private lessonService: LessonService, private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.lessonId = params.get('id');
-  
-      if (this.lessonId) {
-        
-        this.lessonService.getLessonById(this.lessonId).subscribe(data => {
-          this.lesson = data;
-        });
-      }
-    });
-  }
-  
+    this.route.params.subscribe(params => {
+        this.lessonId = params['id'];
+        this.level = params['level']; // 🔹 Preia nivelul direct din parametrii rutei
 
-  goToExercises() {
+        const collection = this.level === 'intermediate' ? 'intermediate_lessons' : 'beginner_lessons';
+
+        console.log(`Fetching lesson ${this.lessonId} from ${collection}`);
+
+        // 🔹 Verifică dacă lessonId nu este null înainte de a face request-ul
+        if (this.lessonId) {
+            this.lessonService.getLessonById(this.lessonId, this.level).subscribe(lesson => {
+                this.lesson = lesson;
+            }, error => {
+                console.error("Error fetching lesson:", error);
+            });
+        } else {
+            console.warn("⚠️ Lesson ID is null, request not sent.");
+        }
+    });
+}
+
+
+
+
+  goToExercises() { 
     if (this.lessonId) {
       this.router.navigate([`/exercises/${this.lessonId}`]); 
     }

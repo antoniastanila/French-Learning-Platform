@@ -35,8 +35,8 @@ export class BeginnerTestComponent implements OnInit {
   constructor(private quizService: QuizService, private router: Router) {}
 
   ngOnInit(): void {
-    this.questions = this.quizService.getQuestions();
-    this.totalQuestions = this.quizService.getTotalQuestions();
+    this.questions = this.quizService.getQuestions('beginner');
+    this.totalQuestions = this.quizService.getTotalQuestions('beginner');
   }
 
   onAnswerSelected(selectedOption: string) {
@@ -86,10 +86,12 @@ determineLesson() {
 }
 
 goToLesson() {
-  if (this.lessonId) {
-    this.router.navigate(['/lesson', this.lessonId]);
-  }
+  const level = 'beginner'; // 🔹 Nivelul este 'beginner' deoarece testul este pentru beginner
+  console.log("Navigating to:", `/lesson/${level}/${this.lessonId}`);
+
+  this.router.navigate([`/lesson/${level}/${this.lessonId}`]);
 }
+
 
 goToMainPage() {
   this.router.navigate(['/main-page']);

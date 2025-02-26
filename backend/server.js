@@ -3,12 +3,14 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const exerciseRoutes = require('./routes/exerciseRoutes');
+const lessonRoutes = require('./routes/lessonRoutes');
 
 const app = express();
 app.use(cors());
 app.use(express.json()); // 🔹 Permite trimiterea de JSON în request-uri
 app.use('/api/users', userRoutes);
 app.use('/api/exercises', exerciseRoutes);
+app.use('/api/lessons', lessonRoutes);
 
 // Conectare la MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/FrenchLessonDB')
@@ -22,30 +24,42 @@ mongoose.connect('mongodb://127.0.0.1:27017/FrenchLessonDB')
     difficulty: String
   });
 
-// 🔹 Definim o colecție MongoDB (Lesson)
-const Lesson = mongoose.model('Lesson', LessonSchema, 'beginner_lessons');
+const { BeginnerLesson, IntermediateLesson } = require('./models/lessons');
 
 // 🔹 GET: Obține toate lecțiile
 app.get('/api/lessons', async (req, res) => {
   try {
-    const lessons = await Lesson.find();
+    // 🔹 Caută lecții în ambele colecții
+    const beginnerLessons = await BeginnerLesson.find();
+    const intermediateLessons = await IntermediateLesson.find();
+
+    // 🔹 Combină toate lecțiile într-un singur array
+    const lessons = [...beginnerLessons, ...intermediateLessons];
+    
     res.json(lessons);
   } catch (err) {
-    res.status(500).json({ error: 'Error fetching lessons' });
+    console.error("❌ Error fetching lessons:", err);
+    res.status(500).json({ error: 'Error fetching lessons', details: err.message });
   }
 });
 
+
 app.get('/api/lessons/:id', async (req, res) => {
-    try {
-      const lesson = await Lesson.findById(req.params.id);
-      if (!lesson) {
-        return res.status(404).json({ error: 'Lesson not found' });
-      }
-      res.json(lesson);
-    } catch (err) {
-      res.status(500).json({ error: 'Error fetching lesson' });
+  try {
+    let lesson = await BeginnerLesson.findById(req.params.id);
+    if (!lesson) {
+      lesson = await IntermediateLesson.findById(req.params.id);
     }
-  });
+    
+    if (!lesson) {
+      return res.status(404).json({ error: 'Lesson not found' });
+    }
+    res.json(lesson);
+  } catch (err) {
+    res.status(500).json({ error: 'Error fetching lesson', details: err.message });
+  }
+});
+
   
 
 // Pornirea serverului
