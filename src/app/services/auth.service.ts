@@ -14,8 +14,35 @@ export class AuthService {
   constructor(private http: HttpClient,  private router: Router) {}
 
   register(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, userData);
+    return this.http.post<{ message: string; token: string; user: { username: string; email: string } }>(
+      `${this.apiUrl}/register`, userData
+    ).pipe(
+      tap(response => {
+        console.log("🔍 User registered response:", response); // ✅ Log pentru debugging
+  
+        // ✅ Salvează token-ul
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+        }
+  
+        // ✅ Verifică dacă `user` există și conține date valide
+        if (response.user) {
+          localStorage.setItem('username', response.user.username || '');
+          localStorage.setItem('email', response.user.email || '');
+        }
+  
+        // ✅ Resetare progres lecții
+        this.completedLessons.next([]);
+  
+        // ✅ Navigare către pagina principală
+        this.router.navigate(['/main-page']);
+      })
+    );
   }
+  
+  
+  
+  
 
   login(credentials: any): Observable<any> {
     return this.http.post<{ token: string; user: any }>(`${this.apiUrl}/login`, credentials).pipe(
