@@ -9,7 +9,7 @@ import { IntermediateComponent } from './pages/intermediate/intermediate.compone
 import { AdvancedComponent } from './pages/advanced/advanced.component';
 import { LessonListComponent } from './components/lesson-list/lesson-list.component';
 import { LessonDetailComponent } from './pages/lesson-detail/lesson-detail.component';
-import { MainPageComponent } from './pages/main-page/main-page.component';
+import { BeginnerMainPageComponent } from './pages/beginner-main-page/beginner-main-page.component';
 import { ExerciseDetailComponent } from './pages/exercise-detail/exercise-detail.component';
 import { AuthGuard } from './guards/auth.guard';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
@@ -28,7 +28,7 @@ export const appRoutes: Routes = [
   { path: 'lessons', component: LessonListComponent },
   { path: '', component: LessonListComponent },
   { path: 'lesson/:level/:id', component: LessonDetailComponent },
-  { path: 'main-page', component: MainPageComponent, canActivate: [AuthGuard] },
+  { path: 'beginner-main-page', component: BeginnerMainPageComponent, canActivate: [AuthGuard] },
   { path: 'exercises/:lessonId', component: ExerciseDetailComponent, canActivate: [AuthGuard]  },
   { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] }
 

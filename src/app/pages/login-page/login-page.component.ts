@@ -15,6 +15,7 @@ declare var FB: any;
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent implements OnInit {
+
   email: string = '';
   password: string = '';
   errorMessage: string = ''; 
@@ -61,7 +62,7 @@ export class LoginPageComponent implements OnInit {
     this.authService.login({ email: this.email, password: this.password }).subscribe({
         next: (response) => {
             localStorage.setItem('token', response.token); // 🔹 Salvăm token-ul
-            this.router.navigate(['/main-page']); // 🔹 Redirecționăm utilizatorul după autentificare
+            this.router.navigate(['/beginner-main-page']); // 🔹 Redirecționăm utilizatorul după autentificare
         },
         error: (err) => {
             if (err.status === 404) {
@@ -89,7 +90,7 @@ export class LoginPageComponent implements OnInit {
           FB.api("/me", { fields: "name,email" }, (userResponse: any) => {
             console.log("User Info:", userResponse);
             localStorage.setItem('facebookAccessToken', response.authResponse.accessToken);
-            this.router.navigate(['/main-page']);
+            this.router.navigate(['/beginner-main-page']);
           });
         } else {
           alert("Login cancelled or not authorized.");

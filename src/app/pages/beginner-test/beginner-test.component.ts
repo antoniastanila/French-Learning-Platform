@@ -94,7 +94,7 @@ goToLesson() {
 
 
 goToMainPage() {
-  this.router.navigate(['/main-page']);
+  this.router.navigate(['/beginner-main-page']);
 }
 
 
