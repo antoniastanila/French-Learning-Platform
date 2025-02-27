@@ -49,7 +49,7 @@ export class LessonDetailComponent implements OnInit {
   }
 
   goToMainPage() {
-    this.router.navigate(['/main-page']); 
+    this.router.navigate(['/beginner-main-page']); 
   }
   
 }

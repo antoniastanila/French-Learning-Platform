@@ -99,8 +99,8 @@ export class ExerciseDetailComponent implements OnInit {
     }
   }
   
-  goToMainPage() {
-    this.router.navigate(['/main-page']); // Navighează la pagina principală
+  goToBeginnerMainPage() {
+    this.router.navigate(['/beginner-main-page']); // Navighează la pagina principală
   }
 
 }

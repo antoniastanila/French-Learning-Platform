@@ -3,9 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router'; 
+import { UserResponse } from '../models/user.model'; 
+
 @Injectable({
   providedIn: 'root',
 })
+
+
 export class AuthService {
   private apiUrl = 'http://localhost:5000/api/users';
   private completedLessons = new BehaviorSubject<string[]>([]);
@@ -14,9 +18,7 @@ export class AuthService {
   constructor(private http: HttpClient,  private router: Router) {}
 
   register(userData: any): Observable<any> {
-    return this.http.post<{ message: string; token: string; user: { username: string; email: string } }>(
-      `${this.apiUrl}/register`, userData
-    ).pipe(
+    return this.http.post<UserResponse>(`${this.apiUrl}/register`, userData).pipe(
       tap(response => {
         console.log("🔍 User registered response:", response); // ✅ Log pentru debugging
   
@@ -27,15 +29,24 @@ export class AuthService {
   
         // ✅ Verifică dacă `user` există și conține date valide
         if (response.user) {
-          localStorage.setItem('username', response.user.username || '');
-          localStorage.setItem('email', response.user.email || '');
+          localStorage.setItem('userId', response.user._id);
+          localStorage.setItem('username', response.user.username);
+          localStorage.setItem('email', response.user.email);
+          localStorage.setItem('level', response.user.level || 'beginner');
         }
   
         // ✅ Resetare progres lecții
         this.completedLessons.next([]);
   
         // ✅ Navigare către pagina principală
-        this.router.navigate(['/main-page']);
+        let mainPageRoute = '/main-page/beginner';
+        if (response.user.level === 'intermediate') {
+            mainPageRoute = '/main-page/intermediate';
+        } else if (response.user.level === 'advanced') {
+            mainPageRoute = '/main-page/advanced';
+        }
+
+        this.router.navigate([mainPageRoute]);
       })
     );
   }
@@ -52,7 +63,7 @@ export class AuthService {
         localStorage.setItem('username', response.user.username);
         localStorage.setItem('email', response.user.email);
         this.completedLessons.next(response.user.completedLessons || []); // 🔹 Păstrează progresul lecțiilor
-        this.router.navigate(['/main-page']);
+        this.router.navigate(['/beginner-main-page']);
       })
     );
   }

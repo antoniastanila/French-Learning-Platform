@@ -25,15 +25,24 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ message: 'Email is already in use!' });
         }
 
-        // Creăm noul utilizator
-        const newUser = new User({ username, email, password });
+        // 🔹 Adăugăm un nivel implicit pentru utilizator
+        const newUser = new User({ username, email, password, level: 'beginner' });
         await newUser.save();
 
         // 🔹 Generăm un token JWT automat după înregistrare
         const token = jwt.sign({ userId: newUser._id, role: newUser.role }, 'your_jwt_secret', { expiresIn: '1h' });
 
         // 🔹 Returnăm utilizatorul și token-ul pentru autentificare automată
-        res.status(201).json({ message: 'User registered successfully!', token, user: newUser });
+        res.status(201).json({
+            message: 'User registered successfully!',
+            token,
+            user: {
+                _id: newUser._id,
+                username: newUser.username,
+                email: newUser.email,
+                level: newUser.level // 🔹 Ne asigurăm că trimitem și nivelul utilizatorului
+            }
+        });
     } catch (error) {
         res.status(500).json({ message: 'Error registering user', error: error.message });
     }

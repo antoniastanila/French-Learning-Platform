@@ -6,13 +6,13 @@ import { LessonService } from '../../services/lesson.service';
 import { Lesson } from '../../models/lesson.model';
 
 @Component({
-  selector: 'app-main-page',
+  selector: 'app-beginner-main-page',
   standalone: true,
-  templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.css'],
+  templateUrl: './beginner-main-page.component.html',
+  styleUrls: ['./beginner-main-page.component.css'],
   imports: [CommonModule]
 })
-export class MainPageComponent implements OnInit {
+export class BeginnerMainPageComponent implements OnInit {
   lessons: Lesson[] = [];
   completedLessons: string[] = [];
   currentLessonId: string | null = null; 
