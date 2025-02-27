@@ -24,4 +24,8 @@ export class LessonService {
     return this.http.get(`${this.apiUrl}/${collection}/${lessonId}`);
   }
   
+  getLessonsByLevel(level: string): Observable<any> {
+  return this.http.get(`${this.apiUrl}?level=${level}`);
+  }
+
 }

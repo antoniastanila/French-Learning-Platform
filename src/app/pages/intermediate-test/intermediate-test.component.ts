@@ -95,8 +95,8 @@ export class IntermediateTestComponent implements OnInit {
   
   
 
-  goToMainPage() {
-    this.router.navigate(['/main-page']);
+  goToIntermediateMainPage() {
+    this.router.navigate(['/intermediate-main-page']);
   }
 
   resetQuiz() {

@@ -14,6 +14,8 @@ import { ExerciseDetailComponent } from './pages/exercise-detail/exercise-detail
 import { AuthGuard } from './guards/auth.guard';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { IntermediateTestComponent } from './pages/intermediate-test/intermediate-test.component';
+import { IntermediateMainPageComponent } from './pages/intermediate-main-page/intermediate-main-page.component';
+
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, 
   { path: 'home', component: HomePageComponent }, 
@@ -30,6 +32,7 @@ export const appRoutes: Routes = [
   { path: 'lesson/:level/:id', component: LessonDetailComponent },
   { path: 'beginner-main-page', component: BeginnerMainPageComponent, canActivate: [AuthGuard] },
   { path: 'exercises/:lessonId', component: ExerciseDetailComponent, canActivate: [AuthGuard]  },
-  { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] }
+  { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
+  { path: 'intermediate-main-page', component: IntermediateMainPageComponent },
 
 ];
