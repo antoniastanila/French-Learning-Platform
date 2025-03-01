@@ -1,1 +1,35 @@
-<p>intermediate-main-page works!</p>
+<div class="main-container">
+    <div class="header">
+      <div class="progress-container">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+        <p class="progress-text">Progres: {{ progress.toFixed(1) }}%</p>
+      </div>
+    
+      <button class="user-btn" (click)="goToUserProfile()">
+        {{ username }}
+      </button>
+      <button class="logout-btn" (click)="logout()">Logout</button>
+    </div>
+    
+    <h1>Intermediate Lessons Overview</h1>
+    
+    <div class="lessons-grid">
+      <div 
+        class="lesson-card" 
+        *ngFor="let lesson of lessons"
+        (click)="goToLesson(lesson._id)"
+        [ngClass]="{
+          'completed': lesson.isCompleted,
+          'current': lesson._id === currentLessonId,
+          'locked': !lesson.isUnlocked
+        }">
+      
+        <h3>{{ lesson.title }}</h3>
+        <p>{{ lesson.description }}</p>
+        
+      </div>
+    </div>
+  </div>
+  <ng-template #noLessons>
+    <p>No lessons available for this level.</p>
+  </ng-template>

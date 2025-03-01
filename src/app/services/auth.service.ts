@@ -32,8 +32,9 @@ export class AuthService {
           localStorage.setItem('userId', response.user._id);
           localStorage.setItem('username', response.user.username);
           localStorage.setItem('email', response.user.email);
-          localStorage.setItem('level', response.user.level || 'beginner');
-        }
+          
+          const userLevel = response.user.level || localStorage.getItem('level') || 'beginner';
+          localStorage.setItem('level', userLevel);        }
   
         // ✅ Resetare progres lecții
         this.completedLessons.next([]);
@@ -62,11 +63,26 @@ export class AuthService {
         localStorage.setItem('userId', response.user._id);
         localStorage.setItem('username', response.user.username);
         localStorage.setItem('email', response.user.email);
+  
+        // 🔹 Salvează `level` dacă există în user, altfel folosește ce e deja în localStorage
+        const userLevel = response.user.level || localStorage.getItem('level') || 'beginner';
+        localStorage.setItem('level', userLevel);
+  
         this.completedLessons.next(response.user.completedLessons || []); // 🔹 Păstrează progresul lecțiilor
-        this.router.navigate(['/beginner-main-page']);
+        
+        // ✅ Redirecționare în funcție de nivel
+        let mainPageRoute = `/beginner-main-page`;
+        if (userLevel === 'intermediate') {
+          mainPageRoute = '/intermediate-main-page';
+        } else if (userLevel === 'advanced') {
+          mainPageRoute = '/advanced-main-page';
+        }
+  
+        this.router.navigate([mainPageRoute]);
       })
     );
   }
+  
 
   getUsername(): string | null {
     return localStorage.getItem('username');
