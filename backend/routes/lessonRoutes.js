@@ -32,12 +32,26 @@ router.get('/:collection/:id', async (req, res) => {
     }
 });
 
-// Obține toate lecțiile
 router.get('/', async (req, res) => {
     try {
-        const beginnerLessons = await BeginnerLesson.find();
-        const intermediateLessons = await IntermediateLesson.find();
-        const lessons = [...beginnerLessons, ...intermediateLessons];
+        const { level } = req.query;
+        let lessons = [];
+
+        if (level === 'beginner') {
+            lessons = await BeginnerLesson.find().lean();
+            lessons = lessons.map(lesson => ({ ...lesson, level: 'beginner' })); // ✅ Adaugă manual level
+        } else if (level === 'intermediate') {
+            lessons = await IntermediateLesson.find().lean();
+            lessons = lessons.map(lesson => ({ ...lesson, level: 'intermediate' })); // ✅ Adaugă manual level
+        } else {
+            const beginnerLessons = await BeginnerLesson.find().lean();
+            const intermediateLessons = await IntermediateLesson.find().lean();
+
+            lessons = [
+                ...beginnerLessons.map(lesson => ({ ...lesson, level: 'beginner' })), 
+                ...intermediateLessons.map(lesson => ({ ...lesson, level: 'intermediate' }))
+            ];
+        }
 
         res.json(lessons);
     } catch (err) {
@@ -45,6 +59,8 @@ router.get('/', async (req, res) => {
         res.status(500).json({ error: 'Error fetching lessons', details: err.message });
     }
 });
+
+
 
 // Adaugă o lecție nouă
 router.post('/', async (req, res) => {

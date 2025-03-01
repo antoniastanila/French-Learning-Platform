@@ -13,12 +13,18 @@ export class StartPageComponent {
   constructor(private router: Router) {}
 
   navigateToBeginner() {
+    localStorage.setItem('level', 'beginner'); // 🔹 Salvează nivelul
     this.router.navigate(['/beginner']); 
   }
+  
   navigateToIntermediate() {
+    localStorage.setItem('level', 'intermediate'); // 🔹 Salvează nivelul
     this.router.navigate(['/intermediate']); 
   }
+  
   navigateToAdvanced() {
+    localStorage.setItem('level', 'advanced'); // 🔹 Salvează nivelul
     this.router.navigate(['/advanced']); 
   }
+  
 }

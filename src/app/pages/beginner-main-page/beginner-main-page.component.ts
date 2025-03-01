@@ -25,16 +25,20 @@ export class BeginnerMainPageComponent implements OnInit {
   ngOnInit(): void {
     this.authService.loadUserProgress(); // ✅ Încarcă progresul la refresh
     this.username = this.authService.getUsername(); 
-
+  
     this.authService.completedLessons$.subscribe(completedLessons => {
       this.completedLessons = completedLessons;
   
-      this.lessonService.getLessons().subscribe(data => {
+      this.lessonService.getLessonsByLevel('beginner').subscribe(data => { // 🔹 Obține doar lecțiile pentru 'beginner'
+        console.log("📌 API Response for Beginner Lessons:", data);
+        
         this.totalLessons = data.length;
         this.authService.completedLessons$.subscribe(completedLessons => {
           this.completedLessons = completedLessons;
           this.updateProgress();
         });
+  
+        // 🔹 Filtrăm și mapăm lecțiile pentru a include doar cele de nivel 'beginner'
         this.lessons = data.map((lesson: any, index: number) => {
           const isCompleted = completedLessons.includes(lesson._id);
           return {
@@ -44,12 +48,12 @@ export class BeginnerMainPageComponent implements OnInit {
             level: lesson.level ?? 'beginner'
           };
         });
-
+  
         // ✅ Determină lecția curentă (prima lecție nefinalizată) și o deblochează
         const firstIncompleteLesson = this.lessons.find(lesson => !lesson.isCompleted);
         if (firstIncompleteLesson) {
           this.currentLessonId = firstIncompleteLesson._id;
-
+  
           // ✅ Modificăm `this.lessons` ca să reflecte noua stare
           this.lessons = this.lessons.map(lesson => ({
             ...lesson,
@@ -59,6 +63,7 @@ export class BeginnerMainPageComponent implements OnInit {
       });
     });
   }
+  
 
 updateProgress(): void {
      if (this.totalLessons > 0) {

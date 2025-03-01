@@ -49,7 +49,12 @@ export class LessonDetailComponent implements OnInit {
   }
 
   goToMainPage() {
-    this.router.navigate(['/beginner-main-page']); 
+    const userLevel = localStorage.getItem('level') || 'beginner'; 
+    const mainPage = userLevel === 'intermediate' ? '/intermediate-main-page' : 
+                     userLevel === 'advanced' ? '/advanced-main-page' :
+                     '/beginner-main-page';
+    this.router.navigate([mainPage]); // ✅ Redirecționează către pagina corespunzătoare nivelului
   }
+  
   
 }
