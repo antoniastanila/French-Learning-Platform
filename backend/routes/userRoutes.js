@@ -97,22 +97,59 @@ router.get('/:userId/progress', async (req, res) => {
         res.status(500).json({ message: 'Error getting progress', error: error.message });
     }
 });
+
 router.post('/:userId/complete-lesson', async (req, res) => {
     try {
-        const { lessonId } = req.body;
+        const { lessonId, level } = req.body; // 🔹 Prinde și nivelul
         const user = await User.findById(req.params.userId);
 
         if (!user) return res.status(404).json({ message: 'User not found' });
 
-        if (!user.completedLessons.includes(lessonId)) {
-            user.completedLessons.push(lessonId); 
+        // ✅ Inițializează progresul pentru nivelul respectiv dacă nu există
+        if (!user.progress[level]) {
+            user.progress[level] = [];
+        }
+
+        // ✅ Evităm duplicarea lecțiilor deja completate
+        if (!user.progress[level].includes(lessonId)) {
+            user.progress[level] = [...new Set([...user.progress[level], lessonId])];
             await user.save();
         }
 
-        res.status(200).json({ message: 'Lesson marked as completed' });
+        console.log(`✅ Lecție ${lessonId} marcată ca finalizată pentru nivelul ${level}`);
+
+        res.status(200).json({ message: 'Lesson marked as completed', completedLessons: user.progress[level] });
     } catch (error) {
+        console.error("❌ Eroare la actualizarea progresului:", error);
         res.status(500).json({ message: 'Error updating progress', error });
     }
 });
+
+
+router.post('/:userId/complete-multiple-lessons', async (req, res) => {
+    const { userId } = req.params;
+    const { lessonIds } = req.body;
+
+    if (!lessonIds || !Array.isArray(lessonIds)) {
+        return res.status(400).json({ message: "Invalid lesson IDs" });
+    }
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // ✅ Adaugă lecțiile noi în lista lecțiilor completate
+        user.completedLessons = [...new Set([...user.completedLessons, ...lessonIds])];
+
+        await user.save();
+        res.json({ message: "Lessons marked as completed", completedLessons: user.completedLessons });
+    } catch (error) {
+        console.error("❌ Error marking lessons as completed:", error);
+        res.status(500).json({ message: "Server error", error });
+    }
+});
+
 
 module.exports = router;

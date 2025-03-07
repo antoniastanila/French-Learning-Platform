@@ -33,7 +33,6 @@ export class ExerciseDetailComponent implements OnInit {
       if (this.lessonId) {
         this.exerciseService.getExercisesByLessonId(this.lessonId).subscribe(exercises => {
           this.exercises = exercises;
-          console.log('🔍 Exerciții încărcate:', exercises);
         });
       }
     });
@@ -57,18 +56,19 @@ export class ExerciseDetailComponent implements OnInit {
         this.allExercisesCompleted = Object.values(this.completedExercises).every(status => status);
       }
   
-      console.log("✅ Răspuns corect:", response.isCorrect);
-      console.log("📌 Exerciții completate:", this.completedExercises);
-      console.log("🎯 Toate exercițiile completate?", this.allExercisesCompleted);
+     
     });
   }
   
   completeLesson() {
     if (this.lessonId) {
-      this.authService.markLessonComplete(this.lessonId); // Salvează progresul utilizatorului
-      this.lessonCompleted = true; // Marchează vizual lecția ca fiind completată
+        const userLevel = this.authService.getUserLevel(); // 🔹 Preluăm nivelul utilizatorului
+        this.authService.markLessonsAsCompleted([this.lessonId], userLevel);
+        this.lessonCompleted = true; // 🔹 Marchează vizual lecția ca fiind completată
     }
-  }
+}
+
+  
   
 
   goToNextLesson() {
@@ -94,7 +94,6 @@ export class ExerciseDetailComponent implements OnInit {
     if (currentIndex !== -1 && currentIndex < lessonIds.length - 1) {
       const nextLessonId = lessonIds[currentIndex + 1];
       const level = 'beginner'; // 🔹 Adaptează la nivelul lecției curente
-      console.log("🔍 Navigating to next lesson:", `/lesson/${level}/${nextLessonId}`);
       this.router.navigate([`/lesson/${level}/${nextLessonId}`]);
     }
   }

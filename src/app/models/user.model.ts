@@ -1,4 +1,3 @@
-// 📌 src/app/models/user.model.ts
 export interface UserResponse {
     message: string;
     token: string;

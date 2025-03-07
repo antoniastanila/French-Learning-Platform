@@ -23,84 +23,79 @@ export class IntermediateMainPageComponent implements OnInit {
   constructor(private lessonService: LessonService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    console.log("🔍 ngOnInit() called");
-    this.authService.loadUserProgress(); // ✅ Încarcă progresul la refresh
-    this.username = this.authService.getUsername(); 
+    this.authService.loadUserProgress();
+    this.username = this.authService.getUsername();
+
+    const storedCurrentLesson = localStorage.getItem('currentLesson');
 
     this.authService.completedLessons$.subscribe(completedLessons => {
       this.completedLessons = completedLessons;
-  
-      // 🔹 Obține lecțiile de nivel `intermediate`
-      this.lessonService.getLessonsByLevel('intermediate').subscribe(data => {
-        console.log("📌 API Response for Intermediate Lessons:", data);
 
-        if (data.length > 0) {
-          console.log("🔍 First lesson object:", data[0]); // Vezi structura primei lecții
-        }
-
+      this.lessonService.getLessonsByLevel('intermediate').subscribe(data => {  
         this.totalLessons = data.length;
-        this.authService.completedLessons$.subscribe(completedLessons => {
-          this.completedLessons = completedLessons;
-          this.updateProgress();
-        });
 
-        // 🔹 Filtrăm lecțiile pentru a afișa doar cele de nivel `intermediate`
-        this.lessons = data.filter((lesson: Lesson) => lesson.level === 'intermediate').map((lesson: Lesson, index: number) => {
-          const isCompleted = completedLessons.includes(lesson._id);
-          return {
-            ...lesson,
-            isCompleted: isCompleted,
-            isUnlocked: isCompleted || index === 0, // ✅ Lecțiile finalizate și prima lecție sunt deblocate
-            level: lesson.level ?? 'intermediate'
-          };
-        });
-        console.log("📌 Filtered lessons assigned to this.lessons:", this.lessons);
-
-
-        // ✅ Determină lecția curentă (prima lecție nefinalizată) și o deblochează
-        const firstIncompleteLesson = this.lessons.find(lesson => !lesson.isCompleted);
-        if (firstIncompleteLesson) {
+        // ✅ Obține lecția curentă din localStorage sau determin-o
+        let firstIncompleteLesson = data.find((lesson: Lesson) => !completedLessons.includes(lesson._id));
+        if (storedCurrentLesson) {
+          this.currentLessonId = storedCurrentLesson;
+        } else if (firstIncompleteLesson) {
           this.currentLessonId = firstIncompleteLesson._id;
-
-          // ✅ Modificăm `this.lessons` ca să reflecte noua stare
-          this.lessons = this.lessons.map(lesson => ({
-            ...lesson,
-            isUnlocked: lesson.isUnlocked || lesson._id === this.currentLessonId
-          }));
         }
+
+        // ✅ Marchează lecțiile corect
+        this.lessons = data.map((lesson: Lesson, index: number) => ({
+          ...lesson,
+          isCompleted: completedLessons.includes(lesson._id),
+          isUnlocked: index === 0 || completedLessons.includes(lesson._id),
+          level: 'intermediate'
+        }));
+
+        this.updateLessonsState();
+        this.updateProgress();
       });
     });
   }
 
-
-updateProgress(): void {
-     if (this.totalLessons > 0) {
-      this.progress = (this.completedLessons.length / this.totalLessons) * 100;
+  updateProgress(): void {
+    const completedCount = this.lessons.filter(lesson => lesson.isCompleted).length;
+    if (this.totalLessons > 0) {
+      this.progress = (completedCount / this.totalLessons) * 100;
     }
-}
+  }
+
+  updateLessonsState(): void {
+    const currentIndex = this.lessons.findIndex(lesson => lesson._id === this.currentLessonId);
   
-goToLesson(lessonId: string) {
-  console.log("🔹 goToLesson() called with lessonId:", lessonId); // ✅ Verifică dacă metoda este apelată
-  const lesson = this.lessons.find(lesson => lesson._id === lessonId);
+    this.lessons = this.lessons.map((lesson, index) => ({
+      ...lesson,
+      isCompleted: index < currentIndex, // Lecțiile anterioare sunt finalizate
+      isUnlocked: index <= currentIndex, // Lecția curentă este accesibilă
+    }));
+  }
 
-  console.log("🔹 Found lesson:", lesson);
-  if (!lesson?.isUnlocked) return;
-
-  const level = lesson.level; // 🔹 Extrage nivelul lecției
-  console.log("🔹 goToLesson() called with:", { lessonId, level, fullPath: `/lesson/${level}/${lessonId}` });
-
-  this.router.navigate([`/lesson/${level}/${lessonId}`]);
-}
-
-  checkIfLessonIsUnlocked(index: number): boolean {
-    return index <= 1; 
+  goToLesson(lessonId: string) {
+    console.log("🔹 goToLesson() called with lessonId:", lessonId);
+    const lesson = this.lessons.find(lesson => lesson._id === lessonId);
+  
+    if (!lesson?.isUnlocked) return;
+  
+    const level = 'intermediate';
+    console.log("🔹 Navigating to:", `/lesson/${level}/${lessonId}`);
+  
+    this.currentLessonId = lessonId;
+    localStorage.setItem('currentLesson', lessonId);
+  
+    this.updateLessonsState();
+    this.updateProgress();
+  
+    this.router.navigate([`/lesson/${level}/${lessonId}`]);
   }
 
   goToUserProfile() {
-    this.router.navigate(['/profile']); // ✅ Navighează către pagina de profil
+    this.router.navigate(['/profile']);
   }
 
   logout() {
-    this.authService.logout(); // 🔹 Apelăm logout-ul din service
+    this.authService.logout();
   }
 }
