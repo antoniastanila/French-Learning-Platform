@@ -6,6 +6,10 @@ import { MultipleChoiceQuestionComponent } from '../../components/multiple-choic
 import { FillInTheBlankComponent } from '../../components/fill-in-the-blank/fill-in-the-blank.component';
 import { ListeningQuestionComponent } from '../../components/listening-question/listening-question.component';
 import { ReadingComprehensionComponent } from '../../components/reading-comprehension/reading-comprehension.component';
+import { AuthService } from '../../services/auth.service';
+import { LessonService } from '../../services/lesson.service'; 
+import { Lesson } from '../../models/lesson.model';
+
 @Component({
   selector: 'app-beginner-test',
   standalone: true,
@@ -32,7 +36,10 @@ export class BeginnerTestComponent implements OnInit {
   selectedAnswer: string | null = null; 
   isAnswered = false;  
 
-  constructor(private quizService: QuizService, private router: Router) {}
+  constructor(private quizService: QuizService,
+              private router: Router, 
+              private authService: AuthService,
+              private lessonService: LessonService) {}
 
   ngOnInit(): void {
     this.questions = this.quizService.getQuestions('beginner');
@@ -74,22 +81,48 @@ nextQuestion() {
 }
 
 determineLesson() {
-  const scorePercentage = (this.score / this.totalQuestions) * 100;
+  const userLevel = this.authService.getUserLevel(); // ✅ Obține nivelul utilizatorului
 
-  if (scorePercentage <= 30) {
-    this.lessonId = '67adff85ba1cb07465fad7fe'; // Lecția 1
-  } else if (scorePercentage > 30 && scorePercentage <= 50) {
-    this.lessonId = '67b30efdbf5bcc73adb8f79b'; // Lecția 5
-  } else if (scorePercentage > 60) {
-    this.lessonId = '67b30f52bf5bcc73adb8f7a5'; // Lecția 10
-  }
+  this.lessonService.getLessonsByLevel(userLevel).subscribe((lessons: Lesson[]) => { 
+    if (!lessons || lessons.length === 0) return;
+
+    const scorePercentage = (this.score / this.totalQuestions) * 100;
+    let startLessonIndex = 0; 
+
+    if (scorePercentage > 30 && scorePercentage <= 50) {
+      startLessonIndex = Math.floor(lessons.length * 0.3); 
+    } else if (scorePercentage > 60) {
+      startLessonIndex = Math.floor(lessons.length * 0.6);
+    }
+
+    this.lessonId = lessons[startLessonIndex]?._id || lessons[0]._id;
+
+    const completedLessons = lessons.slice(0, startLessonIndex).map((lesson: Lesson) => lesson._id);
+
+    console.log("✅ Lecția determinată:", this.lessonId);
+    console.log("✅ Lecții marcate ca finalizate:", completedLessons);
+
+    // ✅ Setăm lecția curentă
+    this.authService.setCurrentLesson(this.lessonId);
+
+    // ✅ Trimitem progresul cu nivelul corect
+    if (completedLessons.length > 0) {
+      this.authService.markLessonsAsCompleted(completedLessons, userLevel);
+    }
+  });
 }
+
+
 
 goToLesson() {
   const level = 'beginner'; // 🔹 Nivelul este 'beginner' deoarece testul este pentru beginner
-  console.log("Navigating to:", `/lesson/${level}/${this.lessonId}`);
+  console.log("🔹 Navigating to:", `/lesson/${level}/${this.lessonId}`);
 
+  // ✅ Navighează către lecția corectă
   this.router.navigate([`/lesson/${level}/${this.lessonId}`]);
+
+  // ✅ Actualizăm progresul în interfață
+  this.authService.loadUserProgress();
 }
 
 

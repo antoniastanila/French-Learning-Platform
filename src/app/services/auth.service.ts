@@ -96,31 +96,57 @@ export class AuthService {
   loadUserProgress(): void {
     const userId = localStorage.getItem('userId');
     if (!userId) {
-        console.error("❌ userId lipsește din localStorage!");
-        return;
+      console.error("❌ userId lipsește din localStorage!");
+      return;
     }
-
-    console.log(`🔍 Cerere către backend: /api/users/${userId}/progress`);
-
-    this.http.get<{ completedLessons: string[] }>(`${this.apiUrl}/${userId}/progress`).subscribe(response => {
+  
+    const userLevel = localStorage.getItem('level') || 'beginner'; // 🔹 Verifică nivelul
+  
+    console.log(`🔍 Cerere către backend: /api/users/${userId}/progress pentru nivelul ${userLevel}`);
+  
+    this.http.get<{ completedLessons: string[] }>(`${this.apiUrl}/${userId}/progress?level=${userLevel}`).subscribe(response => {
+      if (localStorage.getItem('userId') === userId) {
         this.completedLessons.next(response.completedLessons || []);
+      }
     }, error => {
-        console.error("❌ Eroare la încărcarea progresului:", error);
+      console.error("❌ Eroare la încărcarea progresului:", error);
     });
-}
+  }
+  
 
-  markLessonComplete(lessonId: string): void {
+
+  markLessonsAsCompleted(lessonIds: string[], level: string): void {
     const userId = localStorage.getItem('userId');
     if (!userId) return;
 
-    this.http.post(`${this.apiUrl}/${userId}/complete-lesson`, { lessonId }).subscribe(() => {
-      // Adăugăm lecția în progresul local al utilizatorului
-      const updatedLessons = [...this.completedLessons.getValue(), lessonId];
-      this.completedLessons.next(updatedLessons);
-    });
-  }
+    console.log(`🔍 Lecții trimise către backend pentru completare (${level}):`, lessonIds);
+
+    // 🔹 Verificăm care lecții sunt deja înregistrate ca finalizate
+    const newLessons = lessonIds.filter(id => !this.completedLessons.getValue().includes(id));
+
+    if (newLessons.length > 0) {
+        this.http.post(`${this.apiUrl}/${userId}/complete-multiple-lessons`, { lessonIds: newLessons, level }).subscribe(response => {
+            console.log("✅ Răspuns de la backend:", response);
+            // 🔹 Adăugăm lecțiile finalizate în state-ul local
+            const updatedLessons = [...new Set([...this.completedLessons.getValue(), ...newLessons])]; 
+            this.completedLessons.next(updatedLessons);
+        });
+    }
+}
+
+  
+getUserLevel(): string {
+  return localStorage.getItem('level') || 'beginner'; // 🔹 Default la 'beginner' dacă nu există nivel salvat
+}
+
 
   getCompletedLessons(): string[] {
     return this.completedLessons.getValue();
   }
+
+  setCurrentLesson(lessonId: string): void {
+    localStorage.setItem('currentLesson', lessonId);
+    console.log(`✅ Lecția curentă setată: ${lessonId}`);
+  }
+  
 }
