@@ -29,14 +29,22 @@ export class ExerciseDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.lessonId = params.get('lessonId');
+      const level = localStorage.getItem('level') || 'beginner'; // 🔹 Asigură-te că nivelul este preluat corect
+      console.log(`🔹 Cerere API către: /api/exercises/${this.lessonId}?level=${level}`); // ✅ Debugging în frontend
 
       if (this.lessonId) {
-        this.exerciseService.getExercisesByLessonId(this.lessonId).subscribe(exercises => {
-          this.exercises = exercises;
-        });
+        this.exerciseService.getExercisesByLessonId(this.lessonId).subscribe(
+          exercises => {
+            this.exercises = exercises;
+          },
+          error => {
+            console.error("❌ Eroare la preluarea exercițiilor:", error);
+          }
+        );
       }
     });
   }
+  
 
   validateAnswer(exerciseId: string, userAnswer: string): void {
     this.http.post(`http://localhost:5000/api/exercises/${exerciseId}/validate`, { userAnswer }).subscribe((response: any) => {
@@ -98,8 +106,20 @@ export class ExerciseDetailComponent implements OnInit {
     }
   }
   
-  goToBeginnerMainPage() {
-    this.router.navigate(['/beginner-main-page']); // Navighează la pagina principală
+  goToMainPage() {
+    const userLevel = localStorage.getItem('level') || 'beginner'; // 🔹 Preluăm nivelul utilizatorului
+    
+    let mainPageRoute = '/beginner-main-page'; // Default
+    
+    if (userLevel === 'intermediate') {
+      mainPageRoute = '/intermediate-main-page';
+    } else if (userLevel === 'advanced') {
+      mainPageRoute = '/advanced-main-page';
+    }
+  
+    console.log(`🔹 Navigare către: ${mainPageRoute}`);
+    this.router.navigate([mainPageRoute]);
   }
+  
 
 }

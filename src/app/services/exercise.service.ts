@@ -10,8 +10,10 @@ export class ExerciseService {
 
   constructor(private http: HttpClient) {}
 
-  // 🔹 Metodă pentru a obține exercițiile unei lecții pe baza ID-ului lecției
-  getExercisesByLessonId(lessonId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${lessonId}`);
+  getExercisesByLessonId(lessonId: string): Observable<any> {
+    const level = localStorage.getItem('level') || 'beginner'; // 🔹 Asigură-te că nivelul este setat corect
+    console.log(`🔍 Fetching exercises for lesson ${lessonId} at level: ${level}`);
+    return this.http.get(`/api/exercises/${lessonId}?level=${level}`);
   }
+  
 }

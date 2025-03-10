@@ -63,25 +63,31 @@ export class AuthService {
         localStorage.setItem('userId', response.user._id);
         localStorage.setItem('username', response.user.username);
         localStorage.setItem('email', response.user.email);
-  
-        // 🔹 Salvează `level` dacă există în user, altfel folosește ce e deja în localStorage
-        const userLevel = response.user.level || localStorage.getItem('level') || 'beginner';
+
+        const userLevel = response.user.level ? response.user.level : 'beginner'; 
         localStorage.setItem('level', userLevel);
-  
-        this.completedLessons.next(response.user.completedLessons || []); // 🔹 Păstrează progresul lecțiilor
+
+        // 🔹 Debugging logs
+        console.log(`🔍 User logged in: ${response.user.username}`);
+        console.log(`🔍 Received user level from backend: ${response.user.level}`);
+        console.log(`🔍 Stored user level in localStorage: ${localStorage.getItem('level')}`);
+
+        this.completedLessons.next(response.user.completedLessons || []); 
         
-        // ✅ Redirecționare în funcție de nivel
         let mainPageRoute = `/beginner-main-page`;
         if (userLevel === 'intermediate') {
           mainPageRoute = '/intermediate-main-page';
         } else if (userLevel === 'advanced') {
           mainPageRoute = '/advanced-main-page';
         }
-  
+
+        console.log(`🔍 Redirecting user to: ${mainPageRoute}`); // ✅ Log final înainte de redirecționare
         this.router.navigate([mainPageRoute]);
       })
     );
-  }
+}
+
+  
   
 
   getUsername(): string | null {

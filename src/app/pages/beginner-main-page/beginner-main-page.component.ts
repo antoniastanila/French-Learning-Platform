@@ -117,13 +117,6 @@ goToLesson(lessonId: string) {
   this.router.navigate([`/lesson/${level}/${lessonId}`]);
 }
 
-  
-
-
-  checkIfLessonIsUnlocked(index: number): boolean {
-    return index <= 1; 
-  }
-
   goToUserProfile() {
     this.router.navigate(['/profile']); // ✅ Navighează către pagina de profil
   }
