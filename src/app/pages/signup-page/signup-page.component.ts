@@ -25,8 +25,17 @@ export class SignupPageComponent implements OnInit {
     
   }
 
-  ngOnInit(): void {}
-
+  ngOnInit(): void {
+    const userId = localStorage.getItem('userId');
+    const userLevel = localStorage.getItem('level');
+  
+    if (userId) {
+      console.log(`🔹 Utilizator conectat: ${userId}, nivel: ${userLevel}`);
+    } else {
+      console.warn("⚠️ Niciun utilizator conectat.");
+    }
+  }
+  
   onSubmit(): void {
     if (this.signupForm.invalid) return;
 

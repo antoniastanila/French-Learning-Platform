@@ -24,7 +24,17 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFacebookSDK();
+  
+    const userId = localStorage.getItem('userId');
+    const userLevel = localStorage.getItem('level');
+  
+    if (userId) {
+      console.log(`🔹 Utilizator conectat: ${userId}, nivel: ${userLevel}`);
+    } else {
+      console.warn("⚠️ Niciun utilizator conectat.");
+    }
   }
+  
 
   private loadFacebookSDK(): void {
     (function (d, s, id) {
@@ -62,7 +72,22 @@ export class LoginPageComponent implements OnInit {
     this.authService.login({ email: this.email, password: this.password }).subscribe({
         next: (response) => {
             localStorage.setItem('token', response.token); // 🔹 Salvăm token-ul
-            this.router.navigate(['/beginner-main-page']); // 🔹 Redirecționăm utilizatorul după autentificare
+            localStorage.setItem('userId', response.user._id);
+            localStorage.setItem('username', response.user.username);
+            localStorage.setItem('email', response.user.email);
+            
+            const userLevel = response.user.level || 'beginner'; // 🔹 Asigură-te că avem nivelul corect
+            localStorage.setItem('level', userLevel);
+
+            let mainPageRoute = '/beginner-main-page'; // Default
+            if (userLevel === 'intermediate') {
+                mainPageRoute = '/intermediate-main-page';
+            } else if (userLevel === 'advanced') {
+                mainPageRoute = '/advanced-main-page';
+            }
+
+            console.log(`🔹 Navigare după login către: ${mainPageRoute}`);
+            this.router.navigate([mainPageRoute]); // 🔹 Navigăm către pagina corectă
         },
         error: (err) => {
             if (err.status === 404) {
@@ -74,7 +99,8 @@ export class LoginPageComponent implements OnInit {
             }
         }
     });
-  }
+}
+
 
 
   loginWithFacebook(): void {

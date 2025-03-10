@@ -48,6 +48,27 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.patch('/:userId/update-level', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { level } = req.body;
+
+        if (!['beginner', 'intermediate', 'advanced'].includes(level)) {
+            return res.status(400).json({ message: 'Nivel invalid.' });
+        }
+
+        const user = await User.findByIdAndUpdate(userId, { level }, { new: true });
+        if (!user) {
+            return res.status(404).json({ message: 'Utilizatorul nu a fost găsit.' });
+        }
+
+        res.json({ message: 'Nivel actualizat cu succes.', user });
+    } catch (error) {
+        console.error('❌ Eroare la actualizarea nivelului:', error);
+        res.status(500).json({ message: 'Eroare de server.', error });
+    }
+});
+
 
 // 🔹 Autentificare utilizator
 router.post('/login', async (req, res) => {
@@ -65,6 +86,7 @@ router.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user._id, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
+        console.log("🔍 User data sent in login response:", user);
 
         res.json({ 
             message: 'Login successful', 
@@ -72,9 +94,11 @@ router.post('/login', async (req, res) => {
             user: { 
                 _id: user._id, 
                 username: user.username, 
+                level: user.level,  // Adaugă nivelul utilizatorului
                 completedLessons: user.completedLessons 
             } 
         });
+        
     } catch (error) {
         res.status(500).json({ message: 'Eroare la autentificare', details: error.message });
     }

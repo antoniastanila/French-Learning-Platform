@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema(
         username: { type: String, required: true, unique: true },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
+        level: { type: String, enum: ['beginner', 'intermediate', 'advanced'], default: 'beginner' }, // ✅ Asigură nivel default
         role: { type: String, enum: ['student', 'admin'], default: 'student' },
         progress: { type: Object, default: {} },
         completedLessons: { type: [String], default: [] }
