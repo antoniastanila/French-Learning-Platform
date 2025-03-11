@@ -42,6 +42,7 @@ export class IntermediateMainPageComponent implements OnInit {
 
         let storedCurrentLesson = localStorage.getItem(`currentLesson_${userId}`);
 
+        // ✅ Construim lista lecțiilor și stabilim progresul
         this.lessons = data.map((lesson: any, index: number) => ({
           ...lesson,
           isCompleted: completedLessons.includes(lesson._id),
@@ -49,14 +50,19 @@ export class IntermediateMainPageComponent implements OnInit {
           level: lesson.level ?? 'intermediate'
         }));
 
+        // ✅ Găsim prima lecție necompletată
         const firstIncompleteLesson = this.lessons.find(lesson => !lesson.isCompleted);
-        if (storedCurrentLesson && completedLessons.includes(storedCurrentLesson)) {
-          this.currentLessonId = firstIncompleteLesson ? firstIncompleteLesson._id : storedCurrentLesson;
-        } else if (firstIncompleteLesson) {
-          this.currentLessonId = firstIncompleteLesson._id;
-        }
 
-        localStorage.setItem(`currentLesson_${userId}`, this.currentLessonId || '');
+        // ✅ Setăm lecția curentă
+        if (!firstIncompleteLesson) {
+          // Toate lecțiile sunt completate
+          this.currentLessonId = null;
+          localStorage.removeItem(`currentLesson_${userId}`);
+        } else {
+          // Există lecții necompletate → setăm prima lecție necompletată ca fiind curentă
+          this.currentLessonId = firstIncompleteLesson._id;
+          localStorage.setItem(`currentLesson_${userId}`, this.currentLessonId);
+        }
 
         this.updateLessonsState();
         this.updateProgress();
@@ -72,14 +78,33 @@ export class IntermediateMainPageComponent implements OnInit {
   }
 
   updateLessonsState(): void {
-    const currentIndex = this.lessons.findIndex(lesson => lesson._id === this.currentLessonId);
-
-    this.lessons = this.lessons.map((lesson, index) => ({
+    const allCompleted = this.completedLessons.length === this.totalLessons;
+  
+    // ✅ Găsim prima lecție necompletată
+    const firstIncompleteLesson = this.lessons.find(lesson => !this.completedLessons.includes(lesson._id));
+  
+    // ✅ Dacă există lecții nefinalizate, aceasta devine curentă
+    if (!allCompleted && firstIncompleteLesson) {
+      this.currentLessonId = firstIncompleteLesson._id;
+    } else {
+      this.currentLessonId = null; // Nu mai avem lecție curentă dacă toate sunt completate
+    }
+  
+    this.lessons = this.lessons.map(lesson => ({
       ...lesson,
-      isCompleted: index < currentIndex,
-      isUnlocked: index <= currentIndex,
+      isCompleted: this.completedLessons.includes(lesson._id), 
+      isUnlocked: allCompleted || lesson._id === this.currentLessonId || this.completedLessons.includes(lesson._id), 
     }));
+  
+    // ✅ Dacă toate lecțiile sunt finalizate, eliminăm lecția curentă
+    if (allCompleted) {
+      this.currentLessonId = null;
+      localStorage.removeItem(`currentLesson_${localStorage.getItem('userId')}`);
+    } else {
+      localStorage.setItem(`currentLesson_${localStorage.getItem('userId')}`, this.currentLessonId || '');
+    }
   }
+  
 
   goToLesson(lessonId: string) {
     console.log("🔹 goToLesson() called with lessonId:", lessonId);
@@ -93,18 +118,22 @@ export class IntermediateMainPageComponent implements OnInit {
     const level = lesson.level;
     console.log("🔹 Navigating to:", { lessonId, level, fullPath: `/lesson/${level}/${lessonId}` });
 
+    // ✅ Setăm lecția curentă și salvăm în localStorage pentru utilizator
     this.currentLessonId = lessonId;
     localStorage.setItem(`currentLesson_${userId}`, lessonId);
 
+    // ✅ Trimitem lecția ca finalizată doar dacă nu este deja în lista lecțiilor completate
     const userLevel = 'intermediate';
 
     if (!this.completedLessons.includes(lessonId)) {
       this.authService.markLessonsAsCompleted([lessonId], userLevel);
     }
 
+    // ✅ Actualizăm interfața
     this.updateLessonsState();
     this.updateProgress();
 
+    // ✅ Navigăm către lecția selectată
     this.router.navigate([`/lesson/${level}/${lessonId}`]);
   }
 
