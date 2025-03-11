@@ -48,7 +48,7 @@ export class ExerciseDetailComponent implements OnInit {
 
   validateAnswer(exerciseId: string, userAnswer: string): void {
     this.http.post(`http://localhost:5000/api/exercises/${exerciseId}/validate`, { userAnswer }).subscribe((response: any) => {
-      console.log("🔍 Răspuns primit de la server:", response); // ✅ Log pentru debugging
+      console.log("🔍 Răspuns primit de la server:", response); // ✅ Debugging
   
       this.feedbackMessage[exerciseId] = response.message;
   
@@ -58,15 +58,15 @@ export class ExerciseDetailComponent implements OnInit {
         console.error("⚠️ Proprietatea 'isCorrect' lipsește din răspunsul serverului!");
       }
   
-      if (this.exercises.length === 1) {
-        this.allExercisesCompleted = response.isCorrect || false;
-      } else {
-        this.allExercisesCompleted = Object.values(this.completedExercises).every(status => status);
+      // ✅ Verifică dacă toate exercițiile sunt completate corect
+      this.allExercisesCompleted = Object.values(this.completedExercises).every(status => status);
+
+      if (this.allExercisesCompleted) {
+        this.completeLesson(); // ✅ Marchează lecția ca fiind completată automat
       }
-  
-     
     });
-  }
+}
+
   
   completeLesson() {
     if (this.lessonId) {

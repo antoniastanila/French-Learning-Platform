@@ -41,29 +41,35 @@ export class BeginnerMainPageComponent implements OnInit {
         this.totalLessons = data.length;
   
         let storedCurrentLesson = localStorage.getItem(`currentLesson_${userId}`);
-  
+
+        // ✅ Construim lista lecțiilor și stabilim progresul
         this.lessons = data.map((lesson: any, index: number) => ({
           ...lesson,
           isCompleted: completedLessons.includes(lesson._id),
           isUnlocked: index === 0 || completedLessons.includes(lesson._id),
           level: lesson.level ?? 'beginner'
         }));
-  
+
+        // ✅ Găsim prima lecție necompletată
         const firstIncompleteLesson = this.lessons.find(lesson => !lesson.isCompleted);
-        if (storedCurrentLesson && completedLessons.includes(storedCurrentLesson)) {
-          this.currentLessonId = firstIncompleteLesson ? firstIncompleteLesson._id : storedCurrentLesson;
-        } else if (firstIncompleteLesson) {
+
+        // ✅ Setăm lecția curentă
+        if (!firstIncompleteLesson) {
+          // Toate lecțiile sunt completate
+          this.currentLessonId = null;
+          localStorage.removeItem(`currentLesson_${userId}`);
+        } else {
+          // Există lecții necompletate → setăm prima lecție necompletată ca fiind curentă
           this.currentLessonId = firstIncompleteLesson._id;
+          localStorage.setItem(`currentLesson_${userId}`, this.currentLessonId);
         }
-  
-        localStorage.setItem(`currentLesson_${userId}`, this.currentLessonId || '');
-  
+
         this.updateLessonsState();
         this.updateProgress();
       });
     });
   }
-  
+
 
   updateProgress(): void {
     const completedCount = this.lessons.filter(lesson => lesson.isCompleted).length;
@@ -75,14 +81,33 @@ export class BeginnerMainPageComponent implements OnInit {
 
   
 updateLessonsState(): void {
-  const currentIndex = this.lessons.findIndex(lesson => lesson._id === this.currentLessonId);
+  const allCompleted = this.completedLessons.length === this.totalLessons;
 
-  this.lessons = this.lessons.map((lesson, index) => ({
+  // ✅ Găsim prima lecție necompletată
+  const firstIncompleteLesson = this.lessons.find(lesson => !this.completedLessons.includes(lesson._id));
+
+  // ✅ Dacă există lecții nefinalizate, aceasta devine curentă
+  if (!allCompleted && firstIncompleteLesson) {
+    this.currentLessonId = firstIncompleteLesson._id;
+  } else {
+    this.currentLessonId = null; // Nu mai avem lecție curentă dacă toate sunt completate
+  }
+
+  this.lessons = this.lessons.map(lesson => ({
     ...lesson,
-    isCompleted: index < currentIndex, // Lecțiile anterioare sunt finalizate
-    isUnlocked: index <= currentIndex, // Lecția curentă este accesibilă
+    isCompleted: this.completedLessons.includes(lesson._id), 
+    isUnlocked: allCompleted || lesson._id === this.currentLessonId || this.completedLessons.includes(lesson._id), 
   }));
+
+  // ✅ Dacă toate lecțiile sunt finalizate, eliminăm lecția curentă
+  if (allCompleted) {
+    this.currentLessonId = null;
+    localStorage.removeItem(`currentLesson_${localStorage.getItem('userId')}`);
+  } else {
+    localStorage.setItem(`currentLesson_${localStorage.getItem('userId')}`, this.currentLessonId || '');
+  }
 }
+
 
 
 goToLesson(lessonId: string) {
