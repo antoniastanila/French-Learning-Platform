@@ -22,7 +22,9 @@ export class LessonDetailComponent implements OnInit {
         this.lessonId = params['id'];
         this.level = params['level']; // 🔹 Preia nivelul direct din parametrii rutei
 
-        const collection = this.level === 'intermediate' ? 'intermediate_lessons' : 'beginner_lessons';
+        const collection = this.level === 'intermediate' ? 'intermediate_lessons' :
+        this.level === 'advanced' ? 'advanced_lessons' :
+        'beginner_lessons';
 
         console.log(`Fetching lesson ${this.lessonId} from ${collection}`);
 
@@ -42,11 +44,12 @@ export class LessonDetailComponent implements OnInit {
 
 
 
-  goToExercises() { 
-    if (this.lessonId) {
-      this.router.navigate([`/exercises/${this.lessonId}`]); 
-    }
+goToExercises() { 
+  if (this.lessonId) {
+      this.router.navigate([`/exercises/${this.lessonId}`], { queryParams: { level: this.level } });
   }
+}
+
 
   goToMainPage() {
     const userLevel = localStorage.getItem('level') || 'beginner'; 

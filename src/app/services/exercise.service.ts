@@ -10,10 +10,9 @@ export class ExerciseService {
 
   constructor(private http: HttpClient) {}
 
-  getExercisesByLessonId(lessonId: string): Observable<any> {
-    const level = localStorage.getItem('level') || 'beginner'; // 🔹 Asigură-te că nivelul este setat corect
+  getExercisesByLessonId(lessonId: string, level: string): Observable<any> {
     console.log(`🔍 Fetching exercises for lesson ${lessonId} at level: ${level}`);
     return this.http.get(`/api/exercises/${lessonId}?level=${level}`);
-  }
-  
+}
+
 }

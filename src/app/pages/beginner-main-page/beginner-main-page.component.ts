@@ -129,10 +129,6 @@ goToLesson(lessonId: string) {
   // ✅ Trimitem lecția ca finalizată doar dacă nu este deja în lista lecțiilor completate
   const userLevel = 'beginner'; // Sau obține nivelul utilizatorului din AuthService
 
-  if (!this.completedLessons.includes(lessonId)) {
-    this.authService.markLessonsAsCompleted([lessonId], userLevel);
-  }
-
 
   // ✅ Actualizăm interfața
   this.updateLessonsState();

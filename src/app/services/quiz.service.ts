@@ -220,15 +220,32 @@ export class QuizService {
       correctAnswer: 'Du pain',
     },
   ];
-
+  private advancedQuestions = [
+    {
+      type: 'multiple-choice',
+      question: "Quel est le synonyme de 'époustouflant'?",
+      options: ['Ennuyeux', 'Impressionnant', 'Lent', 'Banal'],
+      correctAnswer: 'Impressionnant',
+    },
+    {
+      type: 'reading-comprehension',
+      passage: "Victor Hugo est l'un des écrivains français les plus célèbres. Son œuvre la plus connue est 'Les Misérables'.",
+      question: "Quel est le livre le plus célèbre de Victor Hugo?",
+      options: ['Le Comte de Monte-Cristo', 'Madame Bovary', 'Les Misérables', 'Candide'],
+      correctAnswer: 'Les Misérables',
+    },
+  ];
   getQuestions(level: string) {
     if (level === 'beginner') {
       return this.beginnerQuestions;
     } else if (level === 'intermediate') {
       return this.intermediateQuestions;
+    } else if (level === 'advanced') {
+      return this.advancedQuestions;
     }
     return [];
   }
+
   getTotalQuestions(level: string) {
     return this.getQuestions(level).length;
   }

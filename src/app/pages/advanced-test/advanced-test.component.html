@@ -1,0 +1,66 @@
+<h1 *ngIf="!showResult; else finalMessage">
+    Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+  </h1>
+  
+  <ng-template #finalMessage>
+    <h1>Congratulations!</h1>
+  </ng-template>
+  
+  <div *ngIf="!showResult; else resultTemplate" class="quiz-container">
+    <ng-container *ngIf="questions[currentQuestionIndex] as currentQuestion">
+  
+      <app-multiple-choice-question
+        *ngIf="currentQuestion.type === 'multiple-choice'"
+        [question]="currentQuestion.question"
+        [options]="currentQuestion.options"
+        [isAnswered]="isAnswered"
+        (answerSelected)="onAnswerSelected($event)"
+      ></app-multiple-choice-question>
+  
+      <app-fill-in-the-blank
+        *ngIf="questions[currentQuestionIndex].type === 'fill-in-the-blank'"
+        [question]="questions[currentQuestionIndex].question"
+        [options]="questions[currentQuestionIndex].options"
+        [isAnswered]="isAnswered"
+        (answerSelected)="onAnswerSelected($event)"
+      ></app-fill-in-the-blank>
+  
+      <app-reading-comprehension
+        *ngIf="currentQuestion.type === 'reading-comprehension'"
+        [passage]="currentQuestion.passage"
+        [question]="currentQuestion.question"
+        [options]="currentQuestion.options"
+        [isAnswered]="isAnswered"
+        (answerSelected)="onAnswerSelected($event)"
+      ></app-reading-comprehension>
+  
+      <app-listening-question
+        *ngIf="currentQuestion.type === 'listening'"
+        [audioUrl]="currentQuestion.audioUrl"
+        [question]="currentQuestion.question"
+        [options]="currentQuestion.options"
+        [isAnswered]="isAnswered"
+        (answerSelected)="onAnswerSelected($event)"
+      ></app-listening-question>
+  
+      <button *ngIf="selectedAnswer && !isAnswered" (click)="checkAnswer()">Check</button>
+  
+      <div *ngIf="isAnswered" [ngClass]="{ 'correct-answer': isCorrect, 'wrong-answer': isCorrect === false }">
+        {{ feedbackMessage }}
+      </div>
+  
+      <button *ngIf="isAnswered" (click)="nextQuestion()">Next</button>
+  
+    </ng-container>
+  </div>
+  
+  <ng-template #resultTemplate>
+    <div class="result-container">
+      <h2>Test Completed!</h2>
+      <p>Your final score is: {{ score }}/{{ questions.length }}</p>
+      <button (click)="resetQuiz()">Retake Test</button>
+      <button *ngIf="lessonId" (click)="goToLesson()">Go to Lesson</button>
+      <button (click)="goToMainPage()">Go to Main Page</button>
+    </div>
+  </ng-template>
+  

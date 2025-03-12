@@ -125,10 +125,6 @@ export class IntermediateMainPageComponent implements OnInit {
     // ✅ Trimitem lecția ca finalizată doar dacă nu este deja în lista lecțiilor completate
     const userLevel = 'intermediate';
 
-    if (!this.completedLessons.includes(lessonId)) {
-      this.authService.markLessonsAsCompleted([lessonId], userLevel);
-    }
-
     // ✅ Actualizăm interfața
     this.updateLessonsState();
     this.updateProgress();

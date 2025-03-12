@@ -28,23 +28,28 @@ export class ExerciseDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.lessonId = params.get('lessonId');
-      const level = localStorage.getItem('level') || 'beginner'; // 🔹 Asigură-te că nivelul este preluat corect
-      console.log(`🔹 Cerere API către: /api/exercises/${this.lessonId}?level=${level}`); // ✅ Debugging în frontend
+        this.lessonId = params.get('lessonId');
 
-      if (this.lessonId) {
-        this.exerciseService.getExercisesByLessonId(this.lessonId).subscribe(
-          exercises => {
-            this.exercises = exercises;
-          },
-          error => {
-            console.error("❌ Eroare la preluarea exercițiilor:", error);
-          }
-        );
-      }
+        this.route.queryParams.subscribe(queryParams => {
+            const level = queryParams['level'] || 'beginner'; // 🔹 Preia level din URL
+
+            console.log(`🔹 Cerere API către: /api/exercises/${this.lessonId}?level=${level}`); // ✅ Debugging în frontend
+
+            if (this.lessonId) {
+                this.exerciseService.getExercisesByLessonId(this.lessonId, level).subscribe(
+                    exercises => {
+                        this.exercises = exercises;
+                    },
+                    error => {
+                        console.error("❌ Eroare la preluarea exercițiilor:", error);
+                    }
+                );
+            }
+        });
     });
-  }
-  
+}
+
+
 
   validateAnswer(exerciseId: string, userAnswer: string): void {
     this.http.post(`http://localhost:5000/api/exercises/${exerciseId}/validate`, { userAnswer }).subscribe((response: any) => {

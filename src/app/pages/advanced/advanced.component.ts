@@ -11,7 +11,11 @@ import { Router
 export class AdvancedComponent {
 constructor(private router: Router) {}
 
-  goBack() {
-    this.router.navigate(['/start-page']); 
-  }
+navigateToAdvancedTest() {
+  this.router.navigate(['/advanced-test']); 
+}
+
+navigateBackToStart() {
+  this.router.navigate(['/start-page']); 
+}
 }
