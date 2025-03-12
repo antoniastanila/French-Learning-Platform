@@ -1,10 +1,65 @@
-.advanced-container {
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  button {
-    text-decoration: none;
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f9f0f7;
+  color: #4a154b;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+.content {
+  max-width: 600px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 10px;
+  margin-left: 30%;
+  margin-top: 3%;
+}
+
+/* Titlul */
+h1 {
+  font-size: 32px;
+  color: #6a0572;
+  text-align: center;
+}
+
+/* Secțiune Test */
+.test-section {
+  margin: 30px auto;
+  padding: 20px;
+  background: #e3d1f4;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.test-section button {
+  background-color: #6a0572;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  color: white;
+  margin-top: 10px;
+}
+
+.test-section button:hover {
+  background-color: #4a154b;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+  transform: scale(1.05);
+}
+
+/* Buton Înapoi */
+.back-button {
+  text-decoration: none;
   color: white;
   background-color: #6a0572;
   padding: 10px 20px;
@@ -14,11 +69,11 @@
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #4a154b;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
-    transform: scale(1.05);
-  }
-  
+  margin-left: 35%;
+}
+
+.back-button:hover {
+  background-color: #4a154b;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+  transform: scale(1.05);
+}

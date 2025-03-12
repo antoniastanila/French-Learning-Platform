@@ -41,22 +41,45 @@ app.get('/api/lessons', async (req, res) => {
     console.error("❌ Error fetching lessons:", err);
     res.status(500).json({ error: 'Error fetching lessons', details: err.message });
   }
+});app.get('/api/lessons', async (req, res) => {
+  try {
+    // 🔹 Caută lecții în toate cele trei colecții
+    const beginnerLessons = await BeginnerLesson.find();
+    const intermediateLessons = await IntermediateLesson.find();
+    const advancedLessons = await AdvancedLesson.find(); // ✅ Adăugat AdvancedLesson
+
+    // 🔹 Combină toate lecțiile într-un singur array
+    const lessons = [
+      ...beginnerLessons.map(lesson => ({ ...lesson, level: 'beginner' })),
+      ...intermediateLessons.map(lesson => ({ ...lesson, level: 'intermediate' })),
+      ...advancedLessons.map(lesson => ({ ...lesson, level: 'advanced' })) // ✅ Include advanced
+    ];
+
+    res.json(lessons);
+  } catch (err) {
+    console.error("❌ Error fetching lessons:", err);
+    res.status(500).json({ error: 'Error fetching lessons', details: err.message });
+  }
 });
+
 
 
 app.get('/api/lessons/:id', async (req, res) => {
   try {
-    let lesson = await BeginnerLesson.findById(req.params.id);
-    if (!lesson) {
-      lesson = await IntermediateLesson.findById(req.params.id);
-    }
-    
-    if (!lesson) {
-      return res.status(404).json({ error: 'Lesson not found' });
-    }
-    res.json(lesson);
+      let lesson = await BeginnerLesson.findById(req.params.id);
+      if (!lesson) {
+          lesson = await IntermediateLesson.findById(req.params.id);
+      }
+      if (!lesson) {
+          lesson = await AdvancedLesson.findById(req.params.id);
+      }
+
+      if (!lesson) {
+          return res.status(404).json({ error: 'Lesson not found' });
+      }
+      res.json(lesson);
   } catch (err) {
-    res.status(500).json({ error: 'Error fetching lesson', details: err.message });
+      res.status(500).json({ error: 'Error fetching lesson', details: err.message });
   }
 });
 

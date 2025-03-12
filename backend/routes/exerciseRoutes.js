@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { BeginnerExercise, IntermediateExercise } = require('../models/exercises');
-const { BeginnerLesson, IntermediateLesson } = require('../models/lessons');
+const { BeginnerExercise, IntermediateExercise, AdvancedExercise } = require('../models/exercises'); // ✅ Adăugat AdvancedExercise
+const { BeginnerLesson, IntermediateLesson, AdvancedLesson } = require('../models/lessons'); // ✅ Adăugat AdvancedLesson
 
 const router = express.Router();
 
@@ -17,6 +17,8 @@ router.get('/:lessonId', async (req, res) => {
         let ExerciseModel;
         if (level === 'intermediate') {
             ExerciseModel = IntermediateExercise;
+        } else if (level === 'advanced') { // ✅ Adăugat suport pentru nivelul advanced
+            ExerciseModel = AdvancedExercise;
         } else {
             ExerciseModel = BeginnerExercise;
         }
@@ -40,7 +42,9 @@ router.get('/:lessonId', async (req, res) => {
 router.post('/:exerciseId/validate', async (req, res) => {
     try {
         const { userAnswer } = req.body;
-        const exercise = await BeginnerExercise.findById(req.params.exerciseId) || await IntermediateExercise.findById(req.params.exerciseId);
+        const exercise = await BeginnerExercise.findById(req.params.exerciseId) || 
+        await IntermediateExercise.findById(req.params.exerciseId) ||
+        await AdvancedExercise.findById(req.params.exerciseId); // ✅ Adăugat suport pentru advanced
 
         if (!exercise) {
             return res.status(404).json({ message: 'Exercițiul nu a fost găsit.' });
@@ -68,9 +72,12 @@ router.post('/', async (req, res) => {
             ExerciseModel = BeginnerExercise;
         } else if (level === 'intermediate') {
             ExerciseModel = IntermediateExercise;
+        } else if (level === 'advanced') {  // ✅ Adăugat suport pentru advanced
+            ExerciseModel = AdvancedExercise;
         } else {
-            return res.status(400).json({ message: 'Nivel invalid. Alege beginner sau intermediate.' });
+            return res.status(400).json({ message: 'Nivel invalid. Alege beginner, intermediate sau advanced.' });
         }
+        
 
         const newExercise = new ExerciseModel({ lessonId, question, options, correctAnswer, lessonRef: `${level.charAt(0).toUpperCase() + level.slice(1)}Lesson` });
         await newExercise.save();
@@ -83,8 +90,15 @@ router.post('/', async (req, res) => {
 // 🔹 Șterge un exercițiu după ID
 router.delete('/:exerciseId', async (req, res) => {
     try {
-        await BeginnerExercise.findByIdAndDelete(req.params.exerciseId) || await IntermediateExercise.findByIdAndDelete(req.params.exerciseId);
-        res.json({ message: 'Exercițiul a fost șters' });
+        const deletedExercise = await BeginnerExercise.findByIdAndDelete(req.params.exerciseId) || 
+                        await IntermediateExercise.findByIdAndDelete(req.params.exerciseId) ||
+                        await AdvancedExercise.findByIdAndDelete(req.params.exerciseId); // ✅ Adăugat AdvancedExercise
+
+        if (!deletedExercise) {
+            return res.status(404).json({ message: 'Exercițiul nu a fost găsit.' });
+        }
+        res.json({ message: 'Exercițiul a fost șters.' });
+
     } catch (error) {
         res.status(500).json({ message: 'Eroare la ștergerea exercițiului.', error });
     }

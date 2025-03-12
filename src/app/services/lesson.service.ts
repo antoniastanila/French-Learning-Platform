@@ -19,13 +19,21 @@ export class LessonService {
   }
 
   getLessonById(lessonId: string, level: string) {
-    const collection = level === 'intermediate' ? 'intermediate_lessons' : 'beginner_lessons';
+    let collection = 'beginner_lessons'; // Default la beginner
+
+    if (level === 'intermediate') {
+        collection = 'intermediate_lessons';
+    } else if (level === 'advanced') { // ✅ Adăugat suport pentru advanced
+        collection = 'advanced_lessons';
+    }
+
     console.log(`Fetching from: ${this.apiUrl}/${collection}/${lessonId}`);
-    return this.http.get(`${this.apiUrl}/${collection}/${lessonId}`);
+    return this.http.get(`${this.apiUrl}/${level}/${lessonId}`);
   }
-  
-  getLessonsByLevel(level: string): Observable<any> {
+
+getLessonsByLevel(level: string): Observable<any> {
   return this.http.get(`${this.apiUrl}?level=${level}`);
-  }
+}
+
 
 }

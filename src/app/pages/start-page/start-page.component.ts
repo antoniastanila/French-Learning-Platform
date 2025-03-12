@@ -29,12 +29,14 @@ export class StartPageComponent {
         console.log(`✅ Nivel setat: ${level}`);
 
         // 🔹 Navigare către pagina de test aferentă nivelului
-        let testRoute = '/beginner-test';
+        let levelPageRoute = '/beginner';
         if (level === 'intermediate') {
-          testRoute = '/intermediate-test';
+          levelPageRoute = '/intermediate';
+        } else if (level === 'advanced') {
+          levelPageRoute = '/advanced';
         }
 
-        this.router.navigate([testRoute]); // 🔹 Redirecționează către test
+        this.router.navigate([levelPageRoute]); // 🔹 Redirecționează către test
       },
       error: (err) => {
         console.error('❌ Eroare la actualizarea nivelului:', err);
