@@ -15,4 +15,8 @@ export class ExerciseService {
     return this.http.get(`/api/exercises/${lessonId}?level=${level}`);
 }
 
+getLessonsByLevel(level: string): Observable<any> {
+  return this.http.get(`/api/lessons?level=${level}`);
+}
+
 }
