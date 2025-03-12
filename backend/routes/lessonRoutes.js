@@ -8,26 +8,33 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const { level } = req.query;
+
+        // 🔹 Mapăm nivelurile la modelele corespunzătoare
+        const levelMap = {
+            beginner: BeginnerLesson,
+            intermediate: IntermediateLesson,
+            advanced: AdvancedLesson
+        };
+
         let lessons = [];
 
-        if (level === 'beginner') {
-            lessons = await BeginnerLesson.find().lean();
-            lessons = lessons.map(lesson => ({ ...lesson, level: 'beginner' })); 
-        } else if (level === 'intermediate') {
-            lessons = await IntermediateLesson.find().lean();
-            lessons = lessons.map(lesson => ({ ...lesson, level: 'intermediate' })); 
-        } else if (level === 'advanced') {  // ✅ Adăugat suport pentru advanced
-            lessons = await AdvancedLesson.find().lean();
-            lessons = lessons.map(lesson => ({ ...lesson, level: 'advanced' })); 
+        if (level) {
+            // ✅ Căutăm lecțiile doar pentru nivelul specificat
+            if (!levelMap[level]) {
+                return res.status(400).json({ error: 'Nivel invalid' });
+            }
+            lessons = await levelMap[level].find().lean();
+            lessons = lessons.map(lesson => ({ ...lesson, level })); // ✅ Adaugă level în fiecare obiect
         } else {
+            // ✅ Căutăm toate lecțiile din toate nivelurile
             const beginnerLessons = await BeginnerLesson.find().lean();
             const intermediateLessons = await IntermediateLesson.find().lean();
-            const advancedLessons = await AdvancedLesson.find().lean();  // ✅ Adăugat advanced
+            const advancedLessons = await AdvancedLesson.find().lean();
 
             lessons = [
                 ...beginnerLessons.map(lesson => ({ ...lesson, level: 'beginner' })), 
                 ...intermediateLessons.map(lesson => ({ ...lesson, level: 'intermediate' })), 
-                ...advancedLessons.map(lesson => ({ ...lesson, level: 'advanced' }))  // ✅ Adăugat lecțiile de advanced
+                ...advancedLessons.map(lesson => ({ ...lesson, level: 'advanced' }))
             ];
         }
 
