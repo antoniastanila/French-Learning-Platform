@@ -1,108 +1,108 @@
 .main-container {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .lessons-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .lesson-card {
-    background-color: #d44482;
-    color: white;
-    padding: 15px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .lesson-card.completed:hover,
+  text-align: center;
+  padding: 20px;
+  background-color: #f5f1e7;
+}
+
+.lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-content: center;
+}
+
+.lesson-card {
+  background-color: #d44482;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lesson-card.completed:hover,
 .lesson-card.current:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-  
-  .completed {
-    background-color: #e91e63;
-    color: white;
-  }
-  
-  .current {
-    background-color: #f8a1c4;
-    color: black;
-  }
-  
-  .locked {
-    background-color: #ddd; 
-    color: #999;
-    cursor: not-allowed;
-  }
-  
 
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #f8f8f8;
-    gap: 10px;
-  }
-  
-  .progress-container {
-    flex: 1;
-    border-radius: 5px;
-    background-color: #ddd;
-    overflow: hidden;
-    margin-right: 15px;
-    display: flex; /* ✅ Organizăm elementele */
-    flex-direction: column; /* ✅ Așează progres bar-ul deasupra și textul dedesubt */
-    justify-content: center; /* ✅ Centrează bara și textul pe verticală */
-    text-align: left;
-    padding: 20px; /* ✅ Mai mult spațiu în container */
-    height: 60px; /* ✅ Setează o înălțime mai mare */
+.completed {
+  background-color: #af2f2f;
+  color: white;
+  border: 3px solid #3e2004; /* second-color */   
 }
 
-  
-.progress-bar {
-  width: 100%;
-  height: 15px;
-  border-radius: 20px;
-  background-color: #16753d;
-  transition: width 0.5s ease-in-out;
-}
-
-.progress-text {
-  font-size: 14px;
-  font-weight: bold;
+.current {
+  background-color: #e79e85;
   color: black;
 }
 
+.locked {
+  background-color: #d6ceb8c7; 
+  color: #999;
+  cursor: not-allowed;
+}
 
-  .user-btn, .logout-btn {
-    background-color: #ff559f;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .logout-btn {
-    background-color: #ff4d4d;
-  }
-  
-  .user-btn:hover {
-    background-color: #d44482;
-  }
-  
-  .logout-btn:hover {
-    background-color: #cc0000;
-  }
-  
-  
-  
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #e9d7a7;
+  gap: 10px;
+}
+
+.progress-container {
+  flex: 1;
+  border-radius: 5px;
+  background-color: #f2e9d0;
+  overflow: hidden;
+  margin-right: 15px;
+  display: flex; /* ✅ Organizăm elementele */
+  flex-direction: column; /* ✅ Așează progres bar-ul deasupra și textul dedesubt */
+  justify-content: center; /* ✅ Centrează bara și textul pe verticală */
+  text-align: left;
+  padding: 20px; /* ✅ Mai mult spațiu în container */
+  height: 60px; /* ✅ Setează o înălțime mai mare */
+}
+
+
+.progress-bar {
+width: 100%;
+height: 15px;
+border-radius: 20px;
+background-color: #12572f;
+transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+font-size: 14px;
+font-weight: bold;
+color: black;
+}
+
+
+.user-btn, .logout-btn {
+  background-color: #eb3b3b;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.logout-btn {
+  background-color: #bb5a5a;
+}
+
+.user-btn:hover {
+  background-color: #d44482;
+}
+
+.logout-btn:hover {
+  background-color: #cc0000;
+}
+

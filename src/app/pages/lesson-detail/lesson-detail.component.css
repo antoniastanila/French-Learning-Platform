@@ -1,87 +1,142 @@
-/* Stilizare generală */
+/* Fundal general al paginii */
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f9f0f7;
-    color: #4a154b;
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: auto;
-  }
+  background-color: red !important;
+  background-image: url('/assets/images/backkk.jpg'); /* Înlocuiește cu calea imaginii */
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: "Outfit", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* Poți ajusta între 100 și 900 */
+  font-style: normal;
+  background-color: #f2e9d0; /* first-color */
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   
-  /* Containerul lecției */
-  .lesson-container {
-    margin-left: 29%;
-    margin-top: 5%;
-    max-width: 600px;
-    background-color: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: left;
-  }
-  
-  /* Titlul lecției */
-  .lesson-container h2 {
-    text-align: center;
-    font-size: 28px;
-    color: #d72672;
-    margin-bottom: 15px;
-  }
-  
-  /* Descrierea lecției */
-  .lesson-container p {
-    font-size: 18px;
-    color: #4a154b;
-    margin-bottom: 10px;
-  }
-  
-  /* Lista de fraze */
-  .lesson-container ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .lesson-container li {
-    background-color: #fbe4f1;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 8px;
-    font-size: 16px;
-    color: #4a154b;
-  }
-  
-  /* Text îngroșat pentru fraze */
-  .lesson-container li b {
-    color: #b10f2e;
-  }
-  
-  /* Dificultatea lecției */
-  .lesson-container p strong {
-    color: #6a0572;
-  }
-  
-  /* Butoane */
-  .lesson-container button {
-    background-color: #d72672;
-    color: white;
-    padding: 12px 15px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 15px;
-    margin-right: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-  }
-  
-  .lesson-container button:hover {
-    background-color: #b10f2e;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-    transform: scale(1.05);
-  }
-  
+}
+/* Containerul lecției */
+.lesson-container {
+  font-family: "Outfit", sans-serif;
+  width: 80%;
+  max-width: 900px;
+  background-color: hsl(45, 17%, 95%);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  border: 3px solid #eaceb4; /* second-color */
+  margin-left: 20%;
+}
+
+/* Titlu */
+.lesson-container h2 {
+  text-align: center;
+  font-size: 30px;
+  color: #bb5a5a; /* fourth-color */
+  margin-bottom: 20px;
+}
+
+/* Descriere lecție */
+.lesson-description {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #4a154b;
+  margin-bottom: 15px;
+}
+
+/* Paragrafe explicative */
+.lesson-text {
+  font-size: 18px;
+  background-color: #eaceb4; /* second-color */
+  padding: 12px;
+  border-left: 5px solid #bb5a5a; /* fourth-color */
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+/* Exemple */
+.lesson-example {
+  font-size: 18px;
+  padding: 12px;
+  background-color: #e79e85; /* third-color */
+  border-radius: 6px;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.example-phrase {
+  font-weight: bold;
+  color: white;
+}
+
+/* Liste */
+.lesson-list {
+  list-style: none;
+  padding: 0;
+}
+
+.lesson-list li {
+  background-color: #eaceb4; /* second-color */
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 6px;
+  font-size: 17px;
+}
+
+/* Tabele */
+.lesson-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  font-size: 17px;
+}
+
+.lesson-table th, .lesson-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.lesson-table th {
+  background-color: #e79e85; /* third-color */
+  font-weight: bold;
+  color: white;
+}
+
+.lesson-table tr:nth-child(even) {
+  background-color: #f2e9d0; /* first-color */
+}
+
+/* Dificultate */
+.lesson-difficulty {
+  font-size: 18px;
+  color: #bb5a5a; /* fourth-color */
+  margin-top: 15px;
+}
+
+/* Butoane */
+.lesson-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.lesson-buttons button {
+  background-color: #bb5a5a; /* fourth-color */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: 0.3s;
+}
+
+.lesson-buttons button:hover {
+  background-color: #9c4444;
+  transform: scale(1.05);
+}

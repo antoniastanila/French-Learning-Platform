@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./start-page.component.css']
 })
 export class StartPageComponent {
-  private apiUrl = 'http://localhost:5000/api/users'; // 🔹 API pentru utilizatori
+  private apiUrl = 'https://localhost:5000/api/users'; // 🔹 API pentru utilizatori
 
   constructor(private router: Router, private http: HttpClient) {}
 

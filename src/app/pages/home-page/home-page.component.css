@@ -1,6 +1,6 @@
 .home-page {
     height: 100vh;
-    background-image: url('../../assets/images/french-background.png');
+    background-image: url('../../../assets/images/french-background.png');
     background-size: cover;
     background-position: center;
     position: relative;
