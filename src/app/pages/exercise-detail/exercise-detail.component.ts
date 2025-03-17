@@ -52,7 +52,7 @@ export class ExerciseDetailComponent implements OnInit {
 
 
   validateAnswer(exerciseId: string, userAnswer: string): void {
-    this.http.post(`http://localhost:5000/api/exercises/${exerciseId}/validate`, { userAnswer }).subscribe((response: any) => {
+    this.http.post(`https://localhost:5000/api/exercises/${exerciseId}/validate`, { userAnswer }).subscribe((response: any) => {
       console.log("🔍 Răspuns primit de la server:", response); // ✅ Debugging
   
       this.feedbackMessage[exerciseId] = response.message;

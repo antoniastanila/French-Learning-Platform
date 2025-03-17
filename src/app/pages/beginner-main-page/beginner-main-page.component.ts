@@ -125,7 +125,9 @@ goToLesson(lessonId: string) {
   // ✅ Setăm lecția curentă și salvăm în localStorage pentru utilizator
   this.currentLessonId = lessonId;
   localStorage.setItem(`currentLesson_${userId}`, lessonId);
-
+  if (!this.completedLessons.includes(lessonId)) {
+    this.authService.markLessonsAsCompleted([lessonId], level);
+  }
   // ✅ Trimitem lecția ca finalizată doar dacă nu este deja în lista lecțiilor completate
   const userLevel = 'beginner'; // Sau obține nivelul utilizatorului din AuthService
 

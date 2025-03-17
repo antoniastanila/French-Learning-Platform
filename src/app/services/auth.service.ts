@@ -11,7 +11,7 @@ import { UserResponse } from '../models/user.model';
 
 
 export class AuthService {
-  private apiUrl = 'http://localhost:5000/api/users';
+  private apiUrl = 'https://localhost:5000/api/users';
   private completedLessons = new BehaviorSubject<string[]>([]);
   completedLessons$ = this.completedLessons.asObservable();
 

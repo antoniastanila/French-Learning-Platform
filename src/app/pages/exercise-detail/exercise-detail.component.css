@@ -15,24 +15,27 @@ body {
   /* Containerul exercițiilor */
   .exercise-container {
     max-width: 600px;
-    background-color: white;
+    background-color: #fdf5e0;
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: left;
+    margin-left: 29%;
+    border: 3px solid #eaceb4; /* second-color */
+
   }
   
   /* Titlul exercițiului */
   .exercise-container h3 {
     font-size: 22px;
-    color: #d72672;
+    color: #5c2626;
     margin-bottom: 10px;
   }
   
   /* Opțiunile de răspuns */
   .exercise-container label {
     display: block;
-    background-color: #fbe4f1;
+    background-color: #eaceb4;
     padding: 10px;
     border-radius: 8px;
     font-size: 16px;
@@ -52,7 +55,7 @@ body {
   
   /* Butonul de trimitere a răspunsului */
   .exercise-container button {
-    background-color: #d72672;
+    background-color: #bb5a5a;
     color: white;
     padding: 12px;
     border: none;
@@ -67,7 +70,7 @@ body {
   }
   
   .exercise-container button:hover {
-    background-color: #b10f2e;
+    background-color: #823939;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
     transform: scale(1.05);
   }

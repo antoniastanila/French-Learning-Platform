@@ -1,13 +1,38 @@
+<div class="lesson-detail-page">
 <div class="lesson-container" *ngIf="lesson">
   <h2>{{ lesson.title }}</h2>
-  <p>{{ lesson.description }}</p>
-  <ul>
-    <li *ngFor="let phrase of lesson.content">
-      <b>{{ phrase.phrase }}</b>: {{ phrase.translation }}
-    </li>
-  </ul>
-  <p><strong>Difficulty:</strong> {{ lesson.difficulty }}</p>
+  <p class="lesson-description">{{ lesson.description }}</p>
 
-  <button (click)="goToExercises()">Go to Exercises</button>
-  <button (click)="goToMainPage()">Go to Main Page</button>
+  <div *ngFor="let item of lesson.content" class="lesson-content">
+    <p *ngIf="item.type === 'text'" class="lesson-text">{{ item.text }}</p>
+
+    <p *ngIf="item.type === 'example'" class="lesson-example">
+      <span class="example-phrase">{{ item.phrase }}</span>: {{ item.translation }}
+    </p>
+
+    <ul *ngIf="item.type === 'list'" class="lesson-list">
+      <li *ngFor="let listItem of item.items">{{ listItem }}</li>
+    </ul>
+
+    <table *ngIf="item.type === 'table'" class="lesson-table">
+      <thead>
+        <tr>
+          <th *ngFor="let header of item.headers">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of item.rows">
+          <td *ngFor="let cell of row">{{ cell }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="lesson-difficulty"><strong>Difficulty:</strong> {{ lesson.difficulty }}</p>
+
+  <div class="lesson-buttons">
+    <button (click)="goToExercises()">Go to exercises!</button>
+    <button (click)="goToMainPage()">Back to main page!</button>
+  </div>
+</div>
 </div>
