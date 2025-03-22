@@ -1,98 +1,270 @@
-/* Stilizare generală */
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f9f0f7;
-    color: #4a154b;
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: auto;
-  }
-  
-  /* Containerul exercițiilor */
-  .exercise-container {
-    max-width: 600px;
-    background-color: #fdf5e0;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    margin-left: 29%;
-    border: 3px solid #eaceb4; /* second-color */
+  /* Stilizare generală */
+  body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f9f0f7;
+      color: #4a154b;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: auto;
+    }
+    
+    /* Containerul exercițiilor */
+    .exercise-container {
+      max-width: 600px;
+      background-color: #fdf5e0;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      margin-left: 29%;
+      border: 3px solid #eaceb4; /* second-color */
 
-  }
-  
-  /* Titlul exercițiului */
-  .exercise-container h3 {
-    font-size: 22px;
-    color: #5c2626;
-    margin-bottom: 10px;
-  }
-  
-  /* Opțiunile de răspuns */
-  .exercise-container label {
-    display: block;
-    background-color: #eaceb4;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin: 5px 0;
-  }
-  
-  .exercise-container input[type="radio"] {
-    margin-right: 10px;
-  }
-  
-  /* Efect vizual când utilizatorul trece cu mouse-ul peste opțiuni */
-  .exercise-container label:hover {
-    background-color: #e0d4e3;
-  }
-  
-  /* Butonul de trimitere a răspunsului */
-  .exercise-container button {
-    background-color: #bb5a5a;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    display: block;
-    width: 100%;
-  }
-  
-  .exercise-container button:hover {
-    background-color: #823939;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-    transform: scale(1.05);
-  }
-  
-  /* Mesaj de feedback pentru răspuns */
-  .feedback-message {
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 10px;
-    color: #b10f2e;
-  }
-  
-  /* Containerul butoanelor finale */
-  .exercise-actions {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  /* Butoanele de navigare */
-  .exercise-actions button {
-    flex: 1;
-    margin: 5px;
-  }
-  
+    }
+    
+    /* Titlul exercițiului */
+    .exercise-container h3 {
+      font-size: 22px;
+      color: #5c2626;
+      margin-bottom: 10px;
+    }
+    
+    /* Opțiunile de răspuns */
+    label {
+      display: block;
+      background-color: #eaceb4;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 5px 0;
+    }
+    
+    .exercise-container input[type="radio"] {
+      margin-right: 10px;
+    }
+    
+    /* Efect vizual când utilizatorul trece cu mouse-ul peste opțiuni */
+    .exercise-container label:hover {
+      background-color: #f7c89c;
+    }
+    
+    /* Butonul de trimitere a răspunsului */
+    .exercise-container button {
+      background-color: #bb5a5a;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      display: block;
+      width: 100%;
+    }
+    
+    .exercise-container button:hover {
+      background-color: #823939;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+      transform: scale(1.05);
+    }
+    
+    /* Mesaj de feedback pentru răspuns */
+    .feedback-message {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #b10f2e;
+    }
+    
+    /* Containerul butoanelor finale */
+    .exercise-actions {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    /* Butoanele de navigare */
+    .exercise-actions button {
+      flex: 1;
+      margin: 5px;
+    }
+    
+    
+    input[type="radio"] {
+      display: none; /* Ascunde butonul radio */
+    }
+    
+    .selected-option {
+      background-color: #e9994ee3; /* Culoarea de fundal pentru opțiunea selectată */
+      color: white; /* Culoarea textului pentru opțiunea selectată */
+      padding: 15px;
+      border-radius: 5px;
+    }
+    .selected-correct-option {
+      background-color: #42a045; /* verde */
+      color: white;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    
+    .selected-wrong-option {
+      background-color: #bc382e; /* roșu */
+      color: white;
+      padding: 15px;
+      border-radius: 5px;
+    }
+
+    .previous-mistake-label {
+      font-size: 14px;
+      color: #b44343;
+      font-style: italic;
+      margin-bottom: 10px;
+      margin-top: -10px;
+    }
+    
+    .congratulations-container {
+      background-color: #fdf5e0;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      animation: fadeInCongrats 2s ease-in-out forwards;
+      margin: 60px auto; /* 🟢 auto pe left/right = centrare */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: relative;
+      max-width: 600px;   /* 🟢 controlează lățimea maximă */
+      width: 90%;         /* 🟢 responsive: 90% până la max-width */
+      border: 3px solid #eaceb4; 
+    }
+    
+    @keyframes fadeInCongrats {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .congratulations-container h2 {
+      font-size: 28px;
+      color: #5c2626; /* titlu închis */
+      margin-bottom: 10px;
+    }
+    
+    .congratulations-container p {
+      font-size: 18px;
+      margin-bottom: 30px;
+      color: #6b3e3e;
+    }
+    
+    .congratulations-container button {
+      background-color: #bb5a5a; /* roșu similar butonului Trimite */
+      color: white;
+      padding: 12px 24px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+    
+    .congratulations-container button:hover {
+      background-color: #823939;
+      transform: scale(1.05);
+    }
+    
+    /* Stil pentru inputul din fillInTheBlank */
+    .exercise-container input[type="text"] {
+      width: 30%;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 2px solid #eaceb4;
+      border-radius: 10px;
+      background-color: #fbe3cd;
+      color: #5c2626;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      margin-top: 8px;
+      margin-bottom: 10px;
+    }
+    
+    /* Efect focus */
+    .exercise-container input[type="text"]:focus {
+      border-color: #bb5a5a;
+      box-shadow: 0 0 5px rgba(187, 90, 90, 0.5);
+    }
+    
+    .review-banner {
+      background-color: #fbe3cd;
+      color: #5c2626;
+      font-size: 18px;
+      text-align: center;
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 500px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out; /* aceeași viteză la intrare și ieșire */
+    }
+    
+    /* Fade in class */
+    .fade-in {
+      opacity: 1;
+    }
+    
+    /* Fade out class */
+    .fade-out {
+      opacity: 0;
+    }
+
+    .firework {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      opacity: 0;
+      animation: explode 1.4s ease-out forwards;
+      z-index: 1000;
+    }
+    
+    
+    @keyframes explode {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--x, 0px), var(--y, -100px)) scale(0.7);
+        opacity: 0;
+      }
+    }
+    
+    
+    /* Variante colorate și poziționate diferit */
+    .firework:nth-child(1)  { left: 10%; --x: -30px; --y: -100px; background: #ff6f61; animation-delay: 0s; }
+    .firework:nth-child(2)  { left: 20%; --x: 40px;  --y: -120px; background: #ffd166; animation-delay: 0.3s; }
+    .firework:nth-child(3)  { left: 70%; --x: -60px; --y: -110px; background: #06d6a0; animation-delay: 0.6s; }
+    .firework:nth-child(4)  { left: 85%; --x: 20px;  --y: -130px; background: #118ab2; animation-delay: 0.1s; }
+    .firework:nth-child(5)  { left: 40%; --x: -20px; --y: -140px; background: #ef476f; animation-delay: 0.4s; }
+    .firework:nth-child(6)  { left: 55%; --x: 35px;  --y: -100px; background: #8338ec; animation-delay: 0.9s; }
+    .firework:nth-child(7)  { left: 33%; --x: 60px;  --y: -130px; background: #ffbe0b; animation-delay: 0.2s; }
+    .firework:nth-child(8)  { left: 65%; --x: -25px; --y: -150px; background: #06d6a0; animation-delay: 0.7s; }
+    .firework:nth-child(9)  { left: 5%;  --x: 70px;  --y: -100px; background: #118ab2; animation-delay: 0.5s; }
+    .firework:nth-child(10) { left: 90%; --x: -40px; --y: -110px; background: #ef476f; animation-delay: 0.8s; }
+    .firework:nth-child(11) { left: 25%; --x: 25px;  --y: -120px; background: #8338ec; animation-delay: 0.15s; }
+    .firework:nth-child(12) { left: 48%; --x: -50px; --y: -130px; background: #ff6f61; animation-delay: 0.65s; }
+    .firework:nth-child(13) { left: 75%; --x: 20px;  --y: -140px; background: #ffd166; animation-delay: 0.35s; }
+    .firework:nth-child(14) { left: 60%; --x: -10px; --y: -100px; background: #06d6a0; animation-delay: 1s; }
+    .firework:nth-child(15) { left: 15%; --x: 30px;  --y: -125px; background: #118ab2; animation-delay: 0.45s; }

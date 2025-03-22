@@ -17,28 +17,43 @@ import { AuthService } from '../../services/auth.service';
 export class ExerciseDetailComponent implements OnInit {
   exercises: any[] = [];
   lessonId: string | null = null;
-  selectedAnswer: { [key: string]: string } = {}; 
-  feedbackMessage: { [key: string]: string } = {}; 
+  selectedAnswer: string = ""; 
+  feedbackMessage: string = ""; 
+  currentExerciseIndex: number = 0; 
 
   allExercisesCompleted: boolean = false; // Inițial, butonul va fi ascuns
   completedExercises: { [key: string]: boolean } = {}; // Obiect pentru a ține evidența răspunsurilor corecte
   lessonCompleted: boolean = false;
 
+  wrongExercisesIndexes: number[] = []; // Lista cu indexurile exercițiilor greșite
+  reviewingWrongExercises: boolean = false; // Flag pentru a ști dacă revenim la exerciții greșite  
+
+  isAnswered: boolean = false;
+  wasAnswerCorrect: boolean | null = null; 
+
+  showReviewMessage: boolean = false;
+  reviewFadeClass: string = ''; 
+
   constructor(private route: ActivatedRoute, private http: HttpClient, private exerciseService: ExerciseService,  private router: Router, private authService: AuthService) {}
 
-  ngOnInit(): void {
+ ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
         this.lessonId = params.get('lessonId');
-
         this.route.queryParams.subscribe(queryParams => {
-            const level = queryParams['level'] || 'beginner'; // 🔹 Preia level din URL
-
-            console.log(`🔹 Cerere API către: /api/exercises/${this.lessonId}?level=${level}`); // ✅ Debugging în frontend
-
+            const level = queryParams['level'] || 'beginner';
+            console.log(`🔹 Cerere API către: /api/exercises/${this.lessonId}?level=${level}`);
             if (this.lessonId) {
                 this.exerciseService.getExercisesByLessonId(this.lessonId, level).subscribe(
-                    exercises => {
-                        this.exercises = exercises;
+                    response => {
+                        console.log("📌 Exercițiile primite:", response);
+                        
+                        // ✅ Extragerea exercițiilor corecte
+                        if (Array.isArray(response) && response.length > 0 && response[0].exercises) {
+                            const allExercises = response[0].exercises;
+                            this.exercises = this.getRandomExercises(allExercises, 10);
+                        } else {
+                            this.exercises = [];
+                        }
                     },
                     error => {
                         console.error("❌ Eroare la preluarea exercițiilor:", error);
@@ -47,39 +62,129 @@ export class ExerciseDetailComponent implements OnInit {
             }
         });
     });
-}
+ }
 
-
-
-  validateAnswer(exerciseId: string, userAnswer: string): void {
-    this.http.post(`https://localhost:5000/api/exercises/${exerciseId}/validate`, { userAnswer }).subscribe((response: any) => {
-      console.log("🔍 Răspuns primit de la server:", response); // ✅ Debugging
+ getRandomExercises(array: any[], count: number): any[] {
+    const copied = [...array]; // 🔸 Copie locală ca să nu afectăm originalul
+    const selected: any[] = [];
   
-      this.feedbackMessage[exerciseId] = response.message;
+    while (selected.length < count && copied.length > 0) {
+      const randomIndex = Math.floor(Math.random() * copied.length);
+      const [exercise] = copied.splice(randomIndex, 1); // 🔸 Extrage și elimină
+      selected.push(exercise);
+    }
   
-      if (response.isCorrect !== undefined) { 
-        this.completedExercises[exerciseId] = response.isCorrect;
-      } else {
-        console.error("⚠️ Proprietatea 'isCorrect' lipsește din răspunsul serverului!");
-      }
+    return selected;
+  }
   
-      // ✅ Verifică dacă toate exercițiile sunt completate corect
-      this.allExercisesCompleted = Object.values(this.completedExercises).every(status => status);
+  
+    // ✅ Returnează exercițiul curent
+    getCurrentExercise() {
+        return this.exercises[this.currentExerciseIndex];
+    }
 
-      if (this.allExercisesCompleted) {
-        this.completeLesson(); // ✅ Marchează lecția ca fiind completată automat
-      }
-    });
+    // ✅ Trecerea la următorul exercițiu
+    nextExercise() {
+        if (!this.reviewingWrongExercises) {
+          // 🔹 Modul normal de parcurgere
+          if (this.currentExerciseIndex < this.exercises.length - 1) {
+            this.currentExerciseIndex++;
+          } else if (this.wrongExercisesIndexes.length > 0) {
+            // 🔹 Începem revizuirea exercițiilor greșite
+            this.reviewingWrongExercises = true;
+            this.currentExerciseIndex = this.wrongExercisesIndexes.shift()!;
+          
+            // ✅ Resetăm starea exercițiului înainte de return!
+            this.isAnswered = false;
+            this.selectedAnswer = "";
+            this.feedbackMessage = "";
+            this.wasAnswerCorrect = null;
+          
+            // ✅ Afișăm mesajul animat pentru revizuire
+            this.showReviewMessage = true;
+            this.reviewFadeClass = 'fade-in';
+          
+            setTimeout(() => {
+              this.reviewFadeClass = 'fade-out';
+            }, 4000);
+          
+            setTimeout(() => {
+              this.showReviewMessage = false;
+              this.reviewFadeClass = '';
+            }, 5500);
+          
+            return;     
+          } else {
+            // 🔹 Finalizare lecție
+            console.log("🎉 Ai terminat toate exercițiile!");
+            this.allExercisesCompleted = true;
+            return;
+          }
+        } else {
+          // 🔹 Modul de revizuire a exercițiilor greșite
+          if (this.wrongExercisesIndexes.length > 0) {
+            this.currentExerciseIndex = this.wrongExercisesIndexes.shift()!;
+          } else {
+            // 🔹 Finalizarea lecției după corectarea tuturor exercițiilor greșite
+            console.log("🎉 Ai terminat toate exercițiile, inclusiv cele greșite!");
+            this.allExercisesCompleted = true;
+            this.reviewingWrongExercises = false;
+            return;
+          }
+        }
+      
+        // 🔹 Resetăm răspunsurile și feedback-ul pentru noul exercițiu
+        this.isAnswered = false;
+        this.selectedAnswer = "";
+        this.feedbackMessage = "";
+        this.wasAnswerCorrect = null;
+
+    }
+      
+  
+  validateAnswer() {
+    console.log("📌 Validate answer called");
+    const currentExercise = this.getCurrentExercise();
+    if (!currentExercise) return;
+
+    const userAnswer = this.selectedAnswer;
+
+    const normalizedUserAnswer = this.normalizeText(userAnswer);
+    const normalizedCorrectAnswer = this.normalizeText(currentExercise.correctAnswer);
+    
+    if (normalizedUserAnswer === normalizedCorrectAnswer) { 
+        this.feedbackMessage = "✅ Răspuns corect!";
+        this.wasAnswerCorrect = true;
+        const wrongIndex = this.wrongExercisesIndexes.indexOf(this.currentExerciseIndex);
+        if (wrongIndex !== -1) {
+            this.wrongExercisesIndexes.splice(wrongIndex, 1);
+        }
+
+    } else {
+        this.feedbackMessage = `❌ Răspuns greșit. Corect: ${currentExercise.correctAnswer}`;
+        this.wasAnswerCorrect = false;
+        if (!this.wrongExercisesIndexes.includes(this.currentExerciseIndex)) { 
+            this.wrongExercisesIndexes.push(this.currentExerciseIndex);
+        }
+    }
+    this.isAnswered = true;
+
 }
 
   
   completeLesson() {
-    if (this.lessonId) {
-        const userLevel = this.authService.getUserLevel(); // 🔹 Preluăm nivelul utilizatorului
-        this.authService.markLessonsAsCompleted([this.lessonId], userLevel);
-        this.lessonCompleted = true; // 🔹 Marchează vizual lecția ca fiind completată
-    }
-}
+      if (this.lessonId) {
+          const userLevel = this.authService.getUserLevel(); // 🔹 Preluăm nivelul utilizatorului
+          this.authService.markLessonsAsCompleted([this.lessonId], userLevel);
+          this.lessonCompleted = true; // 🔹 Marchează vizual lecția ca fiind completată
+      }
+  }
+
+  finishLesson() {
+    this.completeLesson(); // Apelează funcția existentă care marchează lecția
+    this.allExercisesCompleted = true;
+  }
+  
 
 goToNextLesson() {
   if (!this.lessonId) return;
@@ -126,6 +231,23 @@ goToNextLesson() {
   
     console.log(`🔹 Navigare către: ${mainPageRoute}`);
     this.router.navigate([mainPageRoute]);
+  }
+  
+  shouldShowFinishLessonButton(): boolean {
+    return this.isAnswered &&
+      this.wrongExercisesIndexes.length === 0 &&
+      !this.allExercisesCompleted &&
+      (
+        (!this.reviewingWrongExercises && this.currentExerciseIndex === this.exercises.length - 1) ||
+        (this.reviewingWrongExercises && this.wrongExercisesIndexes.length === 0)
+      );
+  }
+  
+  normalizeText(text: string): string {
+    return text
+      .toLowerCase()
+      .normalize("NFD") // Descompune caracterele cu diacritice
+      .replace(/[\u0300-\u036f]/g, ""); // Elimină diacriticele
   }
   
 
