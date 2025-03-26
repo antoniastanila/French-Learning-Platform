@@ -14,6 +14,7 @@ export class LessonDetailComponent implements OnInit {
   lesson: any;
   lessonId: string | null = null;
   level: string = 'beginner'; 
+  isCheatSheetVisible = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private lessonService: LessonService, private http: HttpClient) {}
 
@@ -32,6 +33,7 @@ export class LessonDetailComponent implements OnInit {
         if (this.lessonId) {
             this.lessonService.getLessonById(this.lessonId, this.level).subscribe(lesson => {
                 this.lesson = lesson;
+                console.log(this.lesson);
             }, error => {
                 console.error("Error fetching lesson:", error);
             });
@@ -59,5 +61,11 @@ goToExercises() {
     this.router.navigate([mainPage]); // ✅ Redirecționează către pagina corespunzătoare nivelului
   }
   
+  openCheatSheet() {
+    this.isCheatSheetVisible = true;
+  }
   
+  closeCheatSheet() {
+    this.isCheatSheetVisible = false;
+  }
 }

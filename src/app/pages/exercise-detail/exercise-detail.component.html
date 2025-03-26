@@ -74,7 +74,7 @@
     </div>
 
     <!-- Trimite răspunsul -->
-    <button *ngIf="!isAnswered" (click)="validateAnswer()" [disabled]="isAnswered">Trimite răspunsul</button>
+    <button *ngIf="!isAnswered" (click)="validateAnswer()" [disabled]="isAnswered">Check</button>
 
     <p class="feedback-message" *ngIf="feedbackMessage">{{ feedbackMessage }}</p>
 
