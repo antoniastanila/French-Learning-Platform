@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "french-learning-app": {
+    "french-learning-platform": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/french-learning-app",
+            "outputPath": "dist/french-learning-platform",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -33,6 +33,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/French-Learning-Platform/",
               "budgets": [
                 {
                   "type": "initial",
@@ -59,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "french-learning-app:build:production"
+              "buildTarget": "french-learning-platform:build:production"
             },
             "development": {
-              "buildTarget": "french-learning-app:build:development"
+              "buildTarget": "french-learning-platform:build:development"
             }
           },
           "defaultConfiguration": "development",

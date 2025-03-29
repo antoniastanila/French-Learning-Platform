@@ -103,26 +103,15 @@ export class LoginPageComponent implements OnInit {
 
 
 
-  loginWithFacebook(): void {
-    if (typeof FB === 'undefined') {
-      alert('Facebook SDK not loaded. Please try again later.');
-      return;
-    }
+loginWithFacebook(): void {
+  const appId = '981049047413825';
+  const redirectUri = 'https://antoniastanila.github.io/French-Learning-Platform/index.html#/auth/facebook/callback';
+  const scope = 'email,public_profile';
 
-    FB.login(
-      (response: any) => {
-        if (response.authResponse) {
-          console.log("Welcome! Fetching your information...");
-          FB.api("/me", { fields: "name,email" }, (userResponse: any) => {
-            console.log("User Info:", userResponse);
-            localStorage.setItem('facebookAccessToken', response.authResponse.accessToken);
-            this.router.navigate(['/beginner-main-page']);
-          });
-        } else {
-          alert("Login cancelled or not authorized.");
-        }
-      },
-      { scope: "email,public_profile" }
-    );
-  }
+  const facebookLoginUrl = `https://www.facebook.com/v21.0/dialog/oauth?client_id=${appId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}&response_type=token`;
+
+  window.location.href = facebookLoginUrl;
+}
+
+
 }
