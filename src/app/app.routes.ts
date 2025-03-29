@@ -17,12 +17,15 @@ import { IntermediateTestComponent } from './pages/intermediate-test/intermediat
 import { IntermediateMainPageComponent } from './pages/intermediate-main-page/intermediate-main-page.component';
 import { AdvancedTestComponent } from './pages/advanced-test/advanced-test.component';
 import { AdvancedMainPageComponent } from './pages/advanced-main-page/advanced-main-page.component';
+import { FacebookCallbackComponent } from './pages/facebook-callback/facebook-callback.component';
+
+
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, 
   { path: 'home', component: HomePageComponent }, 
   { path: 'login', component: LoginPageComponent },
   { path: 'signup', component: SignupPageComponent },
-  { path: 'start-page', component: StartPageComponent, canActivate: [AuthGuard]  }, 
+  { path: 'start-page', component: StartPageComponent}, 
   { path: 'beginner', component: BeginnerComponent, canActivate: [AuthGuard]  },
   { path: 'beginner-test', component: BeginnerTestComponent },
   { path: 'intermediate', component: IntermediateComponent, canActivate: [AuthGuard]  },
@@ -36,6 +39,7 @@ export const appRoutes: Routes = [
   { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'intermediate-main-page', component: IntermediateMainPageComponent },
   {path: 'advanced-test', component: AdvancedTestComponent},
-  {path: 'advanced-main-page', component: AdvancedMainPageComponent}
+  {path: 'advanced-main-page', component: AdvancedMainPageComponent},
+  { path: 'auth/facebook/callback', component: FacebookCallbackComponent }
 
 ];

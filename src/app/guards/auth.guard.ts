@@ -9,15 +9,17 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
-    const token = localStorage.getItem('token'); 
-
-    if (!token) {
-        this.router.navigate(['/login']);
-        return false;
+    const jwtToken = localStorage.getItem('token'); 
+    const facebookToken = localStorage.getItem('facebookAccessToken'); 
+  
+    if (!jwtToken && !facebookToken) {
+      this.router.navigate(['/login']);
+      return false;
     }
-
-    return true; 
-}
+  
+    return true;
+  }
+  
 
 }
   

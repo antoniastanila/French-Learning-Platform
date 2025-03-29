@@ -2,11 +2,12 @@
   "name": "french-learning-app",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "concurrently \"cd backend && node server.js\" \"ng serve --ssl --ssl-cert backend/cert.pem --ssl-key backend/key.pem --proxy-config proxy.conf.json\"",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+  "ng": "ng",
+  "start": "concurrently \"cd backend && node server.js\" \"ng serve --ssl --ssl-cert backend/cert.pem --ssl-key backend/key.pem --proxy-config proxy.conf.json\"",
+  "build": "ng build",
+  "watch": "ng build --watch --configuration development",
+  "test": "ng test",
+  "deploy": "ng build --configuration production && npx angular-cli-ghpages --dir=dist/french-learning-platform/browser"
   },
   "private": true,
   "dependencies": {
