@@ -9,10 +9,13 @@
       {{ username }}
     </button>
     <button class="logout-btn" (click)="logout()">Logout</button>
+    <button class="start-page-btn" (click)="goToStartPage()">Back to start page</button>
+
   </div>
   
   <h1>Intermediate Lessons Overview</h1>
-  
+  <div *ngIf="isReady; else loading">
+
   <div class="lessons-grid">
     <div 
       class="lesson-card" 
@@ -29,3 +32,8 @@
     </div>
   </div>
 </div>
+</div>
+
+<ng-template #loading>
+  <p style="text-align:center;">Loading lessons and progress...</p>
+</ng-template>

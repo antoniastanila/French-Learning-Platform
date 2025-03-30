@@ -84,7 +84,7 @@ color: black;
 }
 
 
-.user-btn, .logout-btn {
+.start-page-btn, .user-btn, .logout-btn  {
   background-color: #eb3b3b;
   color: white;
   border: none;
@@ -105,4 +105,6 @@ color: black;
 .logout-btn:hover {
   background-color: #cc0000;
 }
+
+
 

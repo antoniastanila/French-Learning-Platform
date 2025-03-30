@@ -33,8 +33,7 @@ export class AuthService {
           localStorage.setItem('username', response.user.username);
           localStorage.setItem('email', response.user.email);
           
-          const userLevel = response.user.level || localStorage.getItem('level') || 'beginner';
-          localStorage.setItem('level', userLevel);        }
+        }
   
         // ✅ Resetare progres lecții
         this.completedLessons.next([]);
@@ -52,9 +51,10 @@ export class AuthService {
     );
   }
   
-  
-  
-  
+  setUserLevel(level: string) {
+    const userId = localStorage.getItem('userId');
+    return this.http.patch(`https://localhost:5000/api/users/${userId}/update-level`, { level });
+  }    
 
   login(credentials: any): Observable<any> {
     return this.http.post<{ token: string; user: any }>(`${this.apiUrl}/login`, credentials).pipe(

@@ -119,9 +119,7 @@ export class AdvancedMainPageComponent implements OnInit {
     // ✅ Salvează lecția curentă pentru utilizator
     this.currentLessonId = lessonId;
     localStorage.setItem(`currentLesson_${userId}`, lessonId);
-    if (!this.completedLessons.includes(lessonId)) {
-      this.authService.markLessonsAsCompleted([lessonId], level);
-    }
+   
     // ✅ Actualizăm interfața pentru progres și starea lecțiilor
     this.updateLessonsState();
     this.updateProgress();
@@ -137,5 +135,9 @@ export class AdvancedMainPageComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  goToStartPage(){
+    this.router.navigate(['/start-page']);
   }
 }

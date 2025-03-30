@@ -79,15 +79,10 @@ export class LoginPageComponent implements OnInit {
             const userLevel = response.user.level || 'beginner'; // 🔹 Asigură-te că avem nivelul corect
             localStorage.setItem('level', userLevel);
 
-            let mainPageRoute = '/beginner-main-page'; // Default
-            if (userLevel === 'intermediate') {
-                mainPageRoute = '/intermediate-main-page';
-            } else if (userLevel === 'advanced') {
-                mainPageRoute = '/advanced-main-page';
-            }
-
-            console.log(`🔹 Navigare după login către: ${mainPageRoute}`);
-            this.router.navigate([mainPageRoute]); // 🔹 Navigăm către pagina corectă
+            let startPageRoute = '/start-page'; // Default
+           
+            console.log(`🔹 Navigare după login către: ${startPageRoute}`);
+            this.router.navigate([startPageRoute]); // 🔹 Navigăm către pagina corectă
         },
         error: (err) => {
             if (err.status === 404) {

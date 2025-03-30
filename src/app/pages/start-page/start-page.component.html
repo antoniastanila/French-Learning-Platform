@@ -1,26 +1,41 @@
-<header>
-    <h1>Welcome to French Learning!</h1>
-  </header>
-  <div class="container">
-    <!-- Secțiunea 1 -->
-    <div class="section">
-      <h2>New to learning French? Start here!</h2>
-      <p>Explore the basics of the French language, including vocabulary and grammar designed for beginners.</p>
-      <button (click)="navigateToBeginner()">Get Started</button>
+<header class="header-bar">
+  <h1>Welcome to French Learning!</h1>
+
+  <div class="global-progress-wrapper">
+    <p class="progress-label">Overall Progress: {{ globalProgress.toFixed(1) }}%</p>
+    <div class="global-progress-bar">
+      <div class="global-progress-fill" [style.width.%]="globalProgress"></div>
     </div>
-  
-    <!-- Secțiunea 2 -->
-    <div class="section">
-      <h2>Already a bit familiar with the French language?</h2>
-      <p>Build on your existing knowledge and dive deeper into intermediate-level lessons and activities.</p>
-      <button (click)="navigateToIntermediate()">Explore Intermediate Lessons</button>
-    </div>
-  
-    <!-- Secțiunea 3 -->
-    <div class="section">
-      <h2>Advanced learners only!</h2>
-      <p>Challenge yourself with advanced-level grammar, vocabulary, and conversation exercises.</p>
-      <button (click)="navigateToAdvanced()">Go Advanced</button>
-    </div>
+  </div>  
+
+  <div class="header-buttons">
+    <button class="profile-btn" (click)="goToProfile()">{{ username || 'Profile' }}</button>
+    <button class="logout-btn" (click)="logout()">Logout</button>
   </div>
-  
+</header>
+
+<!-- ✅ Afișăm conținutul doar după ce totul e gata -->
+<div class="container" *ngIf="isReady">
+  <div class="section">
+    <h2>New to learning French? Start here!</h2>
+    <p>Explore the basics of the French language, including vocabulary and grammar designed for beginners.</p>
+    <button (click)="handleBeginnerClick()">{{ beginnerButtonText }}</button>
+  </div>
+
+  <div class="section">
+    <h2>Already a bit familiar with the French language?</h2>
+    <p>Build on your existing knowledge and dive deeper into intermediate-level lessons and activities.</p>
+    <button (click)="handleIntermediateClick()">{{ intermediateButtonText }}</button>
+  </div>
+
+  <div class="section">
+    <h2>Advanced learners only!</h2>
+    <p>Challenge yourself with advanced-level grammar, vocabulary, and conversation exercises.</p>
+    <button (click)="handleAdvancedClick()">{{ advancedButtonText }}</button>
+  </div>
+</div>
+
+<!-- 🔄 Loader opțional -->
+<div *ngIf="!isReady" class="loading-placeholder">
+  <p>Loading your learning journey...</p>
+</div>

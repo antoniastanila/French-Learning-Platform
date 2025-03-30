@@ -7,5 +7,6 @@ export interface Lesson {
     level: 'beginner' | 'intermediate' | 'advanced'; // Nivelul lecției
     isUnlocked: boolean; // Dacă lecția este accesibilă sau nu
     isCompleted?: boolean; 
+    order: number; 
   }
   
