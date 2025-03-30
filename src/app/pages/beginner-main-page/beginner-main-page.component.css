@@ -52,6 +52,7 @@
   padding: 10px;
   background-color: #e9d7a7;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .progress-container {
@@ -84,7 +85,7 @@ color: black;
 }
 
 
-.user-btn, .logout-btn {
+.user-btn, .logout-btn, .start-page-btn {
   background-color: #eb3b3b;
   color: white;
   border: none;

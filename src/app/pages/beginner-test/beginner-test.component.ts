@@ -81,38 +81,39 @@ nextQuestion() {
 }
 
 determineLesson() {
-  const userLevel = this.authService.getUserLevel(); // ✅ Obține nivelul utilizatorului
+  const scorePercentage = (this.score / this.totalQuestions) * 100;
 
-  this.lessonService.getLessonsByLevel(userLevel).subscribe((lessons: Lesson[]) => { 
-    if (!lessons || lessons.length === 0) return;
+  this.authService.setUserLevel('beginner').subscribe({
+    next: () => {
+      localStorage.setItem('level', 'beginner');
 
-    const scorePercentage = (this.score / this.totalQuestions) * 100;
-    let startLessonIndex = 0; 
+      this.lessonService.getLessonsByLevel('beginner').subscribe((lessons: Lesson[]) => {
+        if (!lessons || lessons.length === 0) return;
 
-    if (scorePercentage > 30 && scorePercentage <= 50) {
-      startLessonIndex = Math.floor(lessons.length * 0.3); 
-    } else if (scorePercentage > 60) {
-      startLessonIndex = Math.floor(lessons.length * 0.6);
-    }
+        lessons.sort((a: Lesson, b: Lesson) => a.order - b.order);
 
-    this.lessonId = lessons[startLessonIndex]?._id || lessons[0]._id;
+        let startLessonIndex = 0;
+        if (scorePercentage > 30 && scorePercentage <= 50) {
+          startLessonIndex = Math.floor(lessons.length * 0.3);
+        } else if (scorePercentage > 60) {
+          startLessonIndex = Math.floor(lessons.length * 0.6);
+        }
 
-    const completedLessons = lessons.slice(0, startLessonIndex).map((lesson: Lesson) => lesson._id);
+        this.lessonId = lessons[startLessonIndex]?._id || lessons[0]._id;
 
-    console.log("✅ Lecția determinată:", this.lessonId);
-    console.log("✅ Lecții marcate ca finalizate:", completedLessons);
+        const completedLessons = lessons.slice(0, startLessonIndex).map((lesson: Lesson) => lesson._id);
 
-    // ✅ Setăm lecția curentă
-    this.authService.setCurrentLesson(this.lessonId);
-
-    // ✅ Trimitem progresul cu nivelul corect
-    if (completedLessons.length > 0) {
-      this.authService.markLessonsAsCompleted(completedLessons, userLevel);
+        this.authService.setCurrentLesson(this.lessonId);
+        if (completedLessons.length > 0) {
+          this.authService.markLessonsAsCompleted(completedLessons, 'beginner');
+        }
+      });
+    },
+    error: (err) => {
+      console.error('❌ Eroare la setarea nivelului beginner:', err);
     }
   });
 }
-
-
 
 goToLesson() {
   const level = 'beginner'; // 🔹 Nivelul este 'beginner' deoarece testul este pentru beginner

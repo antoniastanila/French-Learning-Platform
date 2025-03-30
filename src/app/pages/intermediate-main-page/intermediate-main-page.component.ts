@@ -19,6 +19,7 @@ export class IntermediateMainPageComponent implements OnInit {
   username: string | null = null;
   totalLessons: number = 0;
   progress: number = 0;
+  isReady: boolean = false;
 
   constructor(private lessonService: LessonService, private authService: AuthService, private router: Router) {}
 
@@ -28,48 +29,47 @@ export class IntermediateMainPageComponent implements OnInit {
       console.error("❌ User ID is missing!");
       return;
     }
-
-    this.authService.loadUserProgress();
+  
     this.username = this.authService.getUsername();
-
+  
+    // ✅ Încărcăm progresul ÎNAINTE de subscribe
+    this.authService.loadUserProgress();
+  
+    // ✅ Ne abonăm doar dacă userId este încă același
     this.authService.completedLessons$.subscribe(completedLessons => {
-      if (localStorage.getItem('userId') !== userId) return;
-
+      if (localStorage.getItem('userId') !== userId) return; // 🔑 diferența critică
+  
       this.completedLessons = completedLessons;
-
+  
       this.lessonService.getLessonsByLevel('intermediate').subscribe(data => {
         this.totalLessons = data.length;
-
-        let storedCurrentLesson = localStorage.getItem(`currentLesson_${userId}`);
-
-        // ✅ Construim lista lecțiilor și stabilim progresul
+  
+        const storedCurrentLesson = localStorage.getItem(`currentLesson_${userId}`);
+  
         this.lessons = data.map((lesson: any, index: number) => ({
           ...lesson,
           isCompleted: completedLessons.includes(lesson._id),
           isUnlocked: index === 0 || completedLessons.includes(lesson._id),
           level: lesson.level ?? 'intermediate'
         }));
-
-        // ✅ Găsim prima lecție necompletată
+  
         const firstIncompleteLesson = this.lessons.find(lesson => !lesson.isCompleted);
-
-        // ✅ Setăm lecția curentă
+  
         if (!firstIncompleteLesson) {
-          // Toate lecțiile sunt completate
           this.currentLessonId = null;
           localStorage.removeItem(`currentLesson_${userId}`);
         } else {
-          // Există lecții necompletate → setăm prima lecție necompletată ca fiind curentă
           this.currentLessonId = firstIncompleteLesson._id;
           localStorage.setItem(`currentLesson_${userId}`, this.currentLessonId);
         }
-
+  
         this.updateLessonsState();
         this.updateProgress();
+        this.isReady = true;
       });
     });
   }
-
+  
   updateProgress(): void {
     const completedCount = this.lessons.filter(lesson => lesson.isCompleted).length;
     if (this.totalLessons > 0) {
@@ -121,9 +121,7 @@ export class IntermediateMainPageComponent implements OnInit {
     // ✅ Setăm lecția curentă și salvăm în localStorage pentru utilizator
     this.currentLessonId = lessonId;
     localStorage.setItem(`currentLesson_${userId}`, lessonId);
-    if (!this.completedLessons.includes(lessonId)) {
-      this.authService.markLessonsAsCompleted([lessonId], level);
-    }
+    
     // ✅ Trimitem lecția ca finalizată doar dacă nu este deja în lista lecțiilor completate
     const userLevel = 'intermediate';
 
@@ -141,5 +139,9 @@ export class IntermediateMainPageComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  goToStartPage(){
+    this.router.navigate(['/start-page']);
   }
 }

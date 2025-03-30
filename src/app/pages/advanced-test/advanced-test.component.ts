@@ -81,35 +81,81 @@ export class AdvancedTestComponent implements OnInit {
   }
 
   determineLesson() {
-    const userLevel = this.authService.getUserLevel();
-
-    this.lessonService.getLessonsByLevel(userLevel).subscribe((lessons: Lesson[]) => {
-      if (!lessons || lessons.length === 0) return;
-
-      const scorePercentage = (this.score / this.totalQuestions) * 100;
-      let startLessonIndex = 0;
-
-      if (scorePercentage > 30 && scorePercentage <= 50) {
-        startLessonIndex = Math.floor(lessons.length * 0.3);
-      } else if (scorePercentage > 60) {
-        startLessonIndex = Math.floor(lessons.length * 0.6);
+    const scorePercentage = (this.score / this.totalQuestions) * 100;
+    const existingLevel = localStorage.getItem('level');
+    const isNewUser = !localStorage.getItem('currentLesson'); // ✅ verificare dacă e prima dată
+  
+    if (scorePercentage <= 10) {
+      if (!existingLevel) {
+        alert("Your score is too low to unlock advanced level. Redirecting to intermediate test.");
+        this.router.navigate(['/intermediate']);
+      } else {
+        alert("You did not pass the advanced test. Your current level remains unchanged.");
       }
-
-      this.lessonId = lessons[startLessonIndex]?._id || lessons[0]._id;
-
-      const completedLessons = lessons.slice(0, startLessonIndex).map((lesson: Lesson) => lesson._id);
-
-      console.log("✅ Lecția determinată:", this.lessonId);
-      console.log("✅ Lecții marcate ca finalizate:", completedLessons);
-
-      this.authService.setCurrentLesson(this.lessonId);
-
-      if (completedLessons.length > 0) {
-        this.authService.markLessonsAsCompleted(completedLessons, userLevel);
+      return;
+    }
+  
+    this.authService.setUserLevel('advanced').subscribe({
+      next: () => {
+        localStorage.setItem('level', 'advanced');
+  
+        const markIntermediate = () => {
+          this.lessonService.getLessonsByLevel('intermediate').subscribe(intermediateLessons => {
+            const intermediateIds = intermediateLessons.map((l: Lesson) => l._id);
+            this.authService.markLessonsAsCompleted(intermediateIds, 'intermediate');
+  
+            proceedWithAdvanced(); // 🔁 continuă după intermediate
+          });
+        };
+  
+        const proceedWithAdvanced = () => {
+          this.lessonService.getLessonsByLevel('advanced').subscribe((advancedLessons: Lesson[]) => {
+            if (!advancedLessons || advancedLessons.length === 0) return;
+  
+            advancedLessons.sort((a: Lesson, b: Lesson) => a.order - b.order);
+  
+            let startLessonIndex = 0;
+            if (scorePercentage > 30 && scorePercentage <= 50) {
+              startLessonIndex = Math.floor(advancedLessons.length * 0.3);
+            } else if (scorePercentage > 60) {
+              startLessonIndex = Math.floor(advancedLessons.length * 0.6);
+            }
+  
+            this.lessonId = advancedLessons[startLessonIndex]?._id || advancedLessons[0]._id;
+  
+            const completedLessons = advancedLessons
+              .slice(0, startLessonIndex)
+              .map((lesson: Lesson) => lesson._id);
+  
+            console.log("✅ Lecția determinată:", this.lessonId);
+            console.log("✅ Lecții marcate ca finalizate:", completedLessons);
+  
+            this.authService.setCurrentLesson(this.lessonId);
+            if (completedLessons.length > 0) {
+              this.authService.markLessonsAsCompleted(completedLessons, 'advanced');
+            }
+          });
+        };
+  
+        // 🔹 dacă e utilizator nou → marchează și beginner
+        if (isNewUser) {
+          this.lessonService.getLessonsByLevel('beginner').subscribe(beginnerLessons => {
+            const beginnerIds = beginnerLessons.map((lesson: Lesson) => lesson._id);
+            this.authService.markLessonsAsCompleted(beginnerIds, 'beginner');
+  
+            markIntermediate(); // 🔁 apoi intermediate
+          });
+        } else {
+          markIntermediate(); // 🔁 doar intermediate dacă nu e user nou
+        }
+      },
+      error: (err) => {
+        console.error('❌ Eroare la setarea nivelului advanced:', err);
       }
     });
   }
-
+  
+  
   goToLesson() {
     const level = 'advanced';
     console.log("🔹 Navigating to:", `/lesson/${level}/${this.lessonId}`);

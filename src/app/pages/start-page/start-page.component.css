@@ -82,3 +82,82 @@ body {
     transform: scale(1.05); /* Mărire ușoară la hover */
   }
   
+  .header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #b9619b;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .header-buttons button {
+    margin-left: 10px;
+    padding: 8px 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .profile-btn {
+    background-color: #6a9cfc;
+    color: white;
+  }
+  
+  .logout-btn {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .global-progress-wrapper {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto 10px;
+    text-align: center;
+  }
+  
+  .progress-label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .global-progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .global-progress-fill {
+    height: 100%;
+    background-color: #6a9cfc;
+    width: 0%;
+    transition: width 0.4s ease-in-out;
+  }
+  
+  .loading-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #6B0A2E; /* visiniu, în ton cu aplicația ta */
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  
+  /* Opțional: animație subtilă */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

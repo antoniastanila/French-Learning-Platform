@@ -89,7 +89,7 @@ color: black;
 }
 
 
-.user-btn, .logout-btn {
+.user-btn, .logout-btn, .start-page-btn {
   background-color: #eb3b3b;
   color: white;
   border: none;

@@ -8,6 +8,8 @@ import { ListeningQuestionComponent } from '../../components/listening-question/
 import { ReadingComprehensionComponent } from '../../components/reading-comprehension/reading-comprehension.component';
 import { AuthService } from '../../services/auth.service';
 import { LessonService } from '../../services/lesson.service';
+import { Lesson } from '../../models/lesson.model';
+
 @Component({
   selector: 'app-intermediate-test',
   standalone: true,
@@ -81,35 +83,54 @@ export class IntermediateTestComponent implements OnInit {
 
   determineLesson() {
     const scorePercentage = (this.score / this.totalQuestions) * 100;
+    const existingLevel = localStorage.getItem('level');
   
-    this.lessonService.getLessonsByLevel('intermediate').subscribe(lessons => {
-      // 🔹 Sortează lecțiile după ordinea lor naturală (poți avea un field `order` în DB)
-      lessons.sort((a: any, b: any) => a.order - b.order);
-  
-      let startingIndex = 0;
-      if (scorePercentage > 30 && scorePercentage <= 50) {
-        startingIndex = 4; // Lecția 5
-      } else if (scorePercentage > 60) {
-        startingIndex = 9; // Lecția 10
+    if (scorePercentage <= 10) {
+      if (!existingLevel) {
+        alert("Your score is too low to unlock intermediate level. Redirecting to beginner test.");
+        this.router.navigate(['/beginner']);
+      } else {
+        alert("You did not pass the intermediate test. No changes were made to your current level.");
       }
+      return;
+    }
   
-      if (startingIndex < lessons.length) {
-        this.lessonId = lessons[startingIndex]._id;
+    this.authService.setUserLevel('intermediate').subscribe({
+      next: () => {
+        localStorage.setItem('level', 'intermediate');
   
-        // 🔹 Marchează toate lecțiile anterioare ca fiind finalizate
-        const completedLessons = lessons.slice(0, startingIndex).map((lesson: any) => lesson._id);
+        // 🔹 1. Marchează toate lecțiile de beginner ca finalizate
+        this.lessonService.getLessonsByLevel('beginner').subscribe(beginnerLessons => {
+          const beginnerLessonIds = beginnerLessons.map((lesson: any) => lesson._id);
+          this.authService.markLessonsAsCompleted(beginnerLessonIds, 'beginner');
   
-        console.log("✅ Lecția de start:", this.lessonId);
-        console.log("✅ Lecții finalizate:", completedLessons);
+          // 🔹 2. Continuă cu lecțiile de intermediate
+          this.lessonService.getLessonsByLevel('intermediate').subscribe(intermediateLessons => {
+            intermediateLessons.sort((a: any, b: any) => a.order - b.order);
   
-        // 🔹 Trimite progresul utilizatorului către backend
-        this.authService.markLessonsAsCompleted(completedLessons, 'intermediate');
+            let startingIndex = 0;
+            if (scorePercentage > 30 && scorePercentage <= 50) {
+              startingIndex = 4;
+            } else if (scorePercentage > 60) {
+              startingIndex = 9;
+            }
   
-        // 🔹 Setează lecția curentă
-        this.authService.setCurrentLesson(this.lessonId);
-      }
+            this.lessonId = intermediateLessons[startingIndex]?._id;
+  
+            const completedLessons = intermediateLessons
+              .slice(0, startingIndex)
+              .map((lesson: any) => lesson._id);
+  
+            this.authService.markLessonsAsCompleted(completedLessons, 'intermediate');
+           
+            this.authService.setCurrentLesson(this.lessonId);
+          });
+        });
+      },
+      error: (err) => console.error('❌ Failed to update user level:', err)
     });
   }
+  
   
   goToLesson() {
     if (this.lessonId) {
