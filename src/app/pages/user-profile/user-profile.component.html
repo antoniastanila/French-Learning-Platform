@@ -1,6 +1,22 @@
 <div class="user-profile">
-    <h2>Profil utilizator</h2>
-    <p><strong>Username:</strong> {{ username }}</p>
-    <p><strong>Email:</strong> {{ email }}</p>
+  <h2>Profil utilizator</h2>
+
+  <div class="profile-pic-wrapper" [class.editing]="editingProfilePic">
+    <label *ngIf="editingProfilePic" for="fileInput">
+      <img [src]="tempProfilePic" alt="Profile Picture" class="profile-pic clickable" />
+    </label>
+    <img *ngIf="!editingProfilePic" [src]="profilePicUrl" alt="Profile Picture" class="profile-pic" />
+    <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
   </div>
+
+  <p><strong>Username:</strong> {{ username }}</p>
+  <p><strong>Email:</strong> {{ email }}</p>
+
+  <button *ngIf="!editingProfilePic" (click)="startEditing()">Editează profil</button>
+
+  <div *ngIf="editingProfilePic">
+    <button (click)="saveProfilePic()">Salvează modificări</button>
+    <button (click)="cancelEditing()">Anulează</button>
+  </div>
+</div>
   
