@@ -1,19 +1,83 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css']
+  standalone: true,
+  styleUrls: ['./user-profile.component.css'],
+  imports: [CommonModule]
 })
 export class UserProfileComponent implements OnInit {
   username: string | null = null;
   email: string | null = null;
+  profilePicUrl: string = '';
+  originalProfilePicUrl: string = '';
+  editingProfilePic: boolean = false;
+  tempProfilePic: string = '';
+  userId: string | null = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.username = localStorage.getItem('username');
-    this.email = localStorage.getItem('email'); 
+    this.email = localStorage.getItem('email');
+    this.userId = localStorage.getItem('userId');
+
+    const storedPic = localStorage.getItem('profilePicUrl');
+    this.profilePicUrl = storedPic && storedPic.trim() !== ''
+      ? storedPic
+      : 'assets/images/default-avatar.jpg';
+
+    this.originalProfilePicUrl = this.profilePicUrl;
   }
+
+  startEditing(): void {
+    this.editingProfilePic = true;
+    this.tempProfilePic = this.profilePicUrl;
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          this.tempProfilePic = reader.result;
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  cancelEditing(): void {
+    this.editingProfilePic = false;
+    this.tempProfilePic = this.originalProfilePicUrl;
+  }
+
+  saveProfilePic(): void {
+    this.editingProfilePic = false;
+  
+    if (this.userId && this.tempProfilePic) {
+      this.http.patch<{ imageUrl: string }>(
+        `https://localhost:5000/api/users/${this.userId}/upload-profile-pic`,
+        { base64Image: this.tempProfilePic }
+      ).subscribe({
+        next: (res) => {
+          this.profilePicUrl = res.imageUrl;
+          localStorage.setItem('profilePicUrl', this.profilePicUrl);
+          console.log('✅ Imaginea a fost încărcată și salvată.');
+        },
+        error: err => {
+          console.error('❌ Eroare la upload:', err);
+          this.cancelEditing();
+        }
+      });
+    }
+  }
+  
 }
