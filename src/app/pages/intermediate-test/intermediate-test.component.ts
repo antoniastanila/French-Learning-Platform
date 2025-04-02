@@ -99,44 +99,48 @@ export class IntermediateTestComponent implements OnInit {
       next: () => {
         localStorage.setItem('level', 'intermediate');
   
-        // 🔹 1. Marchează toate lecțiile de beginner ca finalizate
-        this.lessonService.getLessonsByLevel('beginner').subscribe(beginnerLessons => {
-          const beginnerLessonIds = beginnerLessons.map((lesson: any) => lesson._id);
-          this.authService.markLessonsAsCompleted(beginnerLessonIds, 'beginner');
-  
-          // 🔹 2. Continuă cu lecțiile de intermediate
-          this.lessonService.getLessonsByLevel('intermediate').subscribe(intermediateLessons => {
-            intermediateLessons.sort((a: any, b: any) => a.order - b.order);
-  
-            let startingIndex = 0;
-            if (scorePercentage > 30 && scorePercentage <= 50) {
-              startingIndex = 4;
-            } else if (scorePercentage > 60) {
-              startingIndex = 9;
-            }
-  
-            this.lessonId = intermediateLessons[startingIndex]?._id;
-  
-            const completedLessons = intermediateLessons
-              .slice(0, startingIndex)
-              .map((lesson: any) => lesson._id);
-  
+        this.lessonService.getLessonsByLevel('intermediate').subscribe(intermediateLessons => {
+          if (!intermediateLessons || intermediateLessons.length === 0) return;
+          
+          intermediateLessons.sort((a: Lesson, b: Lesson) => a.order - b.order);
+        
+          let startLessonIndex = 0;
+          if(scorePercentage < 30){
+            startLessonIndex = Math.floor(intermediateLessons.length * 0.2);
+          } else if (scorePercentage > 30 && scorePercentage <= 50) {
+            startLessonIndex = Math.floor(intermediateLessons.length * 0.3);
+          } else if (scorePercentage > 60) {
+            startLessonIndex = Math.floor(intermediateLessons.length * 0.6);
+          }
+        
+          this.lessonId = intermediateLessons[startLessonIndex]?._id || intermediateLessons[0]._id;
+        
+          const completedLessons = intermediateLessons
+            .slice(0, startLessonIndex)
+            .map((lesson: Lesson) => lesson._id);
+        
+          this.authService.setCurrentLesson(this.lessonId);
+          if (completedLessons.length > 0) {
             this.authService.markLessonsAsCompleted(completedLessons, 'intermediate');
-           
-            this.authService.setCurrentLesson(this.lessonId);
+          }
+        
+          // 🔄 Acum, după ce am setat nivelul și lecția de start, putem marca beginner-urile
+          this.lessonService.getLessonsByLevel('beginner').subscribe(beginnerLessons => {
+            const beginnerLessonIds = beginnerLessons.map((lesson: Lesson) => lesson._id);
+            this.authService.markLessonsAsCompleted(beginnerLessonIds, 'beginner');
           });
         });
+        
       },
       error: (err) => console.error('❌ Failed to update user level:', err)
     });
   }
   
-  
   goToLesson() {
-    if (this.lessonId) {
-      console.log("🔍 Navigating to lesson:", this.lessonId, "Level:", "intermediate");
-      this.router.navigate([`/lesson/intermediate/${this.lessonId}`]);
-    }
+    const level = 'intermediate'; 
+    console.log("🔍 Navigating to lesson:", this.lessonId, "Level:", "intermediate");
+    this.router.navigate([`/lesson/${level}/${this.lessonId}`]);
+    this.authService.loadUserProgress();
   }
   
   
