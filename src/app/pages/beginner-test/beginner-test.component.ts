@@ -93,7 +93,9 @@ determineLesson() {
         lessons.sort((a: Lesson, b: Lesson) => a.order - b.order);
 
         let startLessonIndex = 0;
-        if (scorePercentage > 30 && scorePercentage <= 50) {
+        if(scorePercentage < 30){
+          startLessonIndex = Math.floor(lessons.length * 0.2);
+        } else if (scorePercentage > 30 && scorePercentage <= 50) {
           startLessonIndex = Math.floor(lessons.length * 0.3);
         } else if (scorePercentage > 60) {
           startLessonIndex = Math.floor(lessons.length * 0.6);
@@ -101,7 +103,9 @@ determineLesson() {
 
         this.lessonId = lessons[startLessonIndex]?._id || lessons[0]._id;
 
-        const completedLessons = lessons.slice(0, startLessonIndex).map((lesson: Lesson) => lesson._id);
+        const completedLessons = lessons
+          .slice(0, startLessonIndex)
+          .map((lesson: Lesson) => lesson._id);
 
         this.authService.setCurrentLesson(this.lessonId);
         if (completedLessons.length > 0) {
@@ -116,13 +120,9 @@ determineLesson() {
 }
 
 goToLesson() {
-  const level = 'beginner'; // 🔹 Nivelul este 'beginner' deoarece testul este pentru beginner
+  const level = 'beginner';
   console.log("🔹 Navigating to:", `/lesson/${level}/${this.lessonId}`);
-
-  // ✅ Navighează către lecția corectă
   this.router.navigate([`/lesson/${level}/${this.lessonId}`]);
-
-  // ✅ Actualizăm progresul în interfață
   this.authService.loadUserProgress();
 }
 

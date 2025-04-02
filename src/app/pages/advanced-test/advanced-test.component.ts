@@ -83,7 +83,6 @@ export class AdvancedTestComponent implements OnInit {
   determineLesson() {
     const scorePercentage = (this.score / this.totalQuestions) * 100;
     const existingLevel = localStorage.getItem('level');
-    const isNewUser = !localStorage.getItem('currentLesson'); // ✅ verificare dacă e prima dată
   
     if (scorePercentage <= 10) {
       if (!existingLevel) {
@@ -99,58 +98,46 @@ export class AdvancedTestComponent implements OnInit {
       next: () => {
         localStorage.setItem('level', 'advanced');
   
-        const markIntermediate = () => {
+        this.lessonService.getLessonsByLevel('advanced').subscribe(advancedLessons => {
+          if (!advancedLessons || advancedLessons.length === 0) return;
+  
+          advancedLessons.sort((a: Lesson, b: Lesson) => a.order - b.order);
+  
+          let startLessonIndex = 0;
+          if (scorePercentage < 30) {
+            startLessonIndex = Math.floor(advancedLessons.length * 0.2);
+          } else if (scorePercentage > 30 && scorePercentage <= 50) {
+            startLessonIndex = Math.floor(advancedLessons.length * 0.3);
+          } else if (scorePercentage > 60) {
+            startLessonIndex = Math.floor(advancedLessons.length * 0.6);
+          }
+  
+          this.lessonId = advancedLessons[startLessonIndex]?._id || advancedLessons[0]._id;
+  
+          const completedAdvancedLessons = advancedLessons
+            .slice(0, startLessonIndex)
+            .map((lesson: Lesson) => lesson._id);
+  
+          this.authService.setCurrentLesson(this.lessonId);
+          if (completedAdvancedLessons.length > 0) {
+            this.authService.markLessonsAsCompleted(completedAdvancedLessons, 'advanced');
+          }
+  
+          // 🔄 Marcare lecții intermediate
           this.lessonService.getLessonsByLevel('intermediate').subscribe(intermediateLessons => {
-            const intermediateIds = intermediateLessons.map((l: Lesson) => l._id);
+            const intermediateIds = intermediateLessons.map((lesson: Lesson) => lesson._id);
             this.authService.markLessonsAsCompleted(intermediateIds, 'intermediate');
-  
-            proceedWithAdvanced(); // 🔁 continuă după intermediate
           });
-        };
-  
-        const proceedWithAdvanced = () => {
-          this.lessonService.getLessonsByLevel('advanced').subscribe((advancedLessons: Lesson[]) => {
-            if (!advancedLessons || advancedLessons.length === 0) return;
-  
-            advancedLessons.sort((a: Lesson, b: Lesson) => a.order - b.order);
-  
-            let startLessonIndex = 0;
-            if (scorePercentage > 30 && scorePercentage <= 50) {
-              startLessonIndex = Math.floor(advancedLessons.length * 0.3);
-            } else if (scorePercentage > 60) {
-              startLessonIndex = Math.floor(advancedLessons.length * 0.6);
-            }
-  
-            this.lessonId = advancedLessons[startLessonIndex]?._id || advancedLessons[0]._id;
-  
-            const completedLessons = advancedLessons
-              .slice(0, startLessonIndex)
-              .map((lesson: Lesson) => lesson._id);
-  
-            console.log("✅ Lecția determinată:", this.lessonId);
-            console.log("✅ Lecții marcate ca finalizate:", completedLessons);
-  
-            this.authService.setCurrentLesson(this.lessonId);
-            if (completedLessons.length > 0) {
-              this.authService.markLessonsAsCompleted(completedLessons, 'advanced');
-            }
-          });
-        };
-  
-        // 🔹 dacă e utilizator nou → marchează și beginner
-        if (isNewUser) {
+          
           this.lessonService.getLessonsByLevel('beginner').subscribe(beginnerLessons => {
             const beginnerIds = beginnerLessons.map((lesson: Lesson) => lesson._id);
             this.authService.markLessonsAsCompleted(beginnerIds, 'beginner');
-  
-            markIntermediate(); // 🔁 apoi intermediate
           });
-        } else {
-          markIntermediate(); // 🔁 doar intermediate dacă nu e user nou
-        }
+          
+        });
       },
       error: (err) => {
-        console.error('❌ Eroare la setarea nivelului advanced:', err);
+        console.error('❌ Failed to update user level to advanced:', err);
       }
     });
   }

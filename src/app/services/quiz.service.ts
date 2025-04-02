@@ -213,19 +213,43 @@ export class QuizService {
       correctAnswer: 'J’allais',
     },
     {
+      type: 'multiple-choice',
+      question: "Quelle est la traduction de 'Anto'?",
+      options: ['Anto', 'Nia', 'Junko', 'Huh'],
+      correctAnswer: 'Anto',
+    },
+    {
       type: 'reading-comprehension',
       passage: "Les Français adorent le pain. Ils en mangent tous les jours.",
       question: "Que mangent les Français tous les jours?",
       options: ['Du fromage', 'Du pain', 'Du vin', 'Des fruits'],
       correctAnswer: 'Du pain',
     },
+    {
+      type: 'multiple-choice',
+      question: "Quelle est la traduction de 'I used to go'?",
+      options: ['Je suis allé', 'J’allais', 'J’irais', 'Je vais aller'],
+      correctAnswer: 'J’allais',
+    }
   ];
   private advancedQuestions = [
+    {
+      type: 'multiple-choice',
+      question: "Quelle est la traduction de 'Anto'?",
+      options: ['Anto', 'Nia', 'Junko', 'Huh'],
+      correctAnswer: 'Anto',
+    },
     {
       type: 'multiple-choice',
       question: "Quel est le synonyme de 'époustouflant'?",
       options: ['Ennuyeux', 'Impressionnant', 'Lent', 'Banal'],
       correctAnswer: 'Impressionnant',
+    },
+    {
+      type: 'multiple-choice',
+      question: "Quelle est la traduction de 'Anto'?",
+      options: ['Anto', 'Nia', 'Junko', 'Huh'],
+      correctAnswer: 'Anto',
     },
     {
       type: 'reading-comprehension',
