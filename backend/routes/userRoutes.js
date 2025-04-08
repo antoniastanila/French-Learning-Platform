@@ -153,27 +153,32 @@ router.post('/:userId/complete-lesson', async (req, res) => {
 router.post('/:userId/complete-multiple-lessons', async (req, res) => {
     const { userId } = req.params;
     const { lessonIds } = req.body;
-
+  
+    console.log("✅ USER:", userId);
+    console.log("✅ Lecții primite:", lessonIds);
+    console.log("✅ Tip lessonIds:", typeof lessonIds, " | Este array?", Array.isArray(lessonIds));
+  
     if (!lessonIds || !Array.isArray(lessonIds)) {
-        return res.status(400).json({ message: "Invalid lesson IDs" });
+      return res.status(400).json({ message: "Invalid lesson IDs" });
     }
-
+  
     try {
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        // ✅ Adaugă lecțiile noi în lista lecțiilor completate
-        user.completedLessons = [...new Set([...user.completedLessons, ...lessonIds])];
-
-        await user.save();
-        res.json({ message: "Lessons marked as completed", completedLessons: user.completedLessons });
+      const update = {
+        $addToSet: { completedLessons: { $each: lessonIds } }
+      };
+  
+      const result = await User.updateOne({ _id: userId }, update);
+  
+      if (result.matchedCount === 0) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      const updatedUser = await User.findById(userId);
+      res.json({ message: "Lessons marked as completed", completedLessons: updatedUser.completedLessons });
     } catch (error) {
-        console.error("❌ Error marking lessons as completed:", error);
-        res.status(500).json({ message: "Server error", error });
+      console.error("❌ Error marking lessons as completed:", error);
+      res.status(500).json({ message: "Server error", error });
     }
-});
-
-
+  });
+  
 module.exports = router;

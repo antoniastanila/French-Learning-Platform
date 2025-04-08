@@ -36,45 +36,49 @@ export class StartPageComponent implements OnInit {
     this.username = localStorage.getItem('username');
     this.loadGlobalProgress();
   
-    // 🟡 Ascultăm modificările reale ale progresului
     this.authService.completedLessons$.subscribe(completed => {
-      if (!this.userLevel) {
-        this.beginnerButtonText = 'Jump here';
-        this.intermediateButtonText = 'Jump here';
-        this.advancedButtonText = 'Jump here';
-        this.isReady = true;
-      } else {
-        this.lessonService.getLessonsByLevel('beginner').subscribe(beginnerLessons => {
-          const allBeginnerIds = beginnerLessons.map((l: Lesson) => l._id);
-          const hasAllBeginnerDone = allBeginnerIds.every((id: string) => completed.includes(id));
-  
-          this.lessonService.getLessonsByLevel('intermediate').subscribe(intermediateLessons => {
-            const allIntermediateIds = intermediateLessons.map((l: Lesson) => l._id);
-            const hasAllIntermediateDone = allIntermediateIds.every((id: string) => completed.includes(id));
-  
-            switch (this.userLevel) {
-              case 'beginner':
-                this.beginnerButtonText = 'Continue Learning';
-                this.intermediateButtonText = 'Jump here';
-                this.advancedButtonText = 'Jump here';
-                break;
-              case 'intermediate':
-                this.beginnerButtonText = hasAllBeginnerDone ? 'All done' : 'Jump here';
-                this.intermediateButtonText = 'Continue Learning';
-                this.advancedButtonText = 'Jump here';
-                break;
-              case 'advanced':
-                this.beginnerButtonText = hasAllBeginnerDone ? 'All done' : 'Jump here';
-                this.intermediateButtonText = hasAllIntermediateDone ? 'All done' : 'Jump here';
-                this.advancedButtonText = 'Continue Learning';
-                break;
-            }
-            this.isReady = true;
-          });
+      const beginner$ = this.lessonService.getLessonsByLevel('beginner');
+      const intermediate$ = this.lessonService.getLessonsByLevel('intermediate');
+    
+      beginner$.subscribe(beginnerLessons => {
+        const beginnerIds = beginnerLessons.map((l: Lesson) => l._id);
+        const hasAllBeginnerDone = beginnerIds.every((id: string) => completed.includes(id));
+    
+        intermediate$.subscribe(intermediateLessons => {
+          const intermediateIds = intermediateLessons.map((l: Lesson) => l._id);
+          const hasAllIntermediateDone = intermediateIds.every((id: string) => completed.includes(id));
+    
+          switch (this.userLevel) {
+            case 'beginner':
+              this.beginnerButtonText = 'Continue Learning';
+              this.intermediateButtonText = 'Jump here';
+              this.advancedButtonText = 'Jump here';
+              break;
+    
+            case 'intermediate':
+              this.beginnerButtonText = hasAllBeginnerDone ? 'All done' : 'Jump here';
+              this.intermediateButtonText = 'Continue Learning';
+              this.advancedButtonText = 'Jump here';
+              break;
+    
+            case 'advanced':
+              this.beginnerButtonText = hasAllBeginnerDone ? 'All done' : 'Jump here';
+              this.intermediateButtonText = hasAllIntermediateDone ? 'All done' : 'Jump here';
+              this.advancedButtonText = 'Continue Learning';
+              break;
+    
+            default:
+              this.beginnerButtonText = 'Jump here';
+              this.intermediateButtonText = 'Jump here';
+              this.advancedButtonText = 'Jump here';
+              break;
+          }
+    
+          this.isReady = true;
         });
-      }
+      });
     });
-  
+    
     // 🟡 Asigură-te că progresul este încărcat
     this.authService.loadUserProgress();
   }
