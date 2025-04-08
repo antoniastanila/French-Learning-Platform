@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
+import {catchError, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router'; 
 import { UserResponse } from '../models/user.model'; 
@@ -140,7 +141,30 @@ export class AuthService {
     }
 }
 
-  
+markLessonsAsCompleted$(lessonIds: string[], level: string): Observable<any> {
+  const userId = localStorage.getItem('userId');
+  if (!userId || !lessonIds || lessonIds.length === 0) {
+    return of(null);
+  }
+
+  return this.http.post(`${this.apiUrl}/${userId}/complete-multiple-lessons`, {
+    lessonIds
+  }).pipe(
+    tap(() => {
+      const current = this.completedLessons.getValue();
+      const updated = [...new Set([...current, ...lessonIds])];
+      this.completedLessons.next(updated);
+
+      console.log(`✅ Lecții marcate ca finalizate pentru nivelul ${level}:`, lessonIds);
+    }),
+    catchError(error => {
+      console.error(`❌ markLessonsAsCompleted$ failed for level ${level}:`, error);
+      return of(null);
+    })
+  );
+}
+
+
 getUserLevel(): string {
   return localStorage.getItem('level') || 'beginner'; // 🔹 Default la 'beginner' dacă nu există nivel salvat
 }
