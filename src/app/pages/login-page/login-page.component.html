@@ -1,7 +1,7 @@
 <div class="login-container">
   <h1>Login</h1>
+
   <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-    <!-- Email Input -->
     <input 
       type="email" 
       [(ngModel)]="email" 
@@ -9,40 +9,24 @@
       placeholder="Email Address" 
       required 
       email
-      #emailField="ngModel"
     />
-    <div *ngIf="emailField.invalid && emailField.touched" class="error-message">
-      <small *ngIf="emailField.errors?.['required']">Email is required.</small>
-      <small *ngIf="emailField.errors?.['email']">Invalid email address.</small>
-    </div>
-
-    <!-- Password Input -->
     <input 
       type="password" 
       [(ngModel)]="password" 
       name="password" 
       placeholder="Password" 
-      required 
-      #passwordField="ngModel"
+      required
     />
-    <div *ngIf="passwordField.invalid && passwordField.touched" class="error-message">
-      <small *ngIf="passwordField.errors?.['required']">Password is required.</small>
-    </div>
 
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-    <!-- Submit Button -->
-    <button type="submit" [disabled]="loginForm.invalid">Log In with Email</button>
-    <a href="#">Forgot Password?</a>
+    <button type="submit" [disabled]="loginForm.invalid" class="email-button">
+      Log In with Email
+    </button>
   </form>
 
-  <h2>Or Log In with Facebook</h2>
-  <button class="facebook-button" (click)="loginWithFacebook()">Log In with Facebook</button>
+  <h2 class="separator">Or</h2>
 
-<!-- Login cu Google -->
-<button (click)="signInWithGoogle()">Loghează-te cu Google</button>
-  
-
+  <!-- ✅ Google login button rendered here -->
+  <div id="g_id_signin" class="google-button-container"></div>
 </div>
