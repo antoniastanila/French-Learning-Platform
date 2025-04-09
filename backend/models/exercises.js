@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 // 🔹 Schema pentru un singur exercițiu (fără lessonId individual)
 const SingleExerciseSchema = new mongoose.Schema({
     question: { type: String, required: true },
+    // lessonAssociated:  { type: Number, required: true },
     questionType: { 
         type: String, 
         required: true, 

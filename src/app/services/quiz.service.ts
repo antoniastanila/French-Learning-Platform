@@ -141,7 +141,7 @@ export class QuizService {
     // Listening Comprehension
     {
       type: 'listening',
-      audioUrl: 'assets/audio/greetings.mp3',
+      audioUrl: 'assets/audios/bonjour.mp3',
       question: 'What does the greeting in this audio mean?',
       options: ['Bonjour', 'Merci', 'Au revoir', 'Pardon'],
       correctAnswer: 'Bonjour',
