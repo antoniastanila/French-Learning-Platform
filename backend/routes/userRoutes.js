@@ -5,6 +5,13 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
+const multer = require('multer');
+const storage = multer.memoryStorage(); 
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 } 
+});
+
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("555078852596-a4cmrg9dcrru8m3p714ct642o45lhi6o.apps.googleusercontent.com");
 
@@ -72,7 +79,6 @@ router.patch('/:userId/update-level', async (req, res) => {
     }
 });
 
-
 // 🔹 Autentificare utilizator
 router.post('/login', async (req, res) => {
     try {
@@ -98,7 +104,8 @@ router.post('/login', async (req, res) => {
                 _id: user._id, 
                 username: user.username, 
                 level: user.level,  // Adaugă nivelul utilizatorului
-                completedLessons: user.completedLessons 
+                completedLessons: user.completedLessons,
+                profilePicUrl: user.profilePicUrl
             } 
         });
         
@@ -219,6 +226,7 @@ router.post('/:userId/complete-multiple-lessons', async (req, res) => {
           username: user.username,
           email: user.email,
           level: user.level,
+          profilePicUrl: user.profilePicUrl || ''
         }
       });
     } catch (err) {
@@ -226,5 +234,29 @@ router.post('/:userId/complete-multiple-lessons', async (req, res) => {
       res.status(401).json({ message: "Google authentication failed" });
     }
   });
+
+  router.patch('/:userId/upload-profile-pic', upload.single('image'), async (req, res) => {
+    try {
+      const { userId } = req.params;
+  
+      if (!req.file) {
+        return res.status(400).json({ message: 'No image uploaded' });
+      }
+  
+      const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+  
+      const user = await User.findById(userId);
+      if (!user) return res.status(404).json({ message: 'User not found' });
+  
+      user.profilePicUrl = base64Image;
+      await user.save(); // 🔥 garantăm salvarea reală
+  
+      res.json({ message: 'Profile picture updated', imageUrl: base64Image });
+    } catch (err) {
+      console.error('❌ Upload error:', err);
+      res.status(500).json({ message: 'Server error during upload', error: err.message });
+    }
+  });
+  
 
 module.exports = router;

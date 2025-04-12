@@ -62,17 +62,22 @@ export class UserProfileComponent implements OnInit {
   saveProfilePic(): void {
     this.editingProfilePic = false;
   
-    if (this.userId && this.tempProfilePic) {
+    const input = document.getElementById('fileInput') as HTMLInputElement;
+  
+    if (this.userId && input?.files && input.files[0]) {
+      const formData = new FormData();
+      formData.append('image', input.files[0]);
+  
       this.http.patch<{ imageUrl: string }>(
         `https://localhost:5000/api/users/${this.userId}/upload-profile-pic`,
-        { base64Image: this.tempProfilePic }
+        formData
       ).subscribe({
         next: (res) => {
           this.profilePicUrl = res.imageUrl;
           localStorage.setItem('profilePicUrl', this.profilePicUrl);
-          console.log('✅ Imaginea a fost încărcată și salvată.');
+          console.log('✅ Imaginea a fost încărcată.');
         },
-        error: err => {
+        error: (err) => {
           console.error('❌ Eroare la upload:', err);
           this.cancelEditing();
         }

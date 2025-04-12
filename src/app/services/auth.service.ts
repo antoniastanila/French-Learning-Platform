@@ -68,6 +68,8 @@ export class AuthService {
         const userLevel = response.user.level ? response.user.level : 'beginner'; 
         localStorage.setItem('level', userLevel);
 
+        localStorage.setItem('profilePicUrl', response.user.profilePicUrl || '');
+
         // 🔹 Debugging logs
         console.log(`🔍 User logged in: ${response.user.username}`);
         console.log(`🔍 Received user level from backend: ${response.user.level}`);
@@ -180,8 +182,27 @@ getUserLevel(): string {
   }
 
   loginWithGoogle(idToken: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/google-login`, { idToken });
-  }
+  return this.http.post<{ token: string; user: any }>(`${this.apiUrl}/google-login`, { idToken }).pipe(
+    tap((response) => {
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('userId', response.user._id);
+      localStorage.setItem('username', response.user.username);
+      localStorage.setItem('email', response.user.email);
+      localStorage.setItem('level', response.user.level || 'beginner');
+      localStorage.setItem('profilePicUrl', response.user.profilePicUrl || '');
+
+      let mainPageRoute = `/beginner-main-page`;
+      if (response.user.level === 'intermediate') {
+        mainPageRoute = '/intermediate-main-page';
+      } else if (response.user.level === 'advanced') {
+        mainPageRoute = '/advanced-main-page';
+      }
+
+      this.router.navigate([mainPageRoute]);
+    })
+  );
+}
+
   
   
 }

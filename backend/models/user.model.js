@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema(
         level: { type: String, enum: ['beginner', 'intermediate', 'advanced'], default: 'beginner' }, // ✅ Asigură nivel default
         role: { type: String, enum: ['student', 'admin'], default: 'student' },
         progress: { type: Object, default: {} },
-        completedLessons: { type: [String], default: [] }
+        completedLessons: { type: [String], default: [] },
+        profilePicUrl: { type: String, default: '' }
     },
     { timestamps: true }
 );

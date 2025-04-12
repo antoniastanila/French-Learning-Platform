@@ -44,12 +44,13 @@ export class LoginPageComponent implements OnInit {
     console.log("📤 Sending ID token to backend:", idToken);
     this.authService.loginWithGoogle(idToken).subscribe({
       next: (res: any) => {
+        console.log('📸 Profil primit la login:', res.user.profilePicUrl);
         localStorage.setItem('token', res.token);
         localStorage.setItem('userId', res.user._id);
         localStorage.setItem('username', res.user.username);
         localStorage.setItem('email', res.user.email);
         localStorage.setItem('level', res.user.level || 'beginner');
-  
+        localStorage.setItem('profilePicUrl', res.user.profilePicUrl || '');
         this.router.navigate(['/start-page']);
       },
       error: (err) => {
@@ -68,8 +69,14 @@ export class LoginPageComponent implements OnInit {
 
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: (res) => {
+        console.log('📸 Profil primit la login:', res.user.profilePicUrl);
         localStorage.setItem('token', res.token);
         localStorage.setItem('userId', res.user._id);
+        localStorage.setItem('username', res.user.username);
+        localStorage.setItem('email', res.user.email);
+        localStorage.setItem('level', res.user.level || 'beginner');
+        localStorage.setItem('profilePicUrl', res.user.profilePicUrl || '');
+
         this.router.navigate(['/start-page']);
       },
       error: () => {
