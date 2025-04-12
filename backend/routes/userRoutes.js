@@ -18,7 +18,7 @@ const client = new OAuth2Client("555078852596-a4cmrg9dcrru8m3p714ct642o45lhi6o.a
 // 🔹 Înregistrare utilizator
 router.post('/register', async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, firstName, lastName } = req.body;
 
         if (!username || !email || !password) {
             return res.status(400).json({ message: 'All fields are required!' });
@@ -36,7 +36,14 @@ router.post('/register', async (req, res) => {
         }
 
         // 🔹 Adăugăm un nivel implicit pentru utilizator
-        const newUser = new User({ username, email, password, level: 'beginner' });
+        const newUser = new User({
+            username,
+            email,
+            password,
+            firstName,
+            lastName,
+            level: 'beginner'
+          });
         await newUser.save();
 
         // 🔹 Generăm un token JWT automat după înregistrare
@@ -48,9 +55,12 @@ router.post('/register', async (req, res) => {
             token,
             user: {
                 _id: newUser._id,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
                 username: newUser.username,
                 email: newUser.email,
-                level: newUser.level // 🔹 Ne asigurăm că trimitem și nivelul utilizatorului
+                level: newUser.level, // 🔹 Ne asigurăm că trimitem și nivelul utilizatorului
+                createdAt: newUser.createdAt
             }
         });
     } catch (error) {
@@ -103,9 +113,12 @@ router.post('/login', async (req, res) => {
             user: { 
                 _id: user._id, 
                 username: user.username, 
-                level: user.level,  // Adaugă nivelul utilizatorului
+                level: user.level,  
                 completedLessons: user.completedLessons,
-                profilePicUrl: user.profilePicUrl
+                profilePicUrl: user.profilePicUrl,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                createdAt: user.createdAt 
             } 
         });
         
@@ -226,7 +239,10 @@ router.post('/:userId/complete-multiple-lessons', async (req, res) => {
           username: user.username,
           email: user.email,
           level: user.level,
-          profilePicUrl: user.profilePicUrl || ''
+          profilePicUrl: user.profilePicUrl || '',
+          firstName: user.firstName,
+          lastName: user.lastName,
+          createdAt: user.createdAt
         }
       });
     } catch (err) {

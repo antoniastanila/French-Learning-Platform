@@ -5,7 +5,11 @@ export interface UserResponse {
         _id: string;
         username: string;
         email: string;
-        level?: string; // 🔹 `level` este opțional
+        level?: string; 
+        firstName?: string;  
+        lastName?: string;   
+        profilePicUrl?: string;
+        createdAt?: string;
     };
 }
   

@@ -17,6 +17,9 @@ export class UserProfileComponent implements OnInit {
   editingProfilePic: boolean = false;
   tempProfilePic: string = '';
   userId: string | null = null;
+  firstName: string | null = null;
+  lastName: string | null = null;
+  createdAt: string | null = null;
 
   constructor(private http: HttpClient) {}
 
@@ -24,6 +27,10 @@ export class UserProfileComponent implements OnInit {
     this.username = localStorage.getItem('username');
     this.email = localStorage.getItem('email');
     this.userId = localStorage.getItem('userId');
+    this.firstName = localStorage.getItem('firstName');
+    this.lastName = localStorage.getItem('lastName');
+    this.createdAt = localStorage.getItem('createdAt');
+    console.log('📅 LocalStorage createdAt:', this.createdAt);
 
     const storedPic = localStorage.getItem('profilePicUrl');
     this.profilePicUrl = storedPic && storedPic.trim() !== ''

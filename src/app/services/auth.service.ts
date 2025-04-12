@@ -31,9 +31,13 @@ export class AuthService {
         // ✅ Verifică dacă `user` există și conține date valide
         if (response.user) {
           localStorage.setItem('userId', response.user._id);
+          localStorage.setItem('firstName', response.user.firstName || '');
+          localStorage.setItem('lastName', response.user.lastName || '');
           localStorage.setItem('username', response.user.username);
           localStorage.setItem('email', response.user.email);
-          
+          localStorage.setItem('createdAt', response.user.createdAt || '');    
+          console.log('📅 Data înregistrării salvată:', response.user.createdAt);
+      
         }
   
         // ✅ Resetare progres lecții
@@ -64,6 +68,8 @@ export class AuthService {
         localStorage.setItem('userId', response.user._id);
         localStorage.setItem('username', response.user.username);
         localStorage.setItem('email', response.user.email);
+        localStorage.setItem('createdAt', response.user.createdAt || '');
+        console.log('📅 Data înregistrării salvată:', response.user.createdAt);
 
         const userLevel = response.user.level ? response.user.level : 'beginner'; 
         localStorage.setItem('level', userLevel);
@@ -190,6 +196,8 @@ getUserLevel(): string {
       localStorage.setItem('email', response.user.email);
       localStorage.setItem('level', response.user.level || 'beginner');
       localStorage.setItem('profilePicUrl', response.user.profilePicUrl || '');
+      localStorage.setItem('createdAt', response.user.createdAt || '');
+      console.log('📅 Data înregistrării salvată:', response.user.createdAt);
 
       let mainPageRoute = `/beginner-main-page`;
       if (response.user.level === 'intermediate') {

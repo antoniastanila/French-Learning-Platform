@@ -9,8 +9,13 @@
     <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
   </div>
 
+  <p><strong>First Name:</strong> {{ firstName }}</p>
+  <p><strong>Last Name:</strong> {{ lastName }}</p>
+  
   <p><strong>Username:</strong> {{ username }}</p>
   <p><strong>Email:</strong> {{ email }}</p>
+
+  <p><strong>Registered on:</strong> {{ createdAt | date: 'longDate' }}</p>
 
   <button *ngIf="!editingProfilePic" (click)="startEditing()">Editează profil</button>
 
