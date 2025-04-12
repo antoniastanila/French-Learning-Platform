@@ -178,5 +178,10 @@ getUserLevel(): string {
     localStorage.setItem('currentLesson', lessonId);
     console.log(`✅ Lecția curentă setată: ${lessonId}`);
   }
+
+  loginWithGoogle(idToken: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/google-login`, { idToken });
+  }
+  
   
 }

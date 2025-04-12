@@ -40,15 +40,25 @@ export class LoginPageComponent implements OnInit {
   }
 
   handleGoogleResponse(response: any): void {
-    console.log('✅ Google credential response:', response);
-
-    // Extragem tokenul JWT primit de la Google
-    const credential = response.credential;
-    localStorage.setItem('token', credential);
-
-    // Exemplu simplu de redirecționare
-    this.router.navigate(['/start-page']);
+    const idToken = response.credential;
+    console.log("📤 Sending ID token to backend:", idToken);
+    this.authService.loginWithGoogle(idToken).subscribe({
+      next: (res: any) => {
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('userId', res.user._id);
+        localStorage.setItem('username', res.user.username);
+        localStorage.setItem('email', res.user.email);
+        localStorage.setItem('level', res.user.level || 'beginner');
+  
+        this.router.navigate(['/start-page']);
+      },
+      error: (err) => {
+        console.error("❌ Google login failed:", err);
+        this.errorMessage = 'Google login failed. Please try again.';
+      }
+    });
   }
+  
 
   onSubmit(form: NgForm): void {
     if (form.invalid) {

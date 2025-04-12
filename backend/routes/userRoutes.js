@@ -5,6 +5,9 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client("555078852596-a4cmrg9dcrru8m3p714ct642o45lhi6o.apps.googleusercontent.com");
+
 // 🔹 Înregistrare utilizator
 router.post('/register', async (req, res) => {
     try {
@@ -30,7 +33,7 @@ router.post('/register', async (req, res) => {
         await newUser.save();
 
         // 🔹 Generăm un token JWT automat după înregistrare
-        const token = jwt.sign({ userId: newUser._id, role: newUser.role }, 'your_jwt_secret', { expiresIn: '1h' });
+        const token = jwt.sign({ userId: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         // 🔹 Returnăm utilizatorul și token-ul pentru autentificare automată
         res.status(201).json({
@@ -85,7 +88,7 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Parola este incorectă.' });
         }
 
-        const token = jwt.sign({ userId: user._id, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         console.log("🔍 User data sent in login response:", user);
 
         res.json({ 
@@ -181,4 +184,47 @@ router.post('/:userId/complete-multiple-lessons', async (req, res) => {
     }
   });
   
+  router.post('/google-login', async (req, res) => {
+    try {
+      const { idToken } = req.body;
+      console.log("📥 ID Token primit:", idToken); 
+      const ticket = await client.verifyIdToken({
+        idToken,
+        audience: "555078852596-a4cmrg9dcrru8m3p714ct642o45lhi6o.apps.googleusercontent.com",
+      });
+  
+      const payload = ticket.getPayload();
+      console.log("✅ Payload primit:", payload);
+      const { email, name, sub } = payload;
+  
+      let user = await User.findOne({ email });
+  
+      if (!user) {
+        user = new User({
+          username: name,
+          email,
+          password: '', // goale pt conturi Google
+          googleId: sub,
+          level: 'beginner',
+        });
+        await user.save();
+      }
+  
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+  
+      res.json({
+        token,
+        user: {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          level: user.level,
+        }
+      });
+    } catch (err) {
+      console.error("❌ Google login error:", err);
+      res.status(401).json({ message: "Google authentication failed" });
+    }
+  });
+
 module.exports = router;
