@@ -49,24 +49,32 @@
       <ng-container *ngIf="completedLessonsByLevel[level] as lessons">
         <ul *ngIf="lessons.length > 0; else none">
           <li
-          *ngFor="let lesson of lessons"
-          [ngClass]="{
-            'clickable-lesson': selectMode,
-            'selected': selectedLessons.has(lesson._id)
-          }"
-          (click)="toggleLessonSelection(lesson._id)"
-        >
-          {{ lesson.title }}
-        </li>
-        
+            *ngFor="let lesson of lessons"
+            [ngClass]="{
+              'clickable-lesson': selectMode,
+              'selected': selectedLessons.has(lesson._id)
+            }"
+            (click)="toggleLessonSelection(lesson._id)"
+          >
+            {{ lesson.title }}
+          </li>
         </ul>
       </ng-container>
       <ng-template #none>
         <p><em>No completed lessons yet.</em></p>
       </ng-template>
     </div>
+  
+    <!-- 🔽 Butoanele pentru mod test -->
+    <div *ngIf="!selectMode">
+      <button class="test-button" (click)="selectLessonsForTest()">Selectează lecții pentru test</button>
+    </div>
+    <div *ngIf="selectMode">
+      <button class="test-button" (click)="generateTest()">Generează test</button>
+      <button class="test-button cancel" (click)="selectLessonsForTest()">Anulează</button>
+    </div>
   </div>
-</div>
+  
 
 <div class="modal-overlay" *ngIf="showModal">
   <div class="modal">

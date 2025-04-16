@@ -10,6 +10,7 @@ const https = require("https");
 const userRoutes = require("./routes/userRoutes");
 const exerciseRoutes = require("./routes/exerciseRoutes");
 const lessonRoutes = require("./routes/lessonRoutes");
+const testRoutes = require('./routes/testRoutes');
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,7 @@ app.use(express.json({ limit: '5mb' }));
 app.use("/api/users", userRoutes);
 app.use("/api/exercises", exerciseRoutes);
 app.use("/api/lessons", lessonRoutes);
+app.use('/api/test', testRoutes);
 
 // Conectare la MongoDB
 mongoose

@@ -1,0 +1,6 @@
+# backend/.gitignore
+
+.env
+node_modules/
+cert.pem
+key.pem

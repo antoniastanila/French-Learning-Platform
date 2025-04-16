@@ -133,5 +133,30 @@ router.get('/:level/:id', async (req, res) => {
     }
 });
 
+// POST /api/lessons/by-ids
+router.post('/by-ids', async (req, res) => {
+    const { ids } = req.body;
+  
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: 'No lesson IDs provided.' });
+    }
+  
+    try {
+      const lessons = [];
+  
+      for (const id of ids) {
+        let lesson = await BeginnerLesson.findById(id);
+        if (!lesson) lesson = await IntermediateLesson.findById(id);
+        if (!lesson) lesson = await AdvancedLesson.findById(id);
+        if (lesson) lessons.push(lesson);
+      }
+  
+      res.json({ lessons });
+    } catch (err) {
+      console.error('❌ Error fetching lessons by IDs:', err);
+      res.status(500).json({ message: 'Server error', error: err.message });
+    }
+  });
+  
 
 module.exports = router;

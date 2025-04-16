@@ -6,6 +6,7 @@ import { take } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { LessonService } from '../../services/lesson.service';
 import { Lesson } from '../../models/lesson.model'; 
+import { TestService } from '../../services/test.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -42,10 +43,13 @@ export class UserProfileComponent implements OnInit {
   selectMode = false;
   selectedLessons: Set<string> = new Set();
 
+  testGenerated: string = '';
+
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private lessonService: LessonService
+    private lessonService: LessonService,
+    private testService: TestService
   ) {}
 
   ngOnInit(): void {
@@ -211,9 +215,21 @@ cancelSelection(): void {
 }
 
 generateTest(): void {
-  console.log('📚 Lecții selectate pentru test:', [...this.selectedLessons]);
-  // aici vei naviga sau deschide un modal pentru generarea testului
+  const selectedLessonObjects: Lesson[] = [];
+
+  for (const level of ['beginner', 'intermediate', 'advanced']) {
+    const lessons = this.completedLessonsByLevel[level];
+    selectedLessonObjects.push(...lessons.filter(lesson => this.selectedLessons.has(lesson._id)));
+  }
+
+  this.testService.generateTest(selectedLessonObjects).subscribe({
+    next: (res) => {
+      this.testGenerated = res.test;
+      console.log('📄 Test generat:', res.test);
+    },
+    error: (err) => {
+      console.error('❌ Eroare la generare test:', err);
+    }
+  });
 }
-
-
 }
