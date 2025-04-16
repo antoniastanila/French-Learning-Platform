@@ -1,28 +1,88 @@
-.profile-pic-wrapper {
-    width: 150px;
-    height: 150px;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 2px solid #ccc;
-    margin-bottom: 15px;
-  }
-  
-  .profile-pic-wrapper.editing {
-    border: 3px dashed #6B0A2E; /* visiniu */
-  }
-  
-  .profile-pic {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .profile-pic.clickable {
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-  
-  .profile-pic.clickable:hover {
-    opacity: 0.8;
-  }
-  
+.profile-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+.card {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  flex: 1 1 400px;
+  max-width: 500px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* ascunde scroll în afara cardului */
+}
+
+.card-lessons-scroll {
+  overflow-y: auto;
+  flex-grow: 1;
+  margin-top: 10px;
+  padding-right: 10px; /* opțional: spațiu lângă scrollbar */
+}
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+
+.profile-pic.clickable {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.profile-pic.clickable:hover {
+  opacity: 0.8;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+}
+
+.profile-pic-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  object-fit: cover;
+}
+
+.modal-buttons {
+  margin-top: 10px;
+}
+
+.modal-buttons button {
+  margin: 5px;
+}
+
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 4px;
+}

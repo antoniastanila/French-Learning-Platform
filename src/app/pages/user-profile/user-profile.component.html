@@ -1,27 +1,76 @@
-<div class="user-profile">
-  <h2>Profil utilizator</h2>
+<div class="profile-container">
+  <!-- CARD PROFIL -->
+  <div class="card">
+    <h2>Profil utilizator</h2>
+    <img [src]="profilePicUrl" alt="Profile Picture" class="profile-pic clickable" />
 
-  <div class="profile-pic-wrapper" [class.editing]="editingProfilePic">
-    <label *ngIf="editingProfilePic" for="fileInput">
-      <img [src]="tempProfilePic" alt="Profile Picture" class="profile-pic clickable" />
-    </label>
-    <img *ngIf="!editingProfilePic" [src]="profilePicUrl" alt="Profile Picture" class="profile-pic" />
-    <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
+    <p><strong>First Name:</strong> {{ firstName }}</p>
+    <p><strong>Last Name:</strong> {{ lastName }}</p>
+    <p><strong>Username:</strong> {{ username }}</p>
+    <p><strong>Email:</strong> {{ email }}</p>
+    <p><strong>Registered on:</strong> {{ createdAt | date: 'longDate' }}</p>
+
+    <button (click)="openEditModal()">Editează profil</button>
   </div>
 
-  <p><strong>First Name:</strong> {{ firstName }}</p>
-  <p><strong>Last Name:</strong> {{ lastName }}</p>
-  
-  <p><strong>Username:</strong> {{ username }}</p>
-  <p><strong>Email:</strong> {{ email }}</p>
+  <!-- CARD LECȚII -->
+<div class="card">
+  <h3>Lecții completate</h3>
+  <p class="test-info">
+    Vrei să generezi un test cu lecțiile pe care nu le stăpânești atât de bine?
+    <br />
+    Click pe butonul de mai jos!
+  </p>
 
-  <p><strong>Registered on:</strong> {{ createdAt | date: 'longDate' }}</p>
+  <!-- 🔹 Buton de acțiune -->
+  <button class="test-button" (click)="selectLessonsForTest()">Selectează lecții pentru test</button>
 
-  <button *ngIf="!editingProfilePic" (click)="startEditing()">Editează profil</button>
-
-  <div *ngIf="editingProfilePic">
-    <button (click)="saveProfilePic()">Salvează modificări</button>
-    <button (click)="cancelEditing()">Anulează</button>
+  <!-- ⬇️ ADĂUGAT WRAPPER SCROLLABIL -->
+  <div class="card-lessons-scroll">
+    <div *ngFor="let level of ['beginner', 'intermediate', 'advanced']">
+      <h4>{{ level | titlecase }} Level</h4>
+      <ng-container *ngIf="completedLessonsByLevel[level] as lessons">
+        <ul *ngIf="lessons.length > 0; else none">
+          <li *ngFor="let lesson of lessons">
+            {{ lesson.title }}
+          </li>
+        </ul>
+      </ng-container>
+      <ng-template #none>
+        <p><em>No completed lessons yet.</em></p>
+      </ng-template>
+    </div>
   </div>
 </div>
-  
+
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal">
+    <h3>Editare Profil</h3>
+
+    <!-- Imaginea de profil curentă -->
+    <img [src]="tempProfilePic || profilePicUrl" alt="Preview" class="profile-pic-preview" />
+
+    <div class="modal-buttons">
+      <button (click)="triggerFileInput()">Change Profile Picture</button>
+      <button (click)="removeProfilePicture()">Remove Profile Picture</button>
+    </div>
+
+    <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
+
+    <!-- Campuri pentru nume -->
+    <label>Prenume:</label>
+    <input type="text" [(ngModel)]="tempFirstName" />
+
+    <label>Nume:</label>
+    <input type="text" [(ngModel)]="tempLastName" />
+
+    <label>Username:</label>
+    <input type="text" [(ngModel)]="tempUsername" (blur)="checkUsernameAvailability()" />
+    <div class="error" *ngIf="usernameError">{{ usernameError }}</div>    
+
+    <div class="modal-buttons">
+      <button (click)="saveChanges()">Save Changes</button>
+      <button (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>

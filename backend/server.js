@@ -13,7 +13,7 @@ const lessonRoutes = require("./routes/lessonRoutes");
 
 const app = express();
 app.use(cors());
-app.use(express.json()); // 🔹 Permite trimiterea de JSON în request-uri
+app.use(express.json({ limit: '5mb' }));
 
 // Folosirea rutelor
 app.use("/api/users", userRoutes);

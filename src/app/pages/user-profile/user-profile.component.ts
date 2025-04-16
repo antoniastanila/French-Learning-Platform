@@ -1,50 +1,102 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { take } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { LessonService } from '../../services/lesson.service';
+import { Lesson } from '../../models/lesson.model'; 
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   standalone: true,
   styleUrls: ['./user-profile.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class UserProfileComponent implements OnInit {
   username: string | null = null;
   email: string | null = null;
   profilePicUrl: string = '';
   originalProfilePicUrl: string = '';
-  editingProfilePic: boolean = false;
   tempProfilePic: string = '';
   userId: string | null = null;
   firstName: string | null = null;
   lastName: string | null = null;
   createdAt: string | null = null;
 
-  constructor(private http: HttpClient) {}
+  showModal = false;
+  tempFirstName: string | null = null;
+  tempLastName: string | null = null;
+
+  completedLessons: string[] = [];
+  completedLessonsByLevel: { [key: string]: Lesson[] } = {
+    beginner: [],
+    intermediate: [],
+    advanced: []
+  };
+
+  tempUsername: string | null = null;
+  usernameError: string | null = null;
+
+
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private lessonService: LessonService
+  ) {}
 
   ngOnInit(): void {
-    this.username = localStorage.getItem('username');
-    this.email = localStorage.getItem('email');
-    this.userId = localStorage.getItem('userId');
-    this.firstName = localStorage.getItem('firstName');
-    this.lastName = localStorage.getItem('lastName');
-    this.createdAt = localStorage.getItem('createdAt');
-    console.log('📅 LocalStorage createdAt:', this.createdAt);
-
-    const storedPic = localStorage.getItem('profilePicUrl');
-    this.profilePicUrl = storedPic && storedPic.trim() !== ''
-      ? storedPic
-      : 'assets/images/default-avatar.jpg';
-
-    this.originalProfilePicUrl = this.profilePicUrl;
+    // 🌟 1. Actualizează datele utilizatorului
+    this.authService.userProfile$.pipe(take(1)).subscribe(user => {
+      if (user) {
+        this.setUserFields(user);
+      } else {
+        const fallbackUser = {
+          _id: localStorage.getItem('userId'),
+          username: localStorage.getItem('username'),
+          email: localStorage.getItem('email'),
+          firstName: localStorage.getItem('firstName'),
+          lastName: localStorage.getItem('lastName'),
+          createdAt: localStorage.getItem('createdAt'),
+          profilePicUrl: localStorage.getItem('profilePicUrl') || 'assets/images/default-avatar.jpg',
+        };
+        this.setUserFields(fallbackUser);
+        this.authService.updateUserProfile(fallbackUser);
+      }
+    });
+  
+    // 🌟 2. Încarcă progresul + ascultă după ce s-a actualizat
+    this.authService.loadUserProgress();
+  
+    this.authService.completedLessons$.subscribe(ids => {
+      this.completedLessons = ids;
+  
+      const levels = ['beginner', 'intermediate', 'advanced'];
+      levels.forEach(level => {
+        this.lessonService.getLessonsByLevel(level).subscribe((lessons: Lesson[]) => {
+          const completed = lessons.filter(l => ids.includes(l._id));
+          this.completedLessonsByLevel[level] = completed;
+        });
+      });
+    });
   }
-
-  startEditing(): void {
-    this.editingProfilePic = true;
+  
+  private setUserFields(user: any): void {
+    this.userId = user._id || localStorage.getItem('userId');
+    this.username = user.username;
+    this.email = user.email;
+    this.firstName = user.firstName;
+    this.lastName = user.lastName;
+    this.createdAt = user.createdAt;
+    this.profilePicUrl = user.profilePicUrl || 'assets/images/default-avatar.jpg';
+  
+    this.tempFirstName = this.firstName;
+    this.tempLastName = this.lastName;
     this.tempProfilePic = this.profilePicUrl;
+    this.tempUsername = this.username;
   }
-
+  
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
@@ -61,35 +113,86 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  cancelEditing(): void {
-    this.editingProfilePic = false;
-    this.tempProfilePic = this.originalProfilePicUrl;
+  openEditModal(): void {
+    this.tempProfilePic = this.profilePicUrl;
+    this.tempFirstName = this.firstName;
+    this.tempLastName = this.lastName;
+    this.tempUsername = this.username;
+    this.usernameError = null;
+    this.showModal = true;
+  }
+  
+  closeModal(): void {
+    this.showModal = false;
+  }
+  
+  triggerFileInput(): void {
+    const input = document.getElementById('fileInput') as HTMLInputElement;
+    input?.click();
+  }
+  
+  removeProfilePicture(): void {
+    this.tempProfilePic = 'assets/images/default-avatar.jpg';
+  }
+  
+  saveChanges(): void {
+    if (!this.userId || this.usernameError) return;
+  
+    const updateData = {
+      firstName: this.tempFirstName,
+      lastName: this.tempLastName,
+      username: this.tempUsername,
+      profilePic: this.tempProfilePic === 'assets/images/default-avatar.jpg' ? '' : this.tempProfilePic,
+    };
+  
+    this.http.patch(`https://localhost:5000/api/users/${this.userId}/update-profile`, updateData)
+      .subscribe({
+        next: (res: any) => {
+          this.firstName = updateData.firstName;
+          this.lastName = updateData.lastName;
+          this.username = updateData.username!;
+          this.profilePicUrl = updateData.profilePic || 'assets/images/default-avatar.jpg';
+  
+          localStorage.setItem('firstName', this.firstName || '');
+          localStorage.setItem('lastName', this.lastName || '');
+          localStorage.setItem('username', this.username);
+          localStorage.setItem('profilePicUrl', this.profilePicUrl);
+  
+          this.authService.updateUserProfile({
+            _id: this.userId,
+            username: this.username,
+            email: this.email,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            createdAt: this.createdAt,
+            profilePicUrl: this.profilePicUrl
+          });
+  
+          console.log('✅ Profil actualizat!');
+          this.closeModal();
+        },
+        error: err => console.error('❌ Eroare la actualizare profil:', err)
+      });
+  }
+  
+  checkUsernameAvailability(): void {
+    if (!this.tempUsername || this.tempUsername === this.username) {
+      this.usernameError = null;
+      return;
+    }
+  
+    this.http.get<{ exists: boolean }>(`https://localhost:5000/api/users/check-username/${this.tempUsername}`)
+      .subscribe(response => {
+        this.usernameError = response.exists ? 'Username already taken.' : null;
+      }, err => {
+        console.error('❌ Eroare la verificarea username-ului:', err);
+        this.usernameError = 'Server error.';
+      });
   }
 
-  saveProfilePic(): void {
-    this.editingProfilePic = false;
-  
-    const input = document.getElementById('fileInput') as HTMLInputElement;
-  
-    if (this.userId && input?.files && input.files[0]) {
-      const formData = new FormData();
-      formData.append('image', input.files[0]);
-  
-      this.http.patch<{ imageUrl: string }>(
-        `https://localhost:5000/api/users/${this.userId}/upload-profile-pic`,
-        formData
-      ).subscribe({
-        next: (res) => {
-          this.profilePicUrl = res.imageUrl;
-          localStorage.setItem('profilePicUrl', this.profilePicUrl);
-          console.log('✅ Imaginea a fost încărcată.');
-        },
-        error: (err) => {
-          console.error('❌ Eroare la upload:', err);
-          this.cancelEditing();
-        }
-      });
-    }
-  }
-  
+  selectLessonsForTest(): void {
+    console.log('🧪 Selectare lecții pentru test');
+    // Aici vei deschide o modală sau naviga spre o pagină de test personalizat
+  }  
+
 }

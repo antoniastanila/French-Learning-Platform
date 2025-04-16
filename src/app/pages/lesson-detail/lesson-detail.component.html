@@ -40,28 +40,34 @@
 
 <div class="modal" [ngClass]="{'visible': isCheatSheetVisible}">
   <div class="modal-content">
-    <h1>Cheat Sheet</h1>
-    <h3>Don't wanna read all that? Here's a little summary for you:</h3>
-    
-    <!-- Tabelul pentru Cheat Sheet -->
-    <table *ngIf="lesson.cheatSheet">
-      <thead>
-        <tr>
-          <th *ngFor="let header of lesson.cheatSheet.headers">{{ header }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of lesson.cheatSheet.rows">
-          <td *ngFor="let cell of row">{{ cell }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- Header fix -->
+    <div class="modal-header">
+      <h1>Cheat Sheet</h1>
+      <h3>Don't wanna read all that? Here's a little summary for you:</h3>
+    </div>
 
+    <!-- Conținut scrollabil -->
+    <div class="modal-scroll">
+      <table *ngIf="lesson.cheatSheet">
+        <thead>
+          <tr>
+            <th *ngFor="let header of lesson.cheatSheet.headers">{{ header }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of lesson.cheatSheet.rows">
+            <td *ngFor="let cell of row">{{ cell }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Footer fix (butoane) -->
     <div class="button-container">
       <button (click)="closeCheatSheet()">Close</button>
       <button (click)="goToExercises()">Go to exercises!</button>
     </div>
-  
   </div>
 </div>
+
 

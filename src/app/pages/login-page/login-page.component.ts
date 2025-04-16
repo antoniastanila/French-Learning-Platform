@@ -41,16 +41,22 @@ export class LoginPageComponent implements OnInit {
 
   handleGoogleResponse(response: any): void {
     const idToken = response.credential;
-    console.log("📤 Sending ID token to backend:", idToken);
     this.authService.loginWithGoogle(idToken).subscribe({
       next: (res: any) => {
-        console.log('📸 Profil primit la login:', res.user.profilePicUrl);
+        // Salvează în localStorage
         localStorage.setItem('token', res.token);
         localStorage.setItem('userId', res.user._id);
         localStorage.setItem('username', res.user.username);
         localStorage.setItem('email', res.user.email);
         localStorage.setItem('level', res.user.level || 'beginner');
         localStorage.setItem('profilePicUrl', res.user.profilePicUrl || '');
+        localStorage.setItem('firstName', res.user.firstName || '');
+        localStorage.setItem('lastName', res.user.lastName || '');
+        localStorage.setItem('createdAt', res.user.createdAt || '');
+  
+        // ⬇️ Asta lipsea! Trebuie setat manual aici pentru a merge profilul
+        this.authService.updateUserProfile(res.user);
+  
         this.router.navigate(['/start-page']);
       },
       error: (err) => {
@@ -60,23 +66,27 @@ export class LoginPageComponent implements OnInit {
     });
   }
   
-
   onSubmit(form: NgForm): void {
     if (form.invalid) {
       this.errorMessage = 'Please enter a valid email and password.';
       return;
     }
-
+  
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: (res) => {
-        console.log('📸 Profil primit la login:', res.user.profilePicUrl);
         localStorage.setItem('token', res.token);
         localStorage.setItem('userId', res.user._id);
         localStorage.setItem('username', res.user.username);
         localStorage.setItem('email', res.user.email);
         localStorage.setItem('level', res.user.level || 'beginner');
         localStorage.setItem('profilePicUrl', res.user.profilePicUrl || '');
-
+        localStorage.setItem('firstName', res.user.firstName || '');
+        localStorage.setItem('lastName', res.user.lastName || '');
+        localStorage.setItem('createdAt', res.user.createdAt || '');
+  
+        // 🔥 CRUCIAL: fără asta, userProfile$ rămâne null până la refresh
+        this.authService.updateUserProfile(res.user);
+  
         this.router.navigate(['/start-page']);
       },
       error: () => {
@@ -84,4 +94,5 @@ export class LoginPageComponent implements OnInit {
       }
     });
   }
+  
 }

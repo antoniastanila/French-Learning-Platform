@@ -113,6 +113,7 @@ router.post('/login', async (req, res) => {
             user: { 
                 _id: user._id, 
                 username: user.username, 
+                email: user.email,
                 level: user.level,  
                 completedLessons: user.completedLessons,
                 profilePicUrl: user.profilePicUrl,
@@ -226,6 +227,8 @@ router.post('/:userId/complete-multiple-lessons', async (req, res) => {
           password: '', // goale pt conturi Google
           googleId: sub,
           level: 'beginner',
+          firstName: payload.given_name || '',
+          lastName: payload.family_name || ''
         });
         await user.save();
       }
@@ -251,6 +254,12 @@ router.post('/:userId/complete-multiple-lessons', async (req, res) => {
     }
   });
 
+  router.get('/check-username/:username', async (req, res) => {
+    const { username } = req.params;
+    const exists = await User.findOne({ username });
+    res.json({ exists: !!exists });
+  });
+
   router.patch('/:userId/upload-profile-pic', upload.single('image'), async (req, res) => {
     try {
       const { userId } = req.params;
@@ -271,6 +280,36 @@ router.post('/:userId/complete-multiple-lessons', async (req, res) => {
     } catch (err) {
       console.error('❌ Upload error:', err);
       res.status(500).json({ message: 'Server error during upload', error: err.message });
+    }
+  });
+  
+  router.patch('/:userId/update-profile', async (req, res) => {
+    const { userId } = req.params;
+    const { firstName, lastName, profilePic, username } = req.body;
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user) return res.status(404).json({ message: 'User not found' });
+  
+      // 🔐 Verificăm dacă username-ul se schimbă
+      if (username && username !== user.username) {
+        const exists = await User.findOne({ username });
+        if (exists && exists._id.toString() !== userId) {
+          return res.status(400).json({ message: 'Username is already taken' });
+        }
+        user.username = username; // ✅ Trebuie setat aici!
+      }
+  
+      user.firstName = firstName;
+      user.lastName = lastName;
+      user.profilePicUrl = profilePic;
+  
+      await user.save(); // 🔁 SALVEAZĂ TOATE MODIFICĂRILE O DATĂ
+  
+      res.json({ message: 'Profile updated', user });
+    } catch (err) {
+      console.error('❌ Eroare la actualizare profil:', err);
+      res.status(500).json({ message: 'Server error', error: err.message });
     }
   });
   

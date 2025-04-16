@@ -10,14 +10,20 @@ import { UserResponse } from '../models/user.model';
   providedIn: 'root',
 })
 
-
 export class AuthService {
   private apiUrl = 'https://localhost:5000/api/users';
   private completedLessons = new BehaviorSubject<string[]>([]);
   completedLessons$ = this.completedLessons.asObservable();
 
+  private userProfile = new BehaviorSubject<any>(null);
+  userProfile$ = this.userProfile.asObservable();
+  
   constructor(private http: HttpClient,  private router: Router) {}
-
+  
+  updateUserProfile(user: any) {
+    this.userProfile.next(user);
+  }
+  
   register(userData: any): Observable<any> {
     return this.http.post<UserResponse>(`${this.apiUrl}/register`, userData).pipe(
       tap(response => {
@@ -68,6 +74,8 @@ export class AuthService {
         localStorage.setItem('userId', response.user._id);
         localStorage.setItem('username', response.user.username);
         localStorage.setItem('email', response.user.email);
+        localStorage.setItem('firstName', response.user.firstName || '');
+        localStorage.setItem('lastName', response.user.lastName || '');
         localStorage.setItem('createdAt', response.user.createdAt || '');
         console.log('📅 Data înregistrării salvată:', response.user.createdAt);
 
@@ -83,21 +91,10 @@ export class AuthService {
 
         this.completedLessons.next(response.user.completedLessons || []); 
         
-        let mainPageRoute = `/beginner-main-page`;
-        if (userLevel === 'intermediate') {
-          mainPageRoute = '/intermediate-main-page';
-        } else if (userLevel === 'advanced') {
-          mainPageRoute = '/advanced-main-page';
-        }
-
-        console.log(`🔍 Redirecting user to: ${mainPageRoute}`); // ✅ Log final înainte de redirecționare
-        this.router.navigate([mainPageRoute]);
+        this.router.navigate(['/start-page']);
       })
     );
 }
-
-  
-  
 
   getUsername(): string | null {
     return localStorage.getItem('username');
@@ -188,29 +185,26 @@ getUserLevel(): string {
   }
 
   loginWithGoogle(idToken: string): Observable<any> {
-  return this.http.post<{ token: string; user: any }>(`${this.apiUrl}/google-login`, { idToken }).pipe(
-    tap((response) => {
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('userId', response.user._id);
-      localStorage.setItem('username', response.user.username);
-      localStorage.setItem('email', response.user.email);
-      localStorage.setItem('level', response.user.level || 'beginner');
-      localStorage.setItem('profilePicUrl', response.user.profilePicUrl || '');
-      localStorage.setItem('createdAt', response.user.createdAt || '');
-      console.log('📅 Data înregistrării salvată:', response.user.createdAt);
-
-      let mainPageRoute = `/beginner-main-page`;
-      if (response.user.level === 'intermediate') {
-        mainPageRoute = '/intermediate-main-page';
-      } else if (response.user.level === 'advanced') {
-        mainPageRoute = '/advanced-main-page';
-      }
-
-      this.router.navigate([mainPageRoute]);
-    })
-  );
-}
-
+    return this.http.post<{ token: string; user: any }>(`${this.apiUrl}/google-login`, { idToken }).pipe(
+      tap((response) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userId', response.user._id);
+        localStorage.setItem('username', response.user.username);
+        localStorage.setItem('email', response.user.email);
+        localStorage.setItem('level', response.user.level || 'beginner');
+        localStorage.setItem('profilePicUrl', response.user.profilePicUrl || '');
+        localStorage.setItem('firstName', response.user.firstName || '');
+        localStorage.setItem('lastName', response.user.lastName || '');
+        localStorage.setItem('createdAt', response.user.createdAt || '');
   
+        // ✅ actualizează imediat userProfile$
+        this.updateUserProfile(response.user);
   
+        // 🔁 Încarcă progresul utilizatorului pentru start-page
+        this.loadUserProgress();
+  
+        this.router.navigate(['/start-page']);
+      })
+    );
+  }
 }
