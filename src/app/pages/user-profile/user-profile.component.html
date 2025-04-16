@@ -22,8 +22,25 @@
     Click pe butonul de mai jos!
   </p>
 
-  <!-- 🔹 Buton de acțiune -->
-  <button class="test-button" (click)="selectLessonsForTest()">Selectează lecții pentru test</button>
+<!-- 🔹 Butoane acțiune -->
+<div class="button-group">
+  <button
+    class="test-button"
+    *ngIf="!selectMode"
+    (click)="selectLessonsForTest()"
+  >
+    Selectează lecții pentru test
+  </button>
+
+  <div *ngIf="selectMode" class="test-action-buttons">
+    <button (click)="generateTest()" class="test-button confirm">
+      Generează test
+    </button>
+    <button (click)="cancelSelection()" class="test-button cancel">
+      Renunță
+    </button>
+  </div>
+</div>
 
   <!-- ⬇️ ADĂUGAT WRAPPER SCROLLABIL -->
   <div class="card-lessons-scroll">
@@ -31,9 +48,17 @@
       <h4>{{ level | titlecase }} Level</h4>
       <ng-container *ngIf="completedLessonsByLevel[level] as lessons">
         <ul *ngIf="lessons.length > 0; else none">
-          <li *ngFor="let lesson of lessons">
-            {{ lesson.title }}
-          </li>
+          <li
+          *ngFor="let lesson of lessons"
+          [ngClass]="{
+            'clickable-lesson': selectMode,
+            'selected': selectedLessons.has(lesson._id)
+          }"
+          (click)="toggleLessonSelection(lesson._id)"
+        >
+          {{ lesson.title }}
+        </li>
+        
         </ul>
       </ng-container>
       <ng-template #none>

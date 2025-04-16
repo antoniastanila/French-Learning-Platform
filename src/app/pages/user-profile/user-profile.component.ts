@@ -39,6 +39,8 @@ export class UserProfileComponent implements OnInit {
   tempUsername: string | null = null;
   usernameError: string | null = null;
 
+  selectMode = false;
+  selectedLessons: Set<string> = new Set();
 
   constructor(
     private http: HttpClient,
@@ -191,8 +193,27 @@ export class UserProfileComponent implements OnInit {
   }
 
   selectLessonsForTest(): void {
-    console.log('🧪 Selectare lecții pentru test');
-    // Aici vei deschide o modală sau naviga spre o pagină de test personalizat
-  }  
+  this.selectMode = true;
+}
+
+toggleLessonSelection(lessonId: string): void {
+  if (!this.selectMode) return;
+  if (this.selectedLessons.has(lessonId)) {
+    this.selectedLessons.delete(lessonId);
+  } else {
+    this.selectedLessons.add(lessonId);
+  }
+}
+
+cancelSelection(): void {
+  this.selectMode = false;
+  this.selectedLessons.clear();
+}
+
+generateTest(): void {
+  console.log('📚 Lecții selectate pentru test:', [...this.selectedLessons]);
+  // aici vei naviga sau deschide un modal pentru generarea testului
+}
+
 
 }

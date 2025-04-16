@@ -86,3 +86,20 @@
   font-size: 0.9em;
   margin-top: 4px;
 }
+
+.clickable-lesson {
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.clickable-lesson:hover {
+  background-color: #f0f0f0; /* hover gri deschis */
+}
+
+.selected {
+  background-color: #6B0A2E; /* visiniu */
+  color: #fff;
+}
+
