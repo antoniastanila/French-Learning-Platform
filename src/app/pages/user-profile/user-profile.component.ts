@@ -223,14 +223,7 @@ generateTest(): void {
     selectedLessonObjects.push(...lessons.filter(lesson => this.selectedLessons.has(lesson._id)));
   }
 
-  this.testService.generateTest(selectedLessonObjects).subscribe({
-    next: (res) => {
-      this.testGenerated = res.test;
-      this.router.navigate(['/generated-test'], { state: { test: res.test } });
-    },
-    error: (err) => {
-      console.error('❌ Eroare la generare test:', err);
-    }
-  });
+  this.router.navigate(['/generated-test'], { state: { lessons: selectedLessonObjects } });
 }
+
 }
