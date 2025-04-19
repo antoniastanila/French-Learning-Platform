@@ -18,7 +18,7 @@ import { IntermediateMainPageComponent } from './pages/intermediate-main-page/in
 import { AdvancedTestComponent } from './pages/advanced-test/advanced-test.component';
 import { AdvancedMainPageComponent } from './pages/advanced-main-page/advanced-main-page.component';
 import { FacebookCallbackComponent } from './pages/facebook-callback/facebook-callback.component';
-
+import { GeneratedTestComponent } from './pages/generated-test/generated-test.component';
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, 
@@ -38,8 +38,8 @@ export const appRoutes: Routes = [
   { path: 'exercises/:lessonId', component: ExerciseDetailComponent, canActivate: [AuthGuard]  },
   { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'intermediate-main-page', component: IntermediateMainPageComponent },
-  {path: 'advanced-test', component: AdvancedTestComponent},
-  {path: 'advanced-main-page', component: AdvancedMainPageComponent},
-  { path: 'auth/facebook/callback', component: FacebookCallbackComponent }
-
+  { path: 'advanced-test', component: AdvancedTestComponent},
+  { path: 'advanced-main-page', component: AdvancedMainPageComponent},
+  { path: 'auth/facebook/callback', component: FacebookCallbackComponent },
+  { path: 'generated-test', component: GeneratedTestComponent }
 ];

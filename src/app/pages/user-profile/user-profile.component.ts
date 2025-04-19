@@ -7,7 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { LessonService } from '../../services/lesson.service';
 import { Lesson } from '../../models/lesson.model'; 
 import { TestService } from '../../services/test.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -49,7 +49,8 @@ export class UserProfileComponent implements OnInit {
     private http: HttpClient,
     private authService: AuthService,
     private lessonService: LessonService,
-    private testService: TestService
+    private testService: TestService,
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
@@ -225,7 +226,7 @@ generateTest(): void {
   this.testService.generateTest(selectedLessonObjects).subscribe({
     next: (res) => {
       this.testGenerated = res.test;
-      console.log('📄 Test generat:', res.test);
+      this.router.navigate(['/generated-test'], { state: { test: res.test } });
     },
     error: (err) => {
       console.error('❌ Eroare la generare test:', err);

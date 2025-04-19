@@ -64,15 +64,7 @@
         <p><em>No completed lessons yet.</em></p>
       </ng-template>
     </div>
-  
-    <!-- 🔽 Butoanele pentru mod test -->
-    <div *ngIf="!selectMode">
-      <button class="test-button" (click)="selectLessonsForTest()">Selectează lecții pentru test</button>
-    </div>
-    <div *ngIf="selectMode">
-      <button class="test-button" (click)="generateTest()">Generează test</button>
-      <button class="test-button cancel" (click)="selectLessonsForTest()">Anulează</button>
-    </div>
+
   </div>
   
 
