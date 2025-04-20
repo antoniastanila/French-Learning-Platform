@@ -19,8 +19,13 @@ import { AdvancedTestComponent } from './pages/advanced-test/advanced-test.compo
 import { AdvancedMainPageComponent } from './pages/advanced-main-page/advanced-main-page.component';
 import { FacebookCallbackComponent } from './pages/facebook-callback/facebook-callback.component';
 import { GeneratedTestComponent } from './pages/generated-test/generated-test.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 export const appRoutes: Routes = [
+  {
+    path: 'reset-password/:token',
+    loadComponent: () => import('./pages/reset-password/reset-password.component').then(m => m.ResetPasswordComponent)
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' }, 
   { path: 'home', component: HomePageComponent }, 
   { path: 'login', component: LoginPageComponent },
@@ -32,7 +37,7 @@ export const appRoutes: Routes = [
   { path: 'intermediate-test', component: IntermediateTestComponent },
   { path: 'advanced', component: AdvancedComponent, canActivate: [AuthGuard]  },
   { path: 'lessons', component: LessonListComponent },
-  { path: '', component: LessonListComponent },
+  //{ path: '', component: LessonListComponent },
   { path: 'lesson/:level/:id', component: LessonDetailComponent },
   { path: 'beginner-main-page', component: BeginnerMainPageComponent, canActivate: [AuthGuard] },
   { path: 'exercises/:lessonId', component: ExerciseDetailComponent, canActivate: [AuthGuard]  },
@@ -41,5 +46,6 @@ export const appRoutes: Routes = [
   { path: 'advanced-test', component: AdvancedTestComponent},
   { path: 'advanced-main-page', component: AdvancedMainPageComponent},
   { path: 'auth/facebook/callback', component: FacebookCallbackComponent },
-  { path: 'generated-test', component: GeneratedTestComponent }
+  { path: 'generated-test', component: GeneratedTestComponent },
+
 ];

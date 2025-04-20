@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import { OAuth2Client } from 'google-auth-library';
 import User from '../models/user.model.js';
+import { forgotPasswordController, resetPasswordController } from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -264,5 +265,9 @@ router.patch('/:userId/update-profile', async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
+router.post('/forgot-password', forgotPasswordController);
+
+router.post('/reset-password', resetPasswordController);
 
 export default router;

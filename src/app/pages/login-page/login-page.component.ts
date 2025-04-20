@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-page',
@@ -17,7 +18,12 @@ export class LoginPageComponent implements OnInit {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  showForgotModal: boolean = false;
+  forgotEmail: string = '';
+  forgotSuccessMessage: string = '';
+  forgotErrorMessage: string = '';  
+
+  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
     // ✅ initializează Google login GSI
@@ -94,5 +100,22 @@ export class LoginPageComponent implements OnInit {
       }
     });
   }
+  
+  sendResetLink(): void {
+    this.forgotSuccessMessage = '';
+    this.forgotErrorMessage = '';
+  
+    this.http.post('/api/users/forgot-password', { email: this.forgotEmail }).subscribe({
+      next: () => {
+        this.forgotSuccessMessage = 'Reset link sent! Check your email.';
+        this.forgotErrorMessage = '';
+        this.forgotEmail = '';
+      },
+      error: err => {
+        this.forgotErrorMessage = err.error?.message || 'Something went wrong';
+      }
+    });
+  }
+ 
   
 }

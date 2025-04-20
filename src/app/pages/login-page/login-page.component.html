@@ -25,8 +25,45 @@
     </button>
   </form>
 
+  <!-- 👇 Mutăm link-ul aici, în afara formularului -->
+  <div style="margin-top: 10px;">
+    <a (click)="showForgotModal = true" style="cursor: pointer; color: #007bff; text-decoration: underline;">
+      Forgot password?
+    </a>    
+  </div>
+
   <h2 class="separator">Or</h2>
 
   <!-- ✅ Google login button rendered here -->
   <div id="g_id_signin" class="google-button-container"></div>
-</div>
+  <div *ngIf="showForgotModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Reset Password</h3>
+  
+      <!-- ✅ Afișează formularul DOAR dacă NU s-a trimis cu succes -->
+      <ng-container *ngIf="!forgotSuccessMessage; else successTemplate">
+        <input
+          type="email"
+          [(ngModel)]="forgotEmail"
+          placeholder="Enter your email"
+          required
+        />
+  
+        <div *ngIf="forgotErrorMessage" class="error-message">{{ forgotErrorMessage }}</div>
+  
+        <div class="modal-buttons">
+          <button (click)="sendResetLink()">Send Reset Link</button>
+          <button (click)="showForgotModal = false">Cancel</button>
+        </div>
+      </ng-container>
+  
+      <!-- ✅ Asta apare DOAR după ce trimitem cu succes -->
+      <ng-template #successTemplate>
+        <div class="success-message">{{ forgotSuccessMessage }}</div>
+        <div class="modal-buttons" style="justify-content: center;">
+          <button (click)="showForgotModal = false">Close</button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  
