@@ -8,6 +8,9 @@ import { LessonService } from '../../services/lesson.service';
 import { Lesson } from '../../models/lesson.model'; 
 import { TestService } from '../../services/test.service';
 import { Router } from '@angular/router';
+
+import { ThemeService } from '../../services/theme.service';
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -50,7 +53,8 @@ export class UserProfileComponent implements OnInit {
     private authService: AuthService,
     private lessonService: LessonService,
     private testService: TestService,
-    private router: Router 
+    private router: Router,
+    private themeService: ThemeService  
   ) {}
 
   ngOnInit(): void {
@@ -225,5 +229,26 @@ generateTest(): void {
 
   this.router.navigate(['/generated-test'], { state: { lessons: selectedLessonObjects } });
 }
+
+changeTheme(event: Event): void {
+  const value = (event.target as HTMLSelectElement)?.value;
+  if (!value) return;
+
+  const body = document.body;
+  // Elimină toate clasele de temă existente
+  body.classList.remove('theme-light', 'theme-warm', 'theme-dark', 'theme-earth');
+  // Adaugă noua temă
+  body.classList.add(value);
+
+  this.http.patch(`https://localhost:5000/api/users/${this.userId}/update-theme`, { theme: value }).subscribe({
+    next: () => console.log('🌈 Tema salvată în backend'),
+    error: err => console.error('❌ Eroare la salvarea temei:', err)
+  });
+  
+
+  // (Opțional) Salvează tema în localStorage ca să persiste
+  localStorage.setItem('selectedTheme', value);
+}
+
 
 }

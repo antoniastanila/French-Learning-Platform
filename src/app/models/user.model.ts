@@ -10,6 +10,7 @@ export interface UserResponse {
         lastName?: string;   
         profilePicUrl?: string;
         createdAt?: string;
+        theme?: string;
     };
 }
   

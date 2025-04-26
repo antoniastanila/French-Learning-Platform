@@ -51,11 +51,13 @@ router.post('/register', async (req, res) => {
         username: newUser.username,
         email: newUser.email,
         level: newUser.level,
+        theme: newUser.theme,
         createdAt: newUser.createdAt
       }
     });
 
   } catch (error) {
+    console.error("❌ Eroare la înregistrare:", error);
     res.status(500).json({ message: 'Error registering user', error: error.message });
   }
 });
@@ -102,6 +104,7 @@ router.post('/login', async (req, res) => {
         profilePicUrl: user.profilePicUrl,
         firstName: user.firstName,
         lastName: user.lastName,
+        theme: user.theme,
         createdAt: user.createdAt
       }
     });
@@ -185,7 +188,8 @@ router.post('/google-login', async (req, res) => {
         googleId: sub,
         level: 'beginner',
         firstName: payload.given_name || '',
-        lastName: payload.family_name || ''
+        lastName: payload.family_name || '',
+        theme: 'theme-light'
       });
       await user.save();
     }
@@ -202,6 +206,7 @@ router.post('/google-login', async (req, res) => {
         profilePicUrl: user.profilePicUrl || '',
         firstName: user.firstName,
         lastName: user.lastName,
+        theme: user.theme,
         createdAt: user.createdAt
       }
     });
@@ -265,6 +270,23 @@ router.patch('/:userId/update-profile', async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
+router.patch('/:userId/update-theme', async (req, res) => {
+  const { userId } = req.params;
+  const { theme } = req.body;
+
+  if (!theme) return res.status(400).json({ message: 'Tema lipsește!' });
+
+  try {
+    const user = await User.findByIdAndUpdate(userId, { theme }, { new: true });
+    if (!user) return res.status(404).json({ message: 'Utilizatorul nu a fost găsit.' });
+
+    res.json({ message: 'Tema salvată cu succes.', theme: user.theme });
+  } catch (err) {
+    res.status(500).json({ message: 'Eroare la salvarea temei.', error: err.message });
+  }
+});
+
 
 router.post('/forgot-password', forgotPasswordController);
 

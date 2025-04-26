@@ -2,8 +2,19 @@
   <!-- CARD PROFIL -->
   <div class="card">
     <h2>Profil utilizator</h2>
-    <img [src]="profilePicUrl" alt="Profile Picture" class="profile-pic clickable" />
 
+    <!-- 👇 Selectare temă -->
+    <!-- Selectare temă -->
+<label for="theme-select"><strong>Tema aplicației:</strong></label>
+<select id="theme-select" (change)="changeTheme($event)">
+  <option value="theme-light">🌸 Pastel Clasic</option>
+  <option value="theme-warm">🌞 Pastel Cald</option>
+  <option value="theme-dark">🌙 Midnight Dark</option>
+  <option value="theme-earth">🌿 Earthy Dark</option>  
+</select>
+
+
+    <img [src]="profilePicUrl" alt="Profile Picture" class="profile-pic clickable" />
     <p><strong>First Name:</strong> {{ firstName }}</p>
     <p><strong>Last Name:</strong> {{ lastName }}</p>
     <p><strong>Username:</strong> {{ username }}</p>
@@ -14,65 +25,53 @@
   </div>
 
   <!-- CARD LECȚII -->
-<div class="card">
-  <h3>Lecții completate</h3>
-  <p class="test-info">
-    Vrei să generezi un test cu lecțiile pe care nu le stăpânești atât de bine?
-    <br />
-    Click pe butonul de mai jos!
-  </p>
+  <div class="card">
+    <h3>Lecții completate</h3>
+    <p class="test-info">
+      Vrei să generezi un test cu lecțiile pe care nu le stăpânești atât de bine?
+      <br />
+      Click pe butonul de mai jos!
+    </p>
 
-<!-- 🔹 Butoane acțiune -->
-<div class="button-group">
-  <button
-    class="test-button"
-    *ngIf="!selectMode"
-    (click)="selectLessonsForTest()"
-  >
-    Selectează lecții pentru test
-  </button>
+    <!-- Butoane acțiune -->
+    <div class="button-group">
+      <button *ngIf="!selectMode" (click)="selectLessonsForTest()" class="test-button">
+        Selectează lecții pentru test
+      </button>
+      <div *ngIf="selectMode" class="test-action-buttons">
+        <button (click)="generateTest()" class="test-button confirm">Generează test</button>
+        <button class="test-button cancel">Renunță</button>
+      </div>
+    </div>
 
-  <div *ngIf="selectMode" class="test-action-buttons">
-    <button (click)="generateTest()" class="test-button confirm">
-      Generează test
-    </button>
-    <button (click)="cancelSelection()" class="test-button cancel">
-      Renunță
-    </button>
+    <!-- Scroll lecții -->
+    <div class="card-lessons-scroll">
+      <div *ngFor="let level of ['beginner', 'intermediate', 'advanced']">
+        <h4>{{ level | titlecase }} Level</h4>
+        <ng-container *ngIf="completedLessonsByLevel[level] as lessons">
+          <ul *ngIf="lessons.length > 0; else none">
+            <li *ngFor="let lesson of lessons"
+                [ngClass]="{
+                  'clickable-lesson': selectMode,
+                  'selected': selectedLessons.has(lesson._id)
+                }"
+                (click)="toggleLessonSelection(lesson._id)">
+              {{ lesson.title }}
+            </li>
+          </ul>
+        </ng-container>
+        <ng-template #none>
+          <p><em>No completed lessons yet.</em></p>
+        </ng-template>
+      </div>
+    </div>
   </div>
 </div>
 
-  <!-- ⬇️ ADĂUGAT WRAPPER SCROLLABIL -->
-  <div class="card-lessons-scroll">
-    <div *ngFor="let level of ['beginner', 'intermediate', 'advanced']">
-      <h4>{{ level | titlecase }} Level</h4>
-      <ng-container *ngIf="completedLessonsByLevel[level] as lessons">
-        <ul *ngIf="lessons.length > 0; else none">
-          <li
-            *ngFor="let lesson of lessons"
-            [ngClass]="{
-              'clickable-lesson': selectMode,
-              'selected': selectedLessons.has(lesson._id)
-            }"
-            (click)="toggleLessonSelection(lesson._id)"
-          >
-            {{ lesson.title }}
-          </li>
-        </ul>
-      </ng-container>
-      <ng-template #none>
-        <p><em>No completed lessons yet.</em></p>
-      </ng-template>
-    </div>
-
-  </div>
-  
-
+<!-- MODAL -->
 <div class="modal-overlay" *ngIf="showModal">
   <div class="modal">
     <h3>Editare Profil</h3>
-
-    <!-- Imaginea de profil curentă -->
     <img [src]="tempProfilePic || profilePicUrl" alt="Preview" class="profile-pic-preview" />
 
     <div class="modal-buttons">
@@ -82,7 +81,6 @@
 
     <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
 
-    <!-- Campuri pentru nume -->
     <label>Prenume:</label>
     <input type="text" [(ngModel)]="tempFirstName" />
 
@@ -91,7 +89,7 @@
 
     <label>Username:</label>
     <input type="text" [(ngModel)]="tempUsername" (blur)="checkUsernameAvailability()" />
-    <div class="error" *ngIf="usernameError">{{ usernameError }}</div>    
+    <div class="error" *ngIf="usernameError">{{ usernameError }}</div>
 
     <div class="modal-buttons">
       <button (click)="saveChanges()">Save Changes</button>

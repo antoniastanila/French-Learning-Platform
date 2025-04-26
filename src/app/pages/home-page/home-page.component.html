@@ -1,11 +1,25 @@
-<div class="home-page">
-    <div class="overlay">
+<app-background-illustration></app-background-illustration>
+
+<div class="home-modern">
+  <ng-container *ngIf="isLoading; else content">
+    <div class="loader-container">
+      <div class="loader"></div>
+    </div>
+  </ng-container>
+
+  <ng-template #content>
+    <div class="overlay-glass" [@fadeIn]>
       <h1 class="welcome-text">Bienvenue dans votre application de français!</h1>
       <p class="description">Învățați franceza într-un mod interactiv și distractiv!</p>
       <div class="button-group">
-        <button class="login-button" (click)="navigateToLogin()">Login</button>
-        <button class="signup-button" (click)="navigateToSignup()">Sign Up</button>
+        <button class="btn login" (click)="navigateToLogin()">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+        <button class="btn signup" (click)="navigateToSignup()">
+          <i class="fas fa-user-plus"></i> Sign Up
+        </button>
       </div>
     </div>
-  </div>
+  </ng-template>
   
+</div>

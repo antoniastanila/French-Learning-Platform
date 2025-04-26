@@ -41,7 +41,8 @@ export class AuthService {
           localStorage.setItem('lastName', response.user.lastName || '');
           localStorage.setItem('username', response.user.username);
           localStorage.setItem('email', response.user.email);
-          localStorage.setItem('createdAt', response.user.createdAt || '');    
+          localStorage.setItem('createdAt', response.user.createdAt || '');  
+          localStorage.setItem('theme', response.user.theme || 'theme-light');  
           console.log('📅 Data înregistrării salvată:', response.user.createdAt);
       
         }
@@ -70,6 +71,7 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     return this.http.post<{ token: string; user: any }>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
+        // 🔐 Salvăm tokenul și datele de bază
         localStorage.setItem('token', response.token);
         localStorage.setItem('userId', response.user._id);
         localStorage.setItem('username', response.user.username);
@@ -77,31 +79,34 @@ export class AuthService {
         localStorage.setItem('firstName', response.user.firstName || '');
         localStorage.setItem('lastName', response.user.lastName || '');
         localStorage.setItem('createdAt', response.user.createdAt || '');
-        console.log('📅 Data înregistrării salvată:', response.user.createdAt);
-
-        const userLevel = response.user.level ? response.user.level : 'beginner'; 
-        localStorage.setItem('level', userLevel);
-
         localStorage.setItem('profilePicUrl', response.user.profilePicUrl || '');
-
-        // 🔹 Debugging logs
-        console.log(`🔍 User logged in: ${response.user.username}`);
-        console.log(`🔍 Received user level from backend: ${response.user.level}`);
-        console.log(`🔍 Stored user level in localStorage: ${localStorage.getItem('level')}`);
-
-        this.completedLessons.next(response.user.completedLessons || []); 
-        
+  
+        // 🔹 Nivelul
+        const userLevel = response.user.level || 'beginner';
+        localStorage.setItem('level', userLevel);
+  
+        // 🌈 Tema – se aplică și se salvează
+        const theme = response.user.theme || 'theme-light';
+        localStorage.setItem('selectedTheme', theme);
+        document.body.classList.remove('theme-light', 'theme-warm', 'theme-dark', 'theme-earth');
+        document.body.classList.add(theme);
+  
+        // ✅ Lecții completate
+        this.completedLessons.next(response.user.completedLessons || []);
+  
+        // 🧭 Navigăm către start-page
         this.router.navigate(['/start-page']);
       })
     );
-}
-
+  }
+  
   getUsername(): string | null {
     return localStorage.getItem('username');
   }
 
   logout() {
     localStorage.removeItem('token'); // 🔹 Ștergem doar autentificarea, NU progresul
+    localStorage.removeItem('selectedTheme'); // 🔥 Șterge tema când te deloghezi
     this.router.navigate(['/home']); // 🔹 Redirecționează utilizatorul
   }
 
@@ -197,14 +202,24 @@ getUserLevel(): string {
         localStorage.setItem('lastName', response.user.lastName || '');
         localStorage.setItem('createdAt', response.user.createdAt || '');
   
+        // 🌈 Salvează tema corect
+        const theme = response.user.theme || 'theme-light';
+        localStorage.setItem('selectedTheme', theme);
+  
+        // 🌈 Aplică tema imediat
+        document.body.classList.remove('theme-light', 'theme-warm', 'theme-dark', 'theme-earth');
+        document.body.classList.add(theme);
+  
         // ✅ actualizează imediat userProfile$
         this.updateUserProfile(response.user);
   
         // 🔁 Încarcă progresul utilizatorului pentru start-page
         this.loadUserProgress();
   
+        // 🧭 Navigăm către start-page
         this.router.navigate(['/start-page']);
       })
     );
   }
+  
 }

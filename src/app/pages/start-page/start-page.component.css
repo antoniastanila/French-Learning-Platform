@@ -6,10 +6,8 @@ body {
   }
   
   header {
-    background-color: #af4c9b;
-    color: white;
-    padding: 20px;
-    text-align: center;
+    background-color: var(--header-bg);
+    color: var(--header-text);
   }
   
   h1 {
@@ -27,8 +25,8 @@ body {
   
   /* Stilizare secțiuni */
   .section {
-    background: white;
-    width: 80%;
+    background-color: var(--section-bg);
+    color: var(--section-text);    width: 80%;
     max-width: 600px;
     margin: 20px 0;
     padding: 20px;
@@ -36,7 +34,7 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
   }
-  
+
   .section h2 {
     margin-bottom: 10px;
     font-size: 20px;
@@ -64,30 +62,19 @@ body {
   }
   
   button {
-    background-color: #b9619b; /* Culoare mov-rozalie */
-    color: white; /* Text alb pentru contrast */
-    font-family: 'Arial', sans-serif; /* Schimbă fontul dacă vrei un aspect mai prietenos */
-    font-size: 16px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 15px; /* Colțuri rotunjite */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Umbră ușoară */
-    cursor: pointer;
-    transition: all 0.3s ease; /* Trecere lină pentru efectul hover */
+    background-color: var(--btn-primary);
+    color: var(--btn-secondary);
+  }
+  button:hover {
+    background-color: var(--btn-hover);
   }
   
-  button:hover {
-    background-color: #a11871; /* Culoare mai deschisă la hover */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Intensifică umbra la hover */
-    transform: scale(1.05); /* Mărire ușoară la hover */
-  }
   
   .header-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    background-color: #b9619b;
     border-bottom: 1px solid #ccc;
   }
   
@@ -101,13 +88,13 @@ body {
   }
   
   .profile-btn {
-    background-color: #6a9cfc;
-    color: white;
+    background-color: var(--profile-btn-bg);
+    color: var(--profile-btn-text);
   }
   
   .logout-btn {
-    background-color: #e74c3c;
-    color: white;
+    background-color: var(--logout-btn-bg);
+  color: var(--logout-btn-text);
   }
   
   .global-progress-wrapper {
@@ -120,20 +107,20 @@ body {
   .progress-label {
     font-size: 16px;
     margin-bottom: 5px;
-    color: #333;
+    /* color: #333; */
   }
   
   .global-progress-bar {
     width: 100%;
     height: 20px;
-    background-color: #e0e0e0;
+    background-color: var(--progress-bg);
     border-radius: 10px;
     overflow: hidden;
   }
   
   .global-progress-fill {
     height: 100%;
-    background-color: #6a9cfc;
+    background-color: var(--progress-fill);
     width: 0%;
     transition: width 0.4s ease-in-out;
   }
@@ -145,7 +132,7 @@ body {
     height: 60vh;
     font-size: 1.2rem;
     font-weight: 500;
-    color: #6B0A2E; /* visiniu, în ton cu aplicația ta */
+    color: var(--loading-text);
     animation: fadeIn 0.6s ease-in-out;
   }
   
