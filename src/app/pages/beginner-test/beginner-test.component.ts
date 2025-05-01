@@ -1,6 +1,4 @@
-// ✅ BEGINNER TEST COMPONENT
-// File: beginner-test.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuizService } from '../../services/quiz.service';
 import { CommonModule } from '@angular/common';
@@ -31,9 +29,15 @@ export class BeginnerTestComponent implements OnInit {
   feedbackMessage: string = '';
   isCorrect: boolean | null = null;
 
-  constructor(private quizService: QuizService, private router: Router, private authService: AuthService, private lessonService: LessonService) {}
+  constructor(private quizService: QuizService, private router: Router, private authService: AuthService, private lessonService: LessonService, private renderer: Renderer2) {}
 
   ngOnInit(): void {
+    this.questions = this.quizService.getQuestions('beginner');
+    this.totalQuestions = this.quizService.getTotalQuestions('beginner');
+
+    const savedTheme = localStorage.getItem('selectedTheme') || 'theme-light';
+    this.renderer.setAttribute(document.body, 'class', savedTheme);
+
     this.questions = this.quizService.getQuestions('beginner');
     this.totalQuestions = this.quizService.getTotalQuestions('beginner');
   }

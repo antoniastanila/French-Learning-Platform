@@ -1,21 +1,28 @@
-import { Component } from '@angular/core';
-import { Router
-  
- } from '@angular/router';
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-advanced',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './advanced.component.html',
-  styleUrl: './advanced.component.css'
+  styleUrls: ['./advanced.component.css']
 })
-export class AdvancedComponent {
-constructor(private router: Router) {}
+export class AdvancedComponent implements OnInit {
 
-navigateToAdvancedTest() {
-  this.router.navigate(['/advanced-test']); 
-}
+  constructor(private router: Router, private renderer: Renderer2) {}
 
-navigateBackToStart() {
-  this.router.navigate(['/start-page']); 
-}
+  ngOnInit() {
+    const savedTheme = localStorage.getItem('selectedTheme') || 'theme-light';
+    this.renderer.setAttribute(document.body, 'class', savedTheme);
+  }
+
+  navigateToAdvancedTest() {
+    this.router.navigate(['/advanced-test']); 
+  }
+
+  navigateBackToStart() {
+    this.router.navigate(['/start-page']); 
+  }
 }

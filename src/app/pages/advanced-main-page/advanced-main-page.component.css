@@ -1,12 +1,12 @@
 body{
-  background-color: #f5f1e7;
+  background-color: var(--background-color);
 
 }
 
 .main-container {
   text-align: center;
   padding: 20px;
-  background-color: #f5f1e7;
+  background-color: var(--background-color);
 }
 
 .lessons-grid {
@@ -17,7 +17,7 @@ body{
 }
 
 .lesson-card {
-  background-color: #d44482;
+  background-color: var(--card-color);
   color: white;
   padding: 15px;
   border-radius: 10px;
@@ -33,18 +33,18 @@ body{
 
 
 .completed {
-  background-color: #af2f2f;
+  background-color: var(--completed-card-color); 
+  border: 3px solid var(--completed-border-color);  
   color: white;
-  border: 3px solid #3e2004; /* second-color */   
 }
 
 .current {
-  background-color: #e79e85;
+  background-color: var(--current-card-color); 
   color: black;
 }
 
 .locked {
-  background-color: #d6ceb8c7; 
+  background-color: var(--locked-card-color);
   color: #999;
   cursor: not-allowed;
 }
@@ -55,14 +55,14 @@ body{
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  background-color: #e9d7a7;
+  background-color: var(--header-background-color);
   gap: 10px;
 }
 
 .progress-container {
   flex: 1;
   border-radius: 5px;
-  background-color: #f2e9d0;
+  background-color: var(--progress-background);
   overflow: hidden;
   margin-right: 15px;
   display: flex; /* ✅ Organizăm elementele */
@@ -78,7 +78,7 @@ body{
 width: 100%;
 height: 15px;
 border-radius: 20px;
-background-color: #12572f;
+background-color: var(--progress-bar-color);
 transition: width 0.5s ease-in-out;
 }
 
@@ -90,7 +90,7 @@ color: black;
 
 
 .user-btn, .logout-btn, .start-page-btn {
-  background-color: #eb3b3b;
+  background-color: var(--button-color) ;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -100,15 +100,12 @@ color: black;
 }
 
 .logout-btn {
-  background-color: #bb5a5a;
-}
+  background-color: var(--button-color) }
 
 .user-btn:hover {
-  background-color: #d44482;
-}
+  background-color: var(--button-color) }
 
 .logout-btn:hover {
-  background-color: #cc0000;
-}
+  background-color: var(--button-color) }
 
  

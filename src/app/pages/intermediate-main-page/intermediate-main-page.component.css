@@ -1,7 +1,7 @@
 .main-container {
   text-align: center;
   padding: 20px;
-  background-color: #f5f1e7;
+  background-color: var(--background-color);
 }
 
 .lessons-grid {
@@ -12,7 +12,7 @@
 }
 
 .lesson-card {
-  background-color: #d44482;
+  background-color: var(--card-color);
   color: white;
   padding: 15px;
   border-radius: 10px;
@@ -26,38 +26,36 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-
 .completed {
-  background-color: #af2f2f;
+  background-color: var(--completed-card-color);
   color: white;
-  border: 3px solid #3e2004; /* second-color */   
+  border: 3px solid var(--completed-border-color); /* second-color */
 }
 
 .current {
-  background-color: #e79e85;
+  background-color: var(--current-card-color);
   color: black;
 }
 
 .locked {
-  background-color: #d6ceb8c7; 
+  background-color: var(--locked-card-color);
   color: #999;
   cursor: not-allowed;
 }
-
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  background-color: #e9d7a7;
+  background-color: var(--header-background-color);
   gap: 10px;
 }
 
 .progress-container {
   flex: 1;
   border-radius: 5px;
-  background-color: #f2e9d0;
+  background-color: var(--progress-background);
   overflow: hidden;
   margin-right: 15px;
   display: flex; /* ✅ Organizăm elementele */
@@ -68,24 +66,22 @@
   height: 60px; /* ✅ Setează o înălțime mai mare */
 }
 
-
 .progress-bar {
-width: 100%;
-height: 15px;
-border-radius: 20px;
-background-color: #12572f;
-transition: width 0.5s ease-in-out;
+  width: 100%;
+  height: 15px;
+  border-radius: 20px;
+  background-color: var(--progress-bar-color);
+  transition: width 0.5s ease-in-out;
 }
 
 .progress-text {
-font-size: 14px;
-font-weight: bold;
-color: black;
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
 }
 
-
-.start-page-btn, .user-btn, .logout-btn  {
-  background-color: #eb3b3b;
+.start-page-btn, .user-btn, .logout-btn {
+  background-color: var(--button-color);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -95,16 +91,13 @@ color: black;
 }
 
 .logout-btn {
-  background-color: #bb5a5a;
+  background-color: var(--logout-button-color);
 }
 
 .user-btn:hover {
-  background-color: #d44482;
+  background-color: var(--button-hover-color);
 }
 
 .logout-btn:hover {
-  background-color: #cc0000;
+  background-color: var(--logout-hover-color);
 }
-
-
-

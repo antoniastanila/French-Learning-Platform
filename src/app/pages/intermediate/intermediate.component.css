@@ -1,8 +1,8 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background-color: #f9f0f7;
-  color: #4a154b;
+  background-color: var(--background-color);
+  color: var(--text-main);
   margin: 0;
   height: 100vh;
   display: flex;
@@ -12,42 +12,41 @@ body {
 }
 
 .content {
-  /* width: 100%; */
   max-width: 600px;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: white;
+  background-color: var(--card-background-color);
+  border: 2px solid var(--card-border-color);
   border-radius: 10px;
+  box-shadow: 0 4px 10px var(--shadow-card);
   margin-left: 30%;
   margin-top: 3%;
-
 }
 
 /* Titlul */
 h1 {
   font-size: 32px;
-  color: #d72672;
- text-align: center;
-}
-
-
-/* Secțiune Progress Bar */
-.progress-section {
-  margin: 20px auto;
-  padding: 20px;
-  background: #ffebf0;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-.progress-section > h2,p{
+  color: var(--title-color);
   text-align: center;
 }
 
+/* Secțiunea Test */
+.test-section {
+  margin: 30px auto;
+  padding: 20px;
+  background: var(--highlight-background-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px var(--shadow-card);
+  text-align: center;
+}
 
+.test-section h2, .test-section p {
+  text-align: center;
+}
 
+/* Bara de progres (dacă va fi adăugată) */
 .progress-bar-container {
   width: 100%;
-  background-color: #e0d4e3;
+  background-color: var(--progress-background);
   border-radius: 10px;
   height: 20px;
   overflow: hidden;
@@ -56,22 +55,13 @@ h1 {
 .progress-bar {
   width: 0%;
   height: 100%;
-  background-color: #b10f2e;
+  background-color: var(--progress-bar-color);
   border-radius: 10px;
-}
-
-/* Secțiunea Test */
-.test-section {
-  margin: 30px auto;
-  padding: 20px;
-  background: #fbe4f1;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
 }
 
 .test-section button {
-  background-color: #d72672;
+  background-color: var(--accent-color);
+  color: white;
   padding: 10px 20px;
   border-radius: 15px;
   font-size: 16px;
@@ -79,20 +69,19 @@ h1 {
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
-  color: white;
   margin-top: 10px;
 }
 
 .test-section button:hover {
-  background-color: #b10f2e;
+  background-color: var(--accent-hover-color);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
   transform: scale(1.05);
 }
 
 .back-button {
   text-decoration: none;
+  background-color: var(--button-color);
   color: white;
-  background-color: #6a0572;
   padding: 10px 20px;
   border-radius: 15px;
   font-size: 16px;
@@ -104,7 +93,7 @@ h1 {
 }
 
 .back-button:hover {
-  background-color: #4a154b;
+  background-color: var(--button-hover-color);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
   transform: scale(1.05);
 }

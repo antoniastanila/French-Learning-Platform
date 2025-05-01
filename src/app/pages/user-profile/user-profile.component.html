@@ -1,19 +1,9 @@
+<div class="user-profile-background"></div>
 <div class="profile-container">
   <!-- CARD PROFIL -->
   <div class="card">
     <h2>Profil utilizator</h2>
-
-    <!-- 👇 Selectare temă -->
-    <!-- Selectare temă -->
-<label for="theme-select"><strong>Tema aplicației:</strong></label>
-<select id="theme-select" (change)="changeTheme($event)">
-  <option value="theme-light">🌸 Pastel Clasic</option>
-  <option value="theme-warm">🌞 Pastel Cald</option>
-  <option value="theme-dark">🌙 Midnight Dark</option>
-  <option value="theme-earth">🌿 Earthy Dark</option>  
-</select>
-
-
+    
     <img [src]="profilePicUrl" alt="Profile Picture" class="profile-pic clickable" />
     <p><strong>First Name:</strong> {{ firstName }}</p>
     <p><strong>Last Name:</strong> {{ lastName }}</p>
@@ -90,6 +80,15 @@
     <label>Username:</label>
     <input type="text" [(ngModel)]="tempUsername" (blur)="checkUsernameAvailability()" />
     <div class="error" *ngIf="usernameError">{{ usernameError }}</div>
+
+    <label for="theme-modal-select"><strong>Tema aplicației:</strong></label>
+    <select id="theme-modal-select" [(ngModel)]="tempTheme" (ngModelChange)="applyTempTheme()">
+      <option value="theme-light">🌸 Paris Breeze</option>
+      <option value="theme-warm">🍑 Peach Fluff</option>
+      <option value="theme-earth">🍫 Dark Chocolate</option>  
+      <option value="theme-dark">🌙 Midnight Moon</option>
+    </select>
+    
 
     <div class="modal-buttons">
       <button (click)="saveChanges()">Save Changes</button>

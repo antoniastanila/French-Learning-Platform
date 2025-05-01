@@ -1,115 +1,114 @@
-h1{
+h1 {
   font-size: 3rem;
   text-align: center;
+  color: var(--title-color);
 }
 
 .quiz-container {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-    background: #fbe4f1;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .quiz-container h1 {
-    color: #d72672;
-    margin-bottom: 20px;
-  }
-  
-  .options button {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: #6a0572;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .options button:hover {
-    background-color: #4a154b;
-  }
-  
-  .back-button {
-    margin-top: 20px;
-    background-color: #6a0572;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-  }
-  
-  .back-button:hover {
-    background-color: #4a154b;
-  }
-  
-  .result-container{
-    text-align: center;
-    padding: 10px;
-    border-radius: 10px;
-    background-color:#fbe4f1;
-    max-width: 600px;
-    margin-left:29%;
-  }
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  background: var(--highlight-background-color);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px var(--shadow-card);
+}
 
-  .result-container button{
-    background-color: #d72672;
-    padding: 10px 20px;
-    border-radius: 15px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
-    color: white;
-    margin-top: 10px;
-  }
+.options button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: var(--accent-color);
+  color: white;
+  cursor: pointer;
+}
 
-  .result-container button:hover{
-    background-color: #b10f2e;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
-    transform: scale(1.05);
-  }
+.options button:hover {
+  background-color: var(--accent-hover-color);
+}
 
-  .correct-answer {
-    color: rgb(38, 101, 82);
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 15px;
-  }
-  
-  .wrong-answer {
-    color: rgb(118, 29, 29);
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 15px;
-  }
+.back-button {
+  margin-top: 20px;
+  background-color: var(--button-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+}
 
-  button {
-    background-color: #5c215e;
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    color: white;
-    margin: 10px;
-    transition: all 0.3s ease;
-    width: 200px;
-  }
-  
-  button:hover {
-    background-color: #b10f2e;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
-    transform: scale(1.05);
-  }
+.back-button:hover {
+  background-color: var(--button-hover-color);
+}
 
-  .selected-answer {
-    background-color: yellow !important;
-    color: black !important;
-  }
+.result-container {
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--highlight-background-color);
+  max-width: 600px;
+  margin-left: 29%;
+  box-shadow: 0 4px 10px var(--shadow-card);
+}
+
+.result-container button {
+  background-color: var(--accent-color);
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.result-container button:hover {
+  background-color: var(--accent-hover-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+  transform: scale(1.05);
+}
+
+.correct-answer {
+  color: var(--correct-option-color);
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.wrong-answer {
+  color: var(--wrong-option-color);
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+button {
+  background-color: var(--button-color);
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  margin: 10px;
+  transition: all 0.3s ease;
+  width: 200px;
+}
+
+button:hover {
+  background-color: var(--button-hover-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+  transform: scale(1.05);
+}
+
+.selected-answer {
+  background-color: var(--option-selected-color) !important;
+  color: var(--text-main) !important;
+  border: 2px solid var(--accent-color);
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
+}

@@ -42,7 +42,10 @@ export class AuthService {
           localStorage.setItem('username', response.user.username);
           localStorage.setItem('email', response.user.email);
           localStorage.setItem('createdAt', response.user.createdAt || '');  
-          localStorage.setItem('theme', response.user.theme || 'theme-light');  
+          const theme = response.user.theme || 'theme-light';
+          localStorage.setItem('selectedTheme', theme);
+          document.body.classList.remove('theme-light', 'theme-warm', 'theme-dark', 'theme-earth');
+          document.body.classList.add(theme);
           console.log('📅 Data înregistrării salvată:', response.user.createdAt);
       
         }
@@ -80,6 +83,8 @@ export class AuthService {
         localStorage.setItem('lastName', response.user.lastName || '');
         localStorage.setItem('createdAt', response.user.createdAt || '');
         localStorage.setItem('profilePicUrl', response.user.profilePicUrl || '');
+        localStorage.setItem('selectedTheme', response.user.theme || 'theme-light');
+
   
         // 🔹 Nivelul
         const userLevel = response.user.level || 'beginner';

@@ -22,4 +22,49 @@ body.theme-light {
    --profile-btn-text: white;
    --logout-btn-bg: #e74c3c;
    --logout-btn-text: white;
+
+   --background-color: #f5f1e7;
+  --card-color: #d44482;
+  --completed-card-color: #af2f2f;
+  --completed-border-color: #3e2004;
+  --current-card-color: #e79e85;
+  --header-background-color: #e9d7a7;
+  --progress-background: #f2e9d0;
+  --progress-bar-color: #12572f;
+  --button-color: #eb3b3b;
+  --logout-button-color: #bb5a5a;
+
+  --locked-card-color: #d6ceb8c7;
+
+  --button-hover-color: #d44482; 
+  --logout-hover-color: #cc0000;
+
+  --card-background-color: #fdf6ec;
+--card-border-color: #eaceb4;
+--title-color: #bb5a5a;
+--description-color: #4a154b;
+--highlight-background-color: #eaceb4;
+--example-background-color: #e79e85;
+--example-text-color: white;
+--accent-color: #bb5a5a;
+--accent-hover-color: #9c4444;
+
+--modal-background-color: #ffffff; /* alb curat */
+--modal-text-color: #2c2c2c; /* text principal închis */
+
+--highlight-hover-color: #f1d6ba; /* puțin mai deschis decât highlight background (#eaceb4) */
+--correct-option-color: #43a047;   /* verde success mai luminos, potrivit pe fundal deschis */
+--wrong-option-color: #e53935;     /* roșu intens și vizibil pe fundal bright */
+--previous-mistake-color: #ff6f61;
+--input-background-color: #ffffff; /* input alb */
+--feedback-color: #e53935;
+
+--option-background-color: var(--highlight-background-color); /* opțiune normală */
+--option-selected-color: var(--highlight-hover-color);         /* selectat */
+--option-hover-color: #f8e4ca; /* HOVER = și mai deschis decât selected */
+
+--audio-background-color: #f5f5f5;
+
+--svg-pattern-opacity: 0.12;
+
 }

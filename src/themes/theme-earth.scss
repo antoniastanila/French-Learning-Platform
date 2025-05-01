@@ -24,4 +24,44 @@ body.theme-earth {
   --logout-btn-bg: #b76e79;            // roșu-pământiu
   --logout-btn-text: #f9f5f0;
   --logout-btn-hover: #8b4a55;
+
+  --background-color: #2d302d;
+  --card-color: #7a6f5f;
+  --completed-card-color: #5c5349;
+  --completed-border-color: #1f1d1a;
+  --current-card-color: #a28c7a;
+  --header-background-color: #4a4a4a;
+  --progress-background: #555;
+  --progress-bar-color: #7a6f5f;
+  --button-color: #8b5e3c;
+  --logout-button-color: #7a4b29;
+
+  --card-background-color: #3a3a3a; /* gri închis mat */
+--card-border-color: #7a6f5f; /* bej-maro */
+--title-color: #c7b299; /* bej deschis */
+--description-color: #d9cbb1; /* crem elegant */
+--highlight-background-color: #4a3f3f; /* maro pământiu */
+--example-background-color: #7a6f5f; /* bej mai intens */
+--example-text-color: #f9f5f0;
+--accent-color: #a1866f; /* bej-portocaliu */
+--accent-hover-color: #7c5c44; /* maro cald */
+
+--modal-background-color: var(--card-background-color);
+--modal-text-color: var(--description-color);
+
+--highlight-hover-color: #5a4a4a; /* puțin mai deschis decât highlight background (#4a3f3f) */
+--correct-option-color: #2e7d32; /* verde mai închis, dar adaptat la tonurile pământii */
+--wrong-option-color: #c62828; /* roșu mai întunecat dar vizibil pe earth */
+--previous-mistake-color: #ff6f61;
+--input-background-color: #4a3f3f; /* rămâne același ca highlight bg */
+--feedback-color: #ff6f61;
+
+--option-background-color: var(--highlight-background-color); /* opțiune normală */
+--option-selected-color: var(--highlight-hover-color);         /* când e selectat */
+--option-hover-color: #7a6464; /* HOVER = puțin mai deschis decât selected */
+
+--audio-background-color: #f5f5f5;
+
+--svg-pattern-opacity: 0.4;
+
 }

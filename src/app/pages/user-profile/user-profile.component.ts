@@ -33,6 +33,10 @@ export class UserProfileComponent implements OnInit {
   tempFirstName: string | null = null;
   tempLastName: string | null = null;
 
+  tempTheme: string = 'theme-light'; // Tema selectată în modal
+
+  originalTheme: string = 'theme-light'; // 🔥 Tema activă când deschizi modalul
+
   completedLessons: string[] = [];
   completedLessonsByLevel: { [key: string]: Lesson[] } = {
     beginner: [],
@@ -45,6 +49,7 @@ export class UserProfileComponent implements OnInit {
 
   selectMode = false;
   selectedLessons: Set<string> = new Set();
+  changesSaved: boolean = false;
 
   testGenerated: string = '';
 
@@ -129,12 +134,23 @@ export class UserProfileComponent implements OnInit {
     this.tempFirstName = this.firstName;
     this.tempLastName = this.lastName;
     this.tempUsername = this.username;
+    this.tempTheme = localStorage.getItem('selectedTheme') || 'theme-light';
+    this.originalTheme = this.tempTheme;
     this.usernameError = null;
     this.showModal = true;
+    this.changesSaved = false; // 🆕
   }
+  
   
   closeModal(): void {
     this.showModal = false;
+  
+    if (!this.changesSaved) { // 🆕 Doar dacă NU am salvat
+      const body = document.body;
+      body.classList.remove('theme-light', 'theme-warm', 'theme-dark', 'theme-earth');
+      body.classList.add(this.originalTheme);
+      localStorage.setItem('selectedTheme', this.originalTheme); 
+    }
   }
   
   triggerFileInput(): void {
@@ -154,6 +170,7 @@ export class UserProfileComponent implements OnInit {
       lastName: this.tempLastName,
       username: this.tempUsername,
       profilePic: this.tempProfilePic === 'assets/images/default-avatar.jpg' ? '' : this.tempProfilePic,
+      theme: this.tempTheme
     };
   
     this.http.patch(`https://localhost:5000/api/users/${this.userId}/update-profile`, updateData)
@@ -168,6 +185,10 @@ export class UserProfileComponent implements OnInit {
           localStorage.setItem('lastName', this.lastName || '');
           localStorage.setItem('username', this.username);
           localStorage.setItem('profilePicUrl', this.profilePicUrl);
+          localStorage.setItem('selectedTheme', this.tempTheme);
+  
+          document.body.classList.remove('theme-light', 'theme-warm', 'theme-dark', 'theme-earth');
+          document.body.classList.add(this.tempTheme);
   
           this.authService.updateUserProfile({
             _id: this.userId,
@@ -180,6 +201,7 @@ export class UserProfileComponent implements OnInit {
           });
   
           console.log('✅ Profil actualizat!');
+          this.changesSaved = true; // 🆕
           this.closeModal();
         },
         error: err => console.error('❌ Eroare la actualizare profil:', err)
@@ -230,25 +252,12 @@ generateTest(): void {
   this.router.navigate(['/generated-test'], { state: { lessons: selectedLessonObjects } });
 }
 
-changeTheme(event: Event): void {
-  const value = (event.target as HTMLSelectElement)?.value;
-  if (!value) return;
+applyTempTheme(): void {
+  if (!this.tempTheme) return;
 
   const body = document.body;
-  // Elimină toate clasele de temă existente
   body.classList.remove('theme-light', 'theme-warm', 'theme-dark', 'theme-earth');
-  // Adaugă noua temă
-  body.classList.add(value);
-
-  this.http.patch(`https://localhost:5000/api/users/${this.userId}/update-theme`, { theme: value }).subscribe({
-    next: () => console.log('🌈 Tema salvată în backend'),
-    error: err => console.error('❌ Eroare la salvarea temei:', err)
-  });
-  
-
-  // (Opțional) Salvează tema în localStorage ca să persiste
-  localStorage.setItem('selectedTheme', value);
+  body.classList.add(this.tempTheme);
 }
-
 
 }

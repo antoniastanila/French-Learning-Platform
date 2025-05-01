@@ -1,4 +1,5 @@
-<!-- Afișează exercițiul curent doar dacă lecția nu este completată -->
+<div class="exercise-detail-background"></div>
+<div class="exercise-detail">
 <div class="exercise-container" *ngIf="!allExercisesCompleted && getCurrentExercise() as currentExercise">
     <h3>{{ currentExercise.question }}</h3>
     <p *ngIf="reviewingWrongExercises" class="previous-mistake-label">previous mistake</p>
@@ -51,27 +52,33 @@
     </div>
 
     <!-- Listening -->
-    <div *ngIf="currentExercise.questionType === 'listening'">
+    <div *ngIf="currentExercise.questionType === 'listening'" class="listening-exercise">
+      <div class="custom-audio-wrapper">
         <audio controls>
-            <source [src]="currentExercise.audioUrl" type="audio/mp3">
-            Your browser does not support the audio element.
+          <source [src]="currentExercise.audioUrl" type="audio/mp3">
+          Your browser does not support the audio element.
         </audio>
-        <div *ngFor="let option of currentExercise.options">
-            <label [ngClass]="{
-                'selected-option': !isAnswered && option === selectedAnswer,
-                'selected-correct-option': isAnswered && option === selectedAnswer && wasAnswerCorrect,
-                'selected-wrong-option': isAnswered && option === selectedAnswer && wasAnswerCorrect === false
-              }">
-                <input 
-                    type="radio" 
-                    name="answer" 
-                    [value]="option" 
-                    [(ngModel)]="selectedAnswer" 
-                    [disabled]="isAnswered"/>
-                {{ option }}
-            </label>
-        </div>
+      </div>
+    
+      <div class="options">
+        <label *ngFor="let option of currentExercise.options"
+               [ngClass]="{
+                 'selected-option': !isAnswered && option === selectedAnswer,
+                 'selected-correct-option': isAnswered && option === selectedAnswer && wasAnswerCorrect,
+                 'selected-wrong-option': isAnswered && option === selectedAnswer && wasAnswerCorrect === false
+               }">
+          <input 
+            type="radio" 
+            name="answer" 
+            [value]="option" 
+            [(ngModel)]="selectedAnswer" 
+            [disabled]="isAnswered"
+          />
+          {{ option }}
+        </label>
+      </div>
     </div>
+    
 
     <!-- Trimite răspunsul -->
     <button *ngIf="!isAnswered" (click)="validateAnswer()" [disabled]="isAnswered">Check</button>
@@ -118,4 +125,5 @@
 <div class="firework"></div>
     <button (click)="goToNextLesson()">Go to Next Lesson</button>
     <button (click)="goToMainPage()">Go to Main Page</button>
+</div>
 </div>

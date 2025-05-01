@@ -1,28 +1,68 @@
-body.theme-warm {
-  --bg-main: #fff7e6;
-  --bg-accent: #ffe0b2;
-  --text-main: #6b1a00;
-  --btn-primary: #f57c00;
-  --btn-secondary: #fff3e0;
-  --btn-hover: #ef6c00;
-  --bg-card: #967f46;
-  --text-card: #e2e2e2;
-  --shadow-card: rgba(255, 255, 255, 0.05);
+  body.theme-warm {
+    --bg-main: #fff7e6;
+    --bg-accent: #ffe0b2;
+    --text-main: #6b1a00;
+    --btn-primary: #f57c00;
+    --btn-secondary: #fff3e0;
+    --btn-hover: #ef6c00;
+    --bg-card: #967f46;
+    --text-card: #e2e2e2;
+    --shadow-card: rgba(255, 255, 255, 0.05);
 
-    --header-bg: #fbbf24;         // galben cald, prietenos
-    --header-text: #4b3200;       // maro închis, lizibil pe galben
-    --section-bg: #fff7e6;        // bej deschis
-    --section-text: #4b3200;
-    --progress-bg: #f2e8da;
-    --progress-fill: #eab308;     // galben intens
-    --loading-text: #c2410c;      // roșu-ocru cald
-  
+      --header-bg: #fbbf24;         // galben cald, prietenos
+      --header-text: #4b3200;       // maro închis, lizibil pe galben
+      --section-bg: #fff7e6;        // bej deschis
+      --section-text: #4b3200;
+      --progress-bg: #f2e8da;
+      --progress-fill: #eab308;     // galben intens
+      --loading-text: #c2410c;      // roșu-ocru cald
+    
 
-    --profile-btn-bg: #f59e0b;           // portocaliu cald
-    --profile-btn-text: white;
-    --profile-btn-hover: #d97706;        // portocaliu mai închis
-  
-    --logout-btn-bg: #ef4444;            // roșu deschis
-    --logout-btn-text: white;
-    --logout-btn-hover: #dc2626;     
-}
+      --profile-btn-bg: #f59e0b;           // portocaliu cald
+      --profile-btn-text: white;
+      --profile-btn-hover: #d97706;        // portocaliu mai închis
+    
+      --logout-btn-bg: #ef4444;            // roșu deschis
+      --logout-btn-text: white;
+      --logout-btn-hover: #dc2626;     
+
+      --background-color: #fff0e0;
+    --card-color: #ff8c42;
+    --completed-card-color: #e4572e;
+    --completed-border-color: #6a1207;
+    --current-card-color: #ffc07f;
+    --header-background-color: #ffe0b3;
+    --progress-background: #ffe6cc;
+    --progress-bar-color: #ff8c42;
+    --button-color: #d45d00;
+    --logout-button-color: #cc5500;
+
+    --card-background-color: #fff7e6; /* foarte deschis */
+  --card-border-color: #ffd699; /* portocaliu cald */
+  --title-color: #d45d00; /* portocaliu intens */
+  --description-color: #6b1a00; /* maro închis */
+  --highlight-background-color: #ffe0b2; /* bej-portocaliu */
+  --example-background-color: #ff8c42; /* portocaliu vibrant */
+  --example-text-color: white;
+  --accent-color: #d45d00; /* butoane portocalii */
+  --accent-hover-color: #b34700; /* portocaliu mai închis */
+
+  --modal-background-color: #fff7e6; /* bej deschis pastel */
+  --modal-text-color: #4b3200; /* maro închis prietenos */
+
+  --highlight-hover-color: #ffd699; /* puțin mai deschis decât highlight background (#ffe0b2) */
+    --correct-option-color: #43a047;   /* verde luminos și plăcut pe fundal cald */
+    --wrong-option-color: #e53935;     /* roșu intens și bine vizibil */
+    --previous-mistake-color: #ff6f61;
+    --input-background-color: #fff3e0; /* foarte deschis, potrivit cu tema */
+    --feedback-color: #e53935;          /* roșu pentru mesajele de feedback */
+
+    --option-background-color: var(--highlight-background-color); /* opțiune normală */
+    --option-selected-color: var(--highlight-hover-color);         /* selectat */
+    --option-hover-color: #ffe8cc; /* HOVER = și mai deschis decât selected */
+
+    --audio-background-color: #f5f5f5;
+
+    --svg-pattern-opacity: 0.15;
+
+  }

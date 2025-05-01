@@ -245,7 +245,7 @@ router.patch('/:userId/upload-profile-pic', upload.single('image'), async (req, 
 
 router.patch('/:userId/update-profile', async (req, res) => {
   const { userId } = req.params;
-  const { firstName, lastName, profilePic, username } = req.body;
+  const { firstName, lastName, profilePic, username, theme } = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -259,9 +259,14 @@ router.patch('/:userId/update-profile', async (req, res) => {
       user.username = username;
     }
 
-    user.firstName = firstName;
-    user.lastName = lastName;
-    user.profilePicUrl = profilePic;
+    if (firstName !== undefined) user.firstName = firstName;
+    if (lastName !== undefined) user.lastName = lastName;
+    if (profilePic !== undefined) user.profilePicUrl = profilePic;
+
+    // 🔥 Adăugat protecție și pentru temă
+    if (theme) {
+      user.theme = theme;
+    }
 
     await user.save();
 
@@ -270,6 +275,7 @@ router.patch('/:userId/update-profile', async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
 
 router.patch('/:userId/update-theme', async (req, res) => {
   const { userId } = req.params;

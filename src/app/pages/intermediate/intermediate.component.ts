@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -9,9 +9,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./intermediate.component.css'],
   imports: [CommonModule]
 })
-export class IntermediateComponent {
+export class IntermediateComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private renderer: Renderer2) {}
+
+  ngOnInit() {
+    const savedTheme = localStorage.getItem('selectedTheme') || 'theme-light';
+    this.renderer.setAttribute(document.body, 'class', savedTheme);
+  }
 
   navigateToIntermediateTest() {
     this.router.navigate(['/intermediate-test']); 

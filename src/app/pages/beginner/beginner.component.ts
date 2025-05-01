@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -9,8 +9,14 @@ import { CommonModule } from '@angular/common';
   templateUrl: './beginner.component.html',
   styleUrls: ['./beginner.component.css']
 })
-export class BeginnerComponent {
-  constructor(private router: Router) {}
+export class BeginnerComponent implements OnInit {
+
+  constructor(private router: Router, private renderer: Renderer2) {}
+
+  ngOnInit() {
+    const savedTheme = localStorage.getItem('selectedTheme') || 'theme-light';
+    this.renderer.setAttribute(document.body, 'class', savedTheme);
+  }
 
   navigateToBeginnerTest() {
     this.router.navigate(['/beginner-test']); 
