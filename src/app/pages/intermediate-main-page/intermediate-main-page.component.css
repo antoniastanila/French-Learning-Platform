@@ -1,8 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Satisfy&display=swap');
+
 .main-container {
   text-align: center;
   padding: 20px;
-  background-color: var(--background-color);
+  background: var(--page-gradient);
+  background-size: 300% 300%;               
+  animation: gradientBG 7s ease infinite;
 }
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+h1 {
+  font-size: 4.5rem;
+  font-weight: 700;
+  font-family: 'Satisfy', cursive;
+  color: var(--title-color); 
+  margin-bottom: 1px;
+  margin-top: 24px;
+}
+
 
 .lessons-grid {
   display: grid;
@@ -12,24 +32,34 @@
 }
 
 .lesson-card {
-  background-color: var(--card-color);
+  background: rgba(255, 255, 255, 0.15); 
+  backdrop-filter: blur(10px);          
+  -webkit-backdrop-filter: blur(10px);  
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   color: white;
-  padding: 15px;
-  border-radius: 10px;
+  border-radius: 20px;
+  padding: 24px 20px;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+} 
+
 
 .lesson-card.completed:hover,
 .lesson-card.current:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow:
+  0 0 5px rgba(255, 255, 255, 0.3),
+  0 0 10px rgba(255, 255, 255, 0.4),
+  0 0 20px rgba(255, 255, 255, 0.2);/* strălucire albă subtilă */
+  transition: all 0.3s ease-in-out;
+  filter: brightness(1.1); /* opțional: luminează tot cardul */
 }
 
 .completed {
   background-color: var(--completed-card-color);
   color: white;
-  border: 3px solid var(--completed-border-color); /* second-color */
+  border: 1.5px solid var(--completed-border-color); /* second-color */
 }
 
 .current {
@@ -38,49 +68,75 @@
 }
 
 .locked {
-  background-color: var(--locked-card-color);
+  background-color: var(--locked-card-color); /* adăugăm o variabilă și pentru locked */
   color: #999;
   cursor: not-allowed;
 }
-
 .header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  background-color: var(--header-background-color);
-  gap: 10px;
+  padding: 0px 0px 40px 0px;
+  margin-bottom: 40px;
+  border-radius: 32px;
+  background: var(--header-main-page-gradient);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--completed-border-color); /* second-color */
+
+  -webkit-backdrop-filter: blur(10px);
 }
 
+.overview-heading {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: 20px;
+  color: #5e2c1f;
+}
 .progress-container {
-  flex: 1;
-  border-radius: 5px;
-  background-color: var(--progress-background);
-  overflow: hidden;
-  margin-right: 15px;
-  display: flex; /* ✅ Organizăm elementele */
-  flex-direction: column; /* ✅ Așează progres bar-ul deasupra și textul dedesubt */
-  justify-content: center; /* ✅ Centrează bara și textul pe verticală */
-  text-align: left;
-  padding: 20px; /* ✅ Mai mult spațiu în container */
-  height: 60px; /* ✅ Setează o înălțime mai mare */
+  width: 80%;
+  max-width: 600px;
+  border-radius: 20px;
+  padding: 0px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-text {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--progress-text-color);
 }
 
 .progress-bar {
   width: 100%;
   height: 15px;
-  border-radius: 20px;
-  background-color: var(--progress-bar-color);
-  transition: width 0.5s ease-in-out;
+  background-color: var(--progress-background-light); /* baza deschisă */
+  border-radius: 10px;
+  overflow: hidden; /* ca să taie fill-ul la margini */
 }
 
-.progress-text {
-  font-size: 14px;
-  font-weight: bold;
-  color: black;
+.progress-fill {
+  height: 100%;
+  background-color: var(--progress-bar-color); /* partea colorată */
+  width: 0%;
+  transition: width 0.4s ease-in-out;
 }
 
-.start-page-btn, .user-btn, .logout-btn {
+.header-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+.user-btn, .logout-btn, .start-page-btn {
   background-color: var(--button-color);
   color: white;
   border: none;
@@ -88,16 +144,28 @@
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
+  transition: all 0.3s ease-in-out;
+
+}
+
+.user-btn:hover, .logout-btn:hover, .start-page-btn:hover{
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+.user-btn, .start-page-btn{
+  background-color: var(--profile-btn-bg);
+}
+
+.user-btn:hover, .start-page-btn:hover {
+  background-color: var(--profile-btn-hover-bg);
 }
 
 .logout-btn {
-  background-color: var(--logout-button-color);
-}
-
-.user-btn:hover {
-  background-color: var(--button-hover-color);
+  background-color: var(--logout-btn-bg);
 }
 
 .logout-btn:hover {
-  background-color: var(--logout-hover-color);
+  background-color: var(--logout-btn-hover-bg);
 }

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Satisfy&display=swap');
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
@@ -11,39 +13,98 @@ body {
   }
   
   h1 {
-    margin: 0;
-    font-size: 28px;
+    font-family: "Satisfy", cursive;
+    margin: 0px; /* adaugă doar un mic spațiu jos */
+    font-size: 5.5rem;
+    color: var(--main-title-color);
+
   }
   
-  /* Container pentru secțiuni */
   .container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    padding: 20px;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 130px 40px 40px 40px; /* top redus la 20px */
+    min-height: auto;
   }
-  
-  /* Stilizare secțiuni */
   .section {
+    position: relative;
+    width: 360px;
+    max-width: 90vw;
     background-color: var(--section-bg);
-    color: var(--section-text);    width: 80%;
-    max-width: 600px;
-    margin: 20px 0;
+    background-image: var(--section-gradient);
+    border: 2px solid var(--card-border-color);
+    color: var(--section-text);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
+    min-height: 200px;
+    overflow: hidden;
   }
-
+  
+  /* Inițial, niciun efect */
+  .section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: var(--section-card-gradient);
+    transform: skewX(-25deg);
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  /* La hover: apare și rulează animația o singură dată */
+  .section:hover::before {
+    animation: shine 1s ease-out;
+    opacity: 1;
+  }
+  
+  @keyframes shine {
+    0% {
+      left: -75%;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    50% {
+      left: 50%;
+    }
+    100% {
+      left: 150%;
+      opacity: 0;
+    }
+  }
+  
+  
+  .section button {
+    padding: 12px 28px;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .section button:hover{
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
   .section h2 {
     margin-bottom: 10px;
     font-size: 20px;
-    color: #333;
+    color: var(--title-color);
   }
   
   .section p {
     font-size: 16px;
-    color: #555;
+    color: var(--description-color);
   }
   
   .section a {
@@ -65,17 +126,31 @@ body {
     background-color: var(--btn-primary);
     color: var(--btn-secondary);
   }
-  button:hover {
-    background-color: var(--btn-hover);
+
+  .header-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+  
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    
+    width: 94%;
+    padding: 24px 32px;
+    margin: 5px 15px; 
+    border-radius: 24px;
+    box-shadow: var(--header-shadow);
+    backdrop-filter: blur(4px);
+    background-image: var(--header-gradient);
   }
   
   
-  .header-bar {
+  .header-buttons {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
-    border-bottom: 1px solid #ccc;
+    gap: 12px;
   }
   
   .header-buttons button {
@@ -87,27 +162,60 @@ body {
     cursor: pointer;
   }
   
-  .profile-btn {
-    background-color: var(--profile-btn-bg);
-    color: var(--profile-btn-text);
-  }
-  
-  .logout-btn {
-    background-color: var(--logout-btn-bg);
+  .profile-btn,
+.logout-btn{
+  padding: 12px 20px; /* buton mai înalt și lat */
+  font-size: 18px;    /* text mai mare */
+  border-radius: 8px; /* ușor mai rotunjit */
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+}
+
+
+.profile-btn:hover,
+.logout-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* umbră subtilă */
+}
+
+.profile-btn{
+  background-color: var(--profile-btn-bg);
+}
+
+.profile-btn:hover{
+  background-color: var(--profile-btn-hover-bg);
+}
+.logout-btn {
+  background-color: var(--logout-btn-bg);
   color: var(--logout-btn-text);
-  }
+}
+
+.logout-btn:hover{
+  background-color: var(--logout-btn-hover-bg);
+}
+
+
+.header-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+
   
   .global-progress-wrapper {
     width: 80%;
     max-width: 600px;
-    margin: 20px auto 10px;
+    /* margin: 20px auto 10px; */
     text-align: center;
   }
   
   .progress-label {
     font-size: 16px;
     margin-bottom: 5px;
-    /* color: #333; */
+    
   }
   
   .global-progress-bar {
@@ -116,6 +224,7 @@ body {
     background-color: var(--progress-bg);
     border-radius: 10px;
     overflow: hidden;
+    margin-bottom: 30px;
   }
   
   .global-progress-fill {
@@ -152,13 +261,14 @@ body {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     z-index: -1;
-    background-image: url('/assets/backgrounds/jupiter.svg');
+    background-image: var(--background-pattern);
     background-repeat: repeat;
-    background-size: 250px 250px;
+    background-size: 280px auto; /* ajustează pentru densitate și ritm */
     background-position: center;
-    opacity: var(--svg-pattern-opacity);
+    opacity: 1; /* sau var(--svg-pattern-opacity) dacă vrei transparență controlabilă */
     pointer-events: none;
   }
+  
   
   .start-page-content {
     position: relative;

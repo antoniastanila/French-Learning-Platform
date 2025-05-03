@@ -1,34 +1,27 @@
-<div class="signup-container">
-    <h2>Sign Up</h2>
-    <form (ngSubmit)="onSubmit()" [formGroup]="signupForm">
+<app-background-illustration></app-background-illustration>
 
-      <label for="firstName">First Name:</label>
-      <input id="firstName" formControlName="firstName" type="text" required />
-          
-      <label for="lastName">Last Name:</label>
-      <input id="lastName" formControlName="lastName" type="text" required />
+<div class="home-modern">
+  <div class="overlay-glass" [@fadeIn]>
+    <h1 class="welcome-text">Create your account</h1>
 
-
-      <label for="username">Username:</label>
-      <input id="username" formControlName="username" type="text" required />
-  
-      <label for="email">Email:</label>
-      <input id="email" formControlName="email" type="email" required />
-  
-      <label for="password">Password:</label>
-      <input 
-        id="password" 
-        formControlName="password" 
-        type="password" 
-        required 
-      />
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <input type="text" placeholder="First Name" formControlName="firstName" required />
+      <input type="text" placeholder="Last Name" formControlName="lastName" required />
+      <input type="text" placeholder="Username" formControlName="username" required />
+      <input type="email" placeholder="Email Address" formControlName="email" required />
+      <input type="password" placeholder="Password" formControlName="password" required />
 
       <div *ngIf="signupForm.get('password')?.errors?.['minlength'] && signupForm.get('password')?.touched" class="error-message">
-        <small>Password must be at least 6 characters long.</small>
+        Password must be at least 6 characters long.
       </div>
 
-      <button type="submit" [disabled]="signupForm.invalid">Sign Up</button>
+      <div class="button-wrapper">
+        <button type="submit" class="btn login" [disabled]="signupForm.invalid">
+          Sign Up
+        </button>
+      </div>
     </form>
-    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
   </div>
-  
+</div>

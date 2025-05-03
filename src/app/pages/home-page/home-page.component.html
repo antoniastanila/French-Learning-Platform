@@ -1,12 +1,19 @@
 <app-background-illustration></app-background-illustration>
 
 <div class="home-modern">
-  <ng-container *ngIf="isLoading; else content">
-    <div class="loader-container">
-      <div class="loader"></div>
-    </div>
-  </ng-container>
+  <!-- Logo-ul rămâne permanent sus stânga -->
+<div class="loader-text-wrapper">
+  <h1 class="loader-text-type">Baguette Talk</h1>
+</div>
 
+<ng-container *ngIf="isLoading; else content">
+  <div class="loader-container">
+    <!-- poți lăsa spinnerul dacă mai vrei -->
+    <div class="loader"></div>
+  </div>
+</ng-container>
+
+  
   <ng-template #content>
     <div class="overlay-glass" [@fadeIn]>
       <h1 class="welcome-text">Bienvenue dans votre application de français!</h1>

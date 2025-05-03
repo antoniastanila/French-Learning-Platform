@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Satisfy&display=swap');
 .home-modern {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #fdf2f8, #e0c3fc, #8ec5fc);
-  background-size: 300% 300%;
-  animation: gradientBG 10s ease infinite;
+  background: url('/assets/backgrounds/home-page-background2.png') no-repeat center center / cover;
+
 }
 
 @keyframes gradientBG {
@@ -18,6 +18,7 @@
 }
 
 .overlay-glass {
+  margin-top: 15px;
   background: rgba(255, 255, 255, 0.25);
   border-radius: 16px;
   padding: 40px;
@@ -94,12 +95,7 @@
 }
 
 .loader {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #e0c3fc;
-  border-top-color: #8ec5fc;
-  border-radius: 50%;
-  animation: spin 1s ease-in-out infinite;
+  display: none; 
 }
 
 @keyframes spin {
@@ -107,3 +103,62 @@
     transform: rotate(360deg);
   }
 }
+
+.loader-text {
+  font-family: 'Pacifico', cursive;
+  font-size: 2.8rem;
+  color: #ec4899;
+  animation: fadeInText 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes fadeInText {
+  from {
+    opacity: 0.2;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+.loader-text-wrapper {
+  position: absolute;
+  top: 1px;
+  left: 60px;
+  z-index: 9999;
+}
+.loader-text-type {
+  font-family: "Satisfy", cursive;
+  font-size: 5.5rem;   
+  color: #ec4899;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  position: relative;
+  animation: typing 2s steps(14, end) forwards;
+}
+.loader-text-type::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: #ec4899;
+  animation: blink 0.8s step-end 3, hide-caret 0s 2.4s forwards;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 14ch }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@keyframes hide-caret {
+  to { opacity: 0; }
+}
+

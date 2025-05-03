@@ -1,67 +1,119 @@
 body.theme-earth {
-  --bg-main: #2b2b2b;
-  --bg-accent: #3b3b3b;
-  --text-main: #d9cbb1;
-  --btn-primary: #a1866f;
-  --btn-secondary: #e4d9c6;
-  --btn-hover: #96735d;
-  --bg-card: #f6ebca;
-  --text-card: #2c2c2c;
-  --shadow-card: rgba(0, 0, 0, 0.1);
+  --bg-main: #2a1f18;
+  --bg-accent: #3a2b24;
+  --main-title-color: #fee1c3;
 
-  --header-bg: #3b2e2e;           // maro închis elegant
-  --header-text: #f0e9dd;
-  --section-bg: #4a3f3f;
-  --section-text: #f4e9d8;
-  --progress-bg: #5c4d4d;
-  --progress-fill: #a1866f;
-  --loading-text: #c8b49e;
+  --text-main: #d5a46c;
+  
+  --btn-primary: #9e6747;
+  --btn-secondary: #e6d8ca;
+  --btn-hover: #7c4d32;
 
-  --profile-btn-bg: #c7b299;           // bej-maro elegant
-  --profile-btn-text: #2c2c2c;
-  --profile-btn-hover: #a1866f;
+  --bg-card: #3a2821;
+  --text-card: #f3e2d0;
+  --shadow-card: rgba(42, 28, 22, 0.15); /* difuz, cald */
 
-  --logout-btn-bg: #b76e79;            // roșu-pământiu
-  --logout-btn-text: #f9f5f0;
-  --logout-btn-hover: #8b4a55;
+  --header-bg: #34241c;
+  --header-text: #fceee0;
 
-  --background-color: #2d302d;
-  --card-color: #7a6f5f;
-  --completed-card-color: #5c5349;
-  --completed-border-color: #1f1d1a;
-  --current-card-color: #a28c7a;
-  --header-background-color: #4a4a4a;
-  --progress-background: #555;
-  --progress-bar-color: #7a6f5f;
-  --button-color: #8b5e3c;
-  --logout-button-color: #7a4b29;
+  --section-bg: #4c2a18;
+  --section-text: #ffffff;
+  --card-background-color: var(--section-bg);
 
-  --card-background-color: #3a3a3a; /* gri închis mat */
---card-border-color: #7a6f5f; /* bej-maro */
---title-color: #c7b299; /* bej deschis */
---description-color: #d9cbb1; /* crem elegant */
---highlight-background-color: #4a3f3f; /* maro pământiu */
---example-background-color: #7a6f5f; /* bej mai intens */
---example-text-color: #f9f5f0;
---accent-color: #a1866f; /* bej-portocaliu */
---accent-hover-color: #7c5c44; /* maro cald */
+  --progress-bg: #604536;
+  --progress-fill: #a96f4f;
 
---modal-background-color: var(--card-background-color);
---modal-text-color: var(--description-color);
+  --loading-text: #dfbca1;
 
---highlight-hover-color: #5a4a4a; /* puțin mai deschis decât highlight background (#4a3f3f) */
---correct-option-color: #2e7d32; /* verde mai închis, dar adaptat la tonurile pământii */
---wrong-option-color: #c62828; /* roșu mai întunecat dar vizibil pe earth */
---previous-mistake-color: #ff6f61;
---input-background-color: #4a3f3f; /* rămâne același ca highlight bg */
---feedback-color: #ff6f61;
+  --profile-btn-bg: #ba8462;
+  --profile-btn-text: #2c1b14;
+  --profile-btn-hover: #945d3d;
 
---option-background-color: var(--highlight-background-color); /* opțiune normală */
---option-selected-color: var(--highlight-hover-color);         /* când e selectat */
---option-hover-color: #7a6464; /* HOVER = puțin mai deschis decât selected */
+  --logout-btn-bg: #a65c4d;
+  --logout-btn-text: #fff4ee;
+  --logout-btn-hover: #843d33;
 
---audio-background-color: #f5f5f5;
+  --background-color: #2b1f18;
+  --card-color: #6c4a38;
+  --completed-card-color: #563724;
+  --completed-border-color: #1d140f;
+  --current-card-color: #b17f62;
 
---svg-pattern-opacity: 0.4;
+  --header-background-color: #3a281f;
+  --progress-background: #4d362a;
+  --progress-bar-color: #a96f4f;
+  --button-color: #874f34;
+  --logout-button-color: #844035;
+
+  --card-background-color: #3a261f;
+  --card-border-color: #a96f4f;
+
+  --title-color: #e9d7c2;
+    --progress-text-color: var(--title-color);
+
+  --description-color: #d2c1ae;
+
+  --highlight-background-color: #493227;
+  --example-background-color: #825c46;
+  --example-text-color: #fdf1e3;
+
+  --accent-color: #a96f4f;
+  --accent-hover-color: #7a4a32;
+
+  --modal-background-color: var(--card-background-color);
+  --modal-text-color: var(--description-color);
+
+  --highlight-hover-color: #5b3c2e;
+  --correct-option-color: #3fa34d;
+  --wrong-option-color: #c0392b;
+  --previous-mistake-color: #f96d59;
+  --input-background-color: #493227;
+  --input-placeholder-color:#a96f4f;
+
+  --feedback-color: #f96d59;
+
+  --option-background-color: var(--highlight-background-color);
+  --option-selected-color: var(--highlight-hover-color);
+  --option-hover-color: #6e4c39;
+
+  --audio-background-color: #f3f3f3;
+
+  --svg-pattern-opacity: 0.3;
+  --header-gradient: linear-gradient(to top, #3e2211, #805442);
+  --header-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), inset 0 6px 8px rgba(133, 83, 83, 0.4);
+
+  --background-pattern: url('/assets/backgrounds/dark-chocolate.png');
+
+  --section-gradient: linear-gradient(to bottom, rgba(255, 255, 255, 0.06), transparent);
+  --profile-btn-hover-bg: #945d3d; /* un ton mai închis și cald față de profile-btn-bg */
+
+  --logout-btn-hover-bg: #843d33; /* deja definit corect — păstrăm */
+  
+  --header-main-page-gradient: linear-gradient(
+    to bottom,
+    #563724,    /* maro-caramel cald */
+    rgba(50, 32, 23, 0.85)     /* maro închis, bogat */
+  );
+  
+  --page-gradient: linear-gradient(135deg,
+  #452b1d 0%,      /* scorțișoară închisă (mai profundă) */
+  #653c27 20%,     /* caramel copt (mai intens) */
+  #804d33 45%,     /* crem accentuat */
+  #946046 70%,     /* ton cald echilibrat */
+  #a06b4f 90%,     /* cappuccino închis */
+  #ac7a5b 100%     /* ciocolată caldă și moale */
+);
+
+  --progress-background-light: #5c3a2a; /* ușor mai deschis decât progress-bg */
+  --progress-bar-color: #c47d57; /* accent caramel, contrast bun pe fundal închis */
+  
+  --section-card-gradient: linear-gradient(
+  120deg,
+  rgba(80, 51, 31, 0) 0%,
+  rgba(140, 90, 60, 0.25) 35%,
+  rgba(200, 140, 100, 0.4) 50%,
+  rgba(140, 90, 60, 0.25) 65%,
+  rgba(80, 51, 31, 0) 100%
+);
 
 }

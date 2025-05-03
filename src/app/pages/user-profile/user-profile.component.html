@@ -85,14 +85,15 @@
     <select id="theme-modal-select" [(ngModel)]="tempTheme" (ngModelChange)="applyTempTheme()">
       <option value="theme-light">🌸 Paris Breeze</option>
       <option value="theme-warm">🍑 Peach Fluff</option>
-      <option value="theme-earth">🍫 Dark Chocolate</option>  
+      <option value="theme-earth">🍫 Chocolate Cappuccino</option>  
       <option value="theme-dark">🌙 Midnight Moon</option>
     </select>
     
 
     <div class="modal-buttons">
-      <button (click)="saveChanges()">Save Changes</button>
-      <button (click)="closeModal()">Cancel</button>
+      <button class="modal-action-button save-button" (click)="saveChanges()">Save Changes</button>
+      <button class="modal-action-button cancel-button" (click)="closeModal()">Cancel</button>
     </div>
+    
   </div>
 </div>

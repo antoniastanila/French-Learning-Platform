@@ -1,70 +1,112 @@
 body.theme-light {
-  --bg-main: #fdf2f8;
-  --bg-accent: #ffffff;
-  --text-main: #2c2c2c;
-  --btn-primary: #ec4899;
+  --bg-main: #fff4f1;               /* fundal general: roz foarte pal */
+  --bg-accent: #fffdfd;             /* alb cald */
+  --text-main: #413535;             /* maro prăfuit, folosit pentru text */
+
+  --btn-primary: #d99987;           /* roz-portocaliu cald (bănci) */
   --btn-secondary: #ffffff;
-  --btn-hover: #db2777;
-  --bg-card: #f7e2e8;
-  --text-card: #2c2c2c;
-  --shadow-card: rgba(0, 0, 0, 0.1);
+  --btn-hover: #c57e6f;             /* mai intens la hover */
 
-   // ✅ variabile noi pentru start-page:
-   --header-bg: #ec4899;
-   --header-text: white;
-   --section-bg: white;
-   --section-text: #2c2c2c;
-   --progress-bg: #e0e0e0;
-   --progress-fill: #6a9cfc;
-   --loading-text: #6B0A2E;
+  --bg-card: #ffeae5;               /* fundal carduri: roz piersică deschis */
+  --text-card: #413535;
+  --shadow-card: rgba(0, 0, 0, 0.06);
 
-   --profile-btn-bg: #6a9cfc;
-   --profile-btn-text: white;
-   --logout-btn-bg: #e74c3c;
-   --logout-btn-text: white;
+  --header-bg: #e29c90;             /* păstrat conform cerinței */
+  --header-text: #3c2c33;
 
-   --background-color: #f5f1e7;
-  --card-color: #d44482;
-  --completed-card-color: #af2f2f;
-  --completed-border-color: #3e2004;
-  --current-card-color: #e79e85;
-  --header-background-color: #e9d7a7;
-  --progress-background: #f2e9d0;
-  --progress-bar-color: #12572f;
-  --button-color: #eb3b3b;
-  --logout-button-color: #bb5a5a;
+  --section-bg: #ffeae5;
+  --section-text: #3c2c33;
 
-  --locked-card-color: #d6ceb8c7;
+  --progress-bg: #f7d8cf;           /* fundal bară progres */
+  --progress-fill: #d68689;         /* roz catifelat (croissant/pisici) */
 
-  --button-hover-color: #d44482; 
-  --logout-hover-color: #cc0000;
+  --loading-text: #a0595e;
 
-  --card-background-color: #fdf6ec;
---card-border-color: #eaceb4;
---title-color: #bb5a5a;
---description-color: #4a154b;
---highlight-background-color: #eaceb4;
---example-background-color: #e79e85;
---example-text-color: white;
---accent-color: #bb5a5a;
---accent-hover-color: #9c4444;
+  --profile-btn-bg: #e08d80;        /* roz cald (obraji personaje) */
+  --profile-btn-text: white;
+  --logout-btn-bg: #e0777a;         /* roșu vintage (accente) */
+  --logout-btn-text: white;
 
---modal-background-color: #ffffff; /* alb curat */
---modal-text-color: #2c2c2c; /* text principal închis */
+  --background-color: #fffaf8;
+  --card-color: #f2b0a2;
+  --completed-card-color: #e2a196;
+  --completed-border-color: #8a4d4a;
+  --current-card-color: #fbd3c9;
 
---highlight-hover-color: #f1d6ba; /* puțin mai deschis decât highlight background (#eaceb4) */
---correct-option-color: #43a047;   /* verde success mai luminos, potrivit pe fundal deschis */
---wrong-option-color: #e53935;     /* roșu intens și vizibil pe fundal bright */
---previous-mistake-color: #ff6f61;
---input-background-color: #ffffff; /* input alb */
---feedback-color: #e53935;
+  --header-background-color: #fceae7;
+  --progress-background: #f9dcd5;
+  --progress-bar-color: #d6777e;
 
---option-background-color: var(--highlight-background-color); /* opțiune normală */
---option-selected-color: var(--highlight-hover-color);         /* selectat */
---option-hover-color: #f8e4ca; /* HOVER = și mai deschis decât selected */
+  --button-color: #d99987;
+  --logout-button-color: #e0777a;
 
---audio-background-color: #f5f5f5;
+  --locked-card-color: #f4dcd5;
 
---svg-pattern-opacity: 0.12;
+  --button-hover-color: #c57e6f;
+  --logout-hover-color: #c64b4e;
 
+  --card-background-color: #fdeae5;
+  --card-border-color: #f6c5be;
+  --title-color: #9a5d59;
+  --progress-text-color: var(--title-color);
+
+  --description-color: #6e4d49;
+
+  --highlight-background-color: #fbdcd3;
+  --example-background-color: #f2b0a2;
+  --example-text-color: #ffffff;
+
+  --accent-color: #d99987;
+  --accent-hover-color: #ba6f60;
+
+  --modal-background-color: var(--section-bg);
+  --modal-text-color: #2c2c2c;
+
+  --highlight-hover-color: #f8c6bd;
+  --correct-option-color: #8bc79f;
+  --wrong-option-color: #ea5a5a;
+  --previous-mistake-color: #e895a7;
+
+  --input-background-color: #ffffff;
+  --input-placeholder-color:#feefef;
+  --feedback-color: #ef5350;
+
+  --option-background-color: var(--highlight-background-color);
+  --option-selected-color: var(--highlight-hover-color);
+  --option-hover-color: #fdebe8;
+
+  --audio-background-color: #fdf3f1;
+  --svg-pattern-opacity: 0.08;
+
+  --header-gradient: linear-gradient(to top, #e29c90, #f9bdb1);
+  --header-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), inset 0 6px 8px rgba(255, 255, 255, 0.4);
+
+  --background-pattern: url('/assets/backgrounds/start-page.png');
+
+  --profile-btn-hover-bg: #d27263; /* aceeași culoare ca btn-primary pentru coerență */
+--logout-btn-hover-bg: #c64b4e;  /* deja definit în logout-hover-color – păstrat pentru consistență */
+
+--header-main-page-gradient: linear-gradient(to bottom, rgba(255, 218, 211, 0.85), rgba(226, 156, 144, 0.85));
+--page-gradient: linear-gradient(135deg,
+  #f1a97d 0%,     /* roz pudrat (fundal general) */
+  #e79f91 20%,    /* roz-piersică cald (fețe, bănci) */
+  #f8d7d4 45%,    /* portocaliu piersică (croissante) */
+  #e3c9b3 70%,    /* bej cald (detalii fundal) */
+  #fdd0c9 90%,    /* roz albicios foarte deschis */
+  #fbc7c2 100%    /* închidere în aceeași nuanță ca începutul */
+);
+
+--progress-background-light: #fde1db;
+--progress-bar-color: #e79591; /* echivalent cu piersică-roz mai intensă */
+
+--section-card-gradient: linear-gradient(
+  120deg,
+  rgba(255, 245, 230, 0) 0%,
+  rgba(255, 245, 230, 0.4) 45%,
+  rgba(255, 255, 255, 0.6) 50%,
+  rgba(255, 245, 230, 0.4) 55%,
+  rgba(255, 245, 230, 0) 100%
+);
+
+--modal-button-hover: #e79591;
 }

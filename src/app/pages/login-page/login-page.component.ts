@@ -5,15 +5,26 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { BackgroundIllustrationComponent } from '../../shared/background-illustration/background-illustration.component';
+import { AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BackgroundIllustrationComponent],
   templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css']
+  styleUrls: ['./login-page.component.css'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('600ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent implements AfterViewInit{
   email: string = '';
   password: string = '';
   errorMessage: string = '';
@@ -25,26 +36,30 @@ export class LoginPageComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
 
-  ngOnInit(): void {
-    // ✅ initializează Google login GSI
+  ngAfterViewInit(): void {
     const clientId = '555078852596-a4cmrg9dcrru8m3p714ct642o45lhi6o.apps.googleusercontent.com';
-
-    // Verificăm că există `google` din scriptul GSI
-    if ((window as any).google && (window as any).google.accounts) {
-      (window as any).google.accounts.id.initialize({
-        client_id: clientId,
-        callback: this.handleGoogleResponse.bind(this),
-      });
-
-      (window as any).google.accounts.id.renderButton(
-        document.getElementById('g_id_signin'),
-        { theme: 'outline', size: 'large' }
-      );
-    } else {
-      console.error("🔴 Google GSI script is not loaded.");
-    }
+  
+    setTimeout(() => {
+      const g = (window as any).google;
+      const target = document.getElementById('g_id_signin');
+  
+      if (g?.accounts?.id && target) {
+        g.accounts.id.initialize({
+          client_id: clientId,
+          callback: this.handleGoogleResponse.bind(this),
+        });
+  
+        g.accounts.id.renderButton(target, {
+          theme: 'outline',
+          size: 'large',
+          width: '300', // poți ajusta
+        });
+      } else {
+        console.warn('🔴 Google GSI script or target element not ready.');
+      }
+    }, 100); // 100ms delay pentru siguranță
   }
-
+  
   handleGoogleResponse(response: any): void {
     const idToken = response.credential;
     this.authService.loginWithGoogle(idToken).subscribe({

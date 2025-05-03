@@ -1,34 +1,33 @@
 <div class="main-container">
-    <div class="header">
-      <div class="progress-container">
-        <div class="progress-bar" [style.width.%]="progress"></div>
-        <p class="progress-text">Progress: {{ progress.toFixed(1) }}%</p>
+  <div class="header">
+    <h1>Advanced Lessons Overview</h1>
+
+    <div class="progress-container">
+      <p class="progress-text">Progress: {{ progress.toFixed(1) }}%</p>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="progress"></div>
       </div>
-  
-      <button class="user-btn" (click)="goToUserProfile()">
-        {{ username }}
-      </button>
+    </div>
+    
+
+    <div class="header-buttons">
+      <button class="user-btn" (click)="goToUserProfile()">{{ username }}</button>
       <button class="logout-btn" (click)="logout()">Logout</button>
       <button class="start-page-btn" (click)="goToStartPage()">Back to start page</button>
-
-    </div>
-  
-    <h1>Advanced Lessons Overview</h1>
-  
-    <div class="lessons-grid">
-      <div 
-        class="lesson-card" 
-        *ngFor="let lesson of lessons"
-        (click)="goToLesson(lesson._id)"
-        [ngClass]="{
-          'completed': lesson.isCompleted,
-          'current': lesson._id === currentLessonId,
-          'locked': !lesson.isUnlocked
-        }">
-      
-        <h3>{{ lesson.title }}</h3>
-      
-      </div>
     </div>
   </div>
-  
+
+  <div class="lessons-grid">
+    <div 
+      class="lesson-card" 
+      *ngFor="let lesson of lessons"
+      (click)="goToLesson(lesson._id)"
+      [ngClass]="{
+        'completed': lesson.isCompleted,
+        'current': lesson._id === currentLessonId,
+        'locked': !lesson.isUnlocked
+      }">
+      <h3>{{ lesson.title }}</h3>
+    </div>
+  </div>
+</div>
