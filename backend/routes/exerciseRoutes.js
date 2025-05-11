@@ -109,4 +109,31 @@ router.delete('/:exerciseId', async (req, res) => {
   }
 });
 
+// 🔹 Returnează un set random de exerciții pentru testul de nivel
+router.get('/placement-test/:level', async (req, res) => {
+  const level = req.params.level;
+  let ExerciseModel;
+
+  if (level === 'intermediate') {
+    ExerciseModel = IntermediateExercise;
+  } else if (level === 'advanced') {
+    ExerciseModel = AdvancedExercise;
+  } else {
+    ExerciseModel = BeginnerExercise;
+  }
+
+  try {
+    const all = await ExerciseModel.find({});
+    const allExercises = all.flatMap(e => e.exercises);
+
+    const shuffled = allExercises.sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 10); // sau orice număr dorești
+
+    res.json(selected);
+  } catch (err) {
+    res.status(500).json({ message: 'Eroare la generarea testului', error: err.message });
+  }
+});
+
+
 export default router;

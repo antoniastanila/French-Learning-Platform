@@ -9,7 +9,7 @@ import { ReadingComprehensionComponent } from '../../components/reading-comprehe
 import { AuthService } from '../../services/auth.service';
 import { LessonService } from '../../services/lesson.service';
 import { Lesson } from '../../models/lesson.model';
-
+import { PlacementTestService } from '../../services/placement-test.service';
 @Component({
   selector: 'app-beginner-test',
   standalone: true,
@@ -29,12 +29,23 @@ export class BeginnerTestComponent implements OnInit {
   feedbackMessage: string = '';
   isCorrect: boolean | null = null;
 
-  constructor(private quizService: QuizService, private router: Router, private authService: AuthService, private lessonService: LessonService, private renderer: Renderer2) {}
+  constructor(private quizService: QuizService, 
+              private router: Router, 
+              private authService: AuthService, 
+              private lessonService: LessonService, 
+              private renderer: Renderer2,
+              private placementTestService: PlacementTestService) {}
 
   ngOnInit(): void {
-    this.questions = this.quizService.getQuestions('beginner');
-    this.totalQuestions = this.quizService.getTotalQuestions('beginner');
-
+    this.placementTestService.getTestQuestions('beginner').subscribe({
+      next: (data) => {
+        this.questions = data;
+        this.totalQuestions = data.length;
+      },
+      error: (err) => {
+        console.error('❌ Eroare la încărcarea întrebărilor din backend:', err);
+      }
+    });
     const savedTheme = localStorage.getItem('selectedTheme') || 'theme-light';
     this.renderer.setAttribute(document.body, 'class', savedTheme);
 

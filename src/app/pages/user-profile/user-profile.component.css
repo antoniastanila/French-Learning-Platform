@@ -10,8 +10,8 @@
 .card {
   border-radius: 12px;
   background-color: var(--section-bg);
-
   border: 2px solid var(--card-border-color); /* sau orice culoare fixă */
+
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
   padding: 20px;
   flex: 1 1 400px;

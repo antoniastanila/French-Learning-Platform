@@ -81,7 +81,12 @@
     
 
     <!-- Trimite răspunsul -->
-    <button *ngIf="!isAnswered" (click)="validateAnswer()" [disabled]="isAnswered">Check</button>
+<button 
+  *ngIf="!isAnswered && selectedAnswer && selectedAnswer.toString().trim() !== ''" 
+  (click)="validateAnswer()"
+>
+  Check
+</button>
 
     <p class="feedback-message" *ngIf="feedbackMessage">{{ feedbackMessage }}</p>
 

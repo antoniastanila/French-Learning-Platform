@@ -1,53 +1,74 @@
 <div class="lesson-detail-background"></div>
 <div class="lesson-detail-page" [ngClass]="{'blur-background': isCheatSheetVisible}">
-<div class="lesson-container" *ngIf="lesson">
-  <h2>{{ lesson.title }}</h2>
-  <button class="cheat-sheet-button" (click)="openCheatSheet()">Cheat Sheet</button>
-  <p class="lesson-description">{{ lesson.description }}</p>
+  <div class="lesson-container" *ngIf="lesson">
+    <h2>{{ lesson.title }}</h2>
+    <button class="cheat-sheet-button" (click)="openCheatSheet()">Cheat Sheet</button>
+    <p class="lesson-description">{{ lesson.description }}</p>
 
-  <div *ngFor="let item of lesson.content" class="lesson-content">
-    <p *ngIf="item.type === 'text'" class="lesson-text">{{ item.text }}</p>
+    <div *ngFor="let item of lesson.content" class="lesson-content">
 
-    <p *ngIf="item.type === 'example'" class="lesson-example">
-      <span class="example-phrase">{{ item.phrase }}</span>: {{ item.translation }}
-    </p>
+      <!-- Subtitlu -->
+      <p *ngIf="item.subtype === 'subtitle'" class="lesson-subtitle">
+        {{ item.text }}
+      </p>
 
-    <ul *ngIf="item.type === 'list'" class="lesson-list">
-      <li *ngFor="let listItem of item.items">{{ listItem }}</li>
-    </ul>
+      <!-- Text explicativ normal -->
+      <p *ngIf="item.type === 'text' && !item.subtype" class="lesson-text">
+        {{ item.text }}
+      </p>
 
-    <table *ngIf="item.type === 'table'" class="lesson-table">
-      <thead>
-        <tr>
-          <th *ngFor="let header of item.headers">{{ header }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of item.rows">
-          <td *ngFor="let cell of row">{{ cell }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <!-- Notă informativă -->
+      <p *ngIf="item.subtype === 'note'" class="lesson-note">
+        💡 {{ item.text }}
+      </p>
 
-  <p class="lesson-difficulty"><strong>Difficulty:</strong> {{ lesson.difficulty }}</p>
+      <!-- Avertisment / Greșeală frecventă -->
+      <p *ngIf="item.subtype === 'warning'" class="lesson-warning">
+        ❌ {{ item.text }}
+      </p>
 
-  <div class="lesson-buttons">
-    <button (click)="goToExercises()">Go to exercises!</button>
-    <button (click)="goToMainPage()">Back to main page!</button>
+      <!-- Exemplu -->
+      <p *ngIf="item.type === 'example'" class="lesson-example">
+        <span class="example-phrase">{{ item.phrase }}</span>: {{ item.translation }}
+      </p>
+
+      <!-- Listă -->
+      <ul *ngIf="item.type === 'list'" class="lesson-list">
+        <li *ngFor="let listItem of item.items">{{ listItem }}</li>
+      </ul>
+
+      <!-- Tabel -->
+      <table *ngIf="item.type === 'table'" class="lesson-table">
+        <thead>
+          <tr>
+            <th *ngFor="let header of item.headers">{{ header }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of item.rows">
+            <td *ngFor="let cell of row">{{ cell }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="lesson-difficulty"><strong>Difficulty:</strong> {{ lesson.difficulty }}</p>
+
+    <div class="lesson-buttons">
+      <button (click)="goToExercises()">Go to exercises!</button>
+      <button (click)="goToMainPage()">Back to main page!</button>
+    </div>
   </div>
 </div>
-</div>
 
-<div class="modal" [ngClass]="{'visible': isCheatSheetVisible}">
-  <div class="modal-content">
-    <!-- Header fix -->
+<!-- Modal Cheat Sheet -->
+<div class="modal-overlay" [ngClass]="{'visible': isCheatSheetVisible}">
+  <div class="modal">
     <div class="modal-header">
       <h1>Cheat Sheet</h1>
       <h3>Don't wanna read all that? Here's a little summary for you:</h3>
     </div>
 
-    <!-- Conținut scrollabil -->
     <div class="modal-scroll">
       <table *ngIf="lesson.cheatSheet">
         <thead>
@@ -63,12 +84,9 @@
       </table>
     </div>
 
-    <!-- Footer fix (butoane) -->
     <div class="button-container">
       <button (click)="closeCheatSheet()">Close</button>
       <button (click)="goToExercises()">Go to exercises!</button>
     </div>
   </div>
 </div>
-
-
