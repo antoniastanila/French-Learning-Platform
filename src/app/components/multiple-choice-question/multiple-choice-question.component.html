@@ -3,9 +3,8 @@
 <div *ngFor="let option of options">
   <button 
     (click)="selectAnswer(option)" 
-    [ngClass]="{'selected-answer': selectedOption === option}" 
+    [ngClass]="{'selected-answer': selectedOption === option}"
     [disabled]="isAnswered">
     {{ option }}
   </button>
 </div>
-

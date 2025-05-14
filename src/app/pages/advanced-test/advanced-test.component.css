@@ -1,34 +1,141 @@
-h1 {
-    font-size: 3rem;
-    text-align: center;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-main);
+  position: relative;
+}
+
+
+.advanced-background {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  background-image: url('/assets/backgrounds/jigsaw.svg');
+  opacity: var(--svg-pattern-opacity);
+  background-repeat: repeat;
+  background-size: 280px auto;
+  background-position: center;
+  pointer-events: none;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* asigură înălțime completă fără să adauge scroll */
+  width: 100%;
+  overflow: hidden; /* 👈 adăugat în plus */
+}
+
+.content {
+  position: relative;
+  z-index: 0;
+  border-radius: 12px;
+  background-color: var(--section-bg);
+
+  border: 2px solid var(--card-border-color);
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
+
+ padding: 20px 20px 20px 20px;  
+ margin: 0px auto;
+  width: 90%;
+
+  max-width: 720px;
+  text-align: center;
+}
+  
+  .quiz-container h1 {
+    color: var(--title-color);
+    margin-bottom: 20px;
+    margin-top: 10px;
   }
   
-  .quiz-container {
-    max-width: 600px;
-    margin: 0 auto;
+  .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 10px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: var(--accent-color);
+        color: white;
+      cursor: pointer;
+  }
+    
+  .options button:hover {
+      background-color: #6a1b9a;
+  }
+    
+  .back-button {
+      margin-top: 20px;
+      background-color: #8e24aa;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+  }
+    
+  .back-button:hover {
+      background-color: #6a1b9a;
+  }
+    
+  .result-container {
     text-align: center;
-    background: #fbe4f1;
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--highlight-background-color);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
   }
   
+/*   
+  .result-container button {
+      background-color: #653e4e;
+      padding: 10px 20px;
+      border-radius: 15px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+      color: white;
+      margin-top: 10px;
+  }
+  
+  .result-container button:hover {
+      background-color: #b10f2e;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+      transform: scale(1.05);
+  }
+   */
   .correct-answer {
-    color: green;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 15px;
+      color: var(--correct-option-color);
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 15px;
   }
-  
+    
   .wrong-answer {
-    color: red;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 15px;
+      color: var(--wrong-option-color);
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 15px;
   }
   
   button {
-    background-color: #5c215e;
+    background-color: var(--accent-color);
     padding: 10px 15px;
     border-radius: 10px;
     font-size: 16px;
@@ -40,54 +147,132 @@ h1 {
     width: 200px;
   }
   
+
+  
   button:hover {
-    background-color: #b10f2e;
-  }
-  .result-container {
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #fbe4f1;
-    max-width: 600px;
-    margin: 50px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .result-container h2 {
-    color: #d72672;
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .result-container p {
-    font-size: 18px;
-    color: #4a154b;
-    margin-bottom: 20px;
-  }
-  
-  .result-container button {
-    background-color: #6a0572;
-    padding: 12px 24px;
-    border-radius: 15px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
-    color: white;
-    margin: 10px;
-    width: 200px;
-  }
-  
-  .result-container button:hover {
-    background-color: #4a154b;
+    background-color: var(--accent-hover-color);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
     transform: scale(1.05);
   }
+/*   
   
-  h1 {
-    font-size: 3rem;
-    text-align: center;
-    margin-bottom: 20px;
+  .selected-answer {
+      background-color: rgb(12, 17, 104) !important;
+      color: black !important;
+  } */
+  
+  .check-next-btn {
+  margin-top: 20px; /* ajustează cum vrei */
+  margin-bottom: 10px;
+  background-color: var(--check-next-button);
+}
+
+ .check-next-btn:hover{
+    background-color: var(--check-next-button-hover);
+ }
+
+ 
+
+ .congratulations-container {
+  background-color: var(--card-background-color);
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  animation: fadeInCongrats 2s ease-in-out forwards;
+  margin: 20px auto;
+  box-shadow: 0 4px 12px var(--shadow-card);
+  position: relative;
+  max-width: 600px;
+  width: 90%;
+  /* border: 3px solid var(--card-border-color); */
+}
+
+@keyframes fadeInCongrats {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.congratulations-container h2 {
+  font-size: 28px;
+  color: var(--title-color);
+  margin-bottom: 10px;
+}
+
+.congratulations-container p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  color: var(--description-color);
+}
+
+.congratulations-container button {
+  background-color: var(--accent-color);
+  color: white;
+  padding: 12px 24px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.congratulations-container button:hover {
+  background-color: var(--accent-hover-color);
+  transform: scale(1.05);
+}
+.firework {
+  position: absolute;
+  bottom: 50px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: explode 1.5s ease-out infinite;
+  z-index: 1000;
+  animation-delay: calc(var(--delay, 0s));
+}
+
+
+
+.firework-launcher {
+  position: absolute;
+  bottom: 50px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  z-index: 1001;
+  animation: colorPulse 2s infinite;
+}
+
+.launcher-left {
+  left: 140px; /* ajustabil – sub primul buton */
+  background-color: orange;
+}
+.launcher-right {
+  right: 140px; /* ajustabil – sub al doilea buton */
+  background-color: red;
+}
+
+@keyframes colorPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+
+@keyframes explode {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), var(--y)) scale(0.5);
+    opacity: 0;
+  }
+}

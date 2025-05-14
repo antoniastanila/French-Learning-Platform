@@ -1,5 +1,5 @@
 body.theme-earth {
-  --bg-main: #2a1f18;
+  --bg-main: #302016;
   --bg-accent: #3a2b24;
   --main-title-color: #fee1c3;
 
@@ -65,10 +65,12 @@ body.theme-earth {
 
   --highlight-hover-color: #5b3c2e;
   --correct-option-color: #3fa34d;
-  --wrong-option-color: #c0392b;
+  --wrong-option-color: #f7513f;
   --previous-mistake-color: #f96d59;
   --input-background-color: #493227;
   --input-placeholder-color:#a96f4f;
+    --input-placeholder-border-color:#67a94f;
+
 
   --feedback-color: #f96d59;
 
@@ -115,5 +117,8 @@ body.theme-earth {
   rgba(140, 90, 60, 0.25) 65%,
   rgba(80, 51, 31, 0) 100%
 );
+
+--check-next-button:#b86433;
+--check-next-button-hover:#aa5625 ;
 
 }

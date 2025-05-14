@@ -1,5 +1,5 @@
 button{
-    background-color: #d72672;
+  background-color: var(--accent-color);
     padding: 10px 20px;
     border-radius: 15px;
     font-size: 16px;
@@ -12,7 +12,7 @@ button{
   }
   
   button:hover{
-    background-color: #b10f2e;
+    background-color: var(--accent-hover-color);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
     transform: scale(1.05);
   }
@@ -20,4 +20,41 @@ button{
     background-color: yellow !important;
     color: black !important;
 }
-  
+
+.fill-in-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.fill-in-the-blank-input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--card-border-color);
+  background-color: var(--input-placeholder-color);
+
+  width: 100%;
+  max-width: 400px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.check-next-btn {
+  margin-top: 20px;
+  width: 200px;
+  background-color: var(--accent-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.check-next-btn:hover {
+  background-color: var(--accent-hover-color);
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+}

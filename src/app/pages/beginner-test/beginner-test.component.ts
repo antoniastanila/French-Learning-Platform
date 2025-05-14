@@ -10,12 +10,14 @@ import { AuthService } from '../../services/auth.service';
 import { LessonService } from '../../services/lesson.service';
 import { Lesson } from '../../models/lesson.model';
 import { PlacementTestService } from '../../services/placement-test.service';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-beginner-test',
   standalone: true,
   templateUrl: './beginner-test.component.html',
   styleUrls: ['./beginner-test.component.css'],
-  imports: [MultipleChoiceQuestionComponent, FillInTheBlankComponent, ListeningQuestionComponent, ReadingComprehensionComponent, CommonModule]
+  imports: [MultipleChoiceQuestionComponent, FormsModule, FillInTheBlankComponent, ListeningQuestionComponent, ReadingComprehensionComponent, CommonModule]
 })
 export class BeginnerTestComponent implements OnInit {
   score = 0;
@@ -28,6 +30,8 @@ export class BeginnerTestComponent implements OnInit {
   lessonId: string = '';
   feedbackMessage: string = '';
   isCorrect: boolean | null = null;
+fireworks: { x?: string; y: string; color: string; delay: string; left?: number }[] = [];
+
 
   constructor(private quizService: QuizService, 
               private router: Router, 
@@ -41,17 +45,48 @@ export class BeginnerTestComponent implements OnInit {
       next: (data) => {
         this.questions = data;
         this.totalQuestions = data.length;
+  
+        console.log("📌 Întrebări primite din MongoDB:", data);
+        console.log("📊 Tipuri de întrebări:", this.questions.map(q => q.questionType));
       },
       error: (err) => {
         console.error('❌ Eroare la încărcarea întrebărilor din backend:', err);
       }
     });
+  
+    if (this.showResult) {
+    this.generateFireworks();
+  }
     const savedTheme = localStorage.getItem('selectedTheme') || 'theme-light';
     this.renderer.setAttribute(document.body, 'class', savedTheme);
-
-    this.questions = this.quizService.getQuestions('beginner');
-    this.totalQuestions = this.quizService.getTotalQuestions('beginner');
   }
+  
+generateFireworks() {
+  this.fireworks = [];
+  const colors = ['red', 'blue', 'yellow', 'magenta', 'lime', 'cyan', 'orange'];
+
+  const launcherConfigs = [
+    { left: 90, directionX: 1 },   // launcher stânga
+    { left: 580, directionX: -1 }  // launcher dreapta
+  ];
+
+  launcherConfigs.forEach(launcher => {
+    for (let i = 0; i < 15; i++) {
+      const horizontalSpread = launcher.directionX * (Math.random() * 60 + 10); // ±70px
+      const verticalHeight = -(Math.random() * 140 + 100); // până la -240px
+      const offsetLeft = Math.floor(Math.random() * 20 - 10); // ±10px pentru plecare
+
+      this.fireworks.push({
+        x: `${horizontalSpread}px`,
+        y: `${verticalHeight}px`,
+        delay: `${(Math.random() * 1.2).toFixed(2)}s`,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        left: launcher.left + offsetLeft
+      });
+    }
+  });
+}
+
 
   onAnswerSelected(option: string) {
     this.selectedAnswer = option;
@@ -74,6 +109,7 @@ export class BeginnerTestComponent implements OnInit {
 
     if (++this.currentQuestionIndex >= this.questions.length) {
       this.showResult = true;
+      this.generateFireworks();
       this.determineLesson();
     }
   }

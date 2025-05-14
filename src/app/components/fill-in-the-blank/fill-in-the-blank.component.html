@@ -1,14 +1,13 @@
 <h2>Fill in the blank</h2>
 <p>{{ question }}</p>
-  
-<div *ngFor="let option of options">
-  <button 
-    (click)="selectAnswer(option)" 
-    [ngClass]="{'selected-answer': selectedOption === option}"
-    [disabled]="isAnswered">
-    {{ option }}
-  </button>
+
+<div class="fill-in-container">
+  <input
+    type="text"
+    [(ngModel)]="userAnswer"
+    (ngModelChange)="onInputChange()"
+    [disabled]="isAnswered"
+    placeholder="Type your answer here"
+    class="fill-in-the-blank-input"
+  />
 </div>
-
-
-  

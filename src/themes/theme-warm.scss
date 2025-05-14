@@ -1,5 +1,5 @@
 body.theme-warm {
-  --bg-main: #fff6f0;                   /* fundal cald, foarte deschis */
+  --bg-main: #f9e9dd;                   /* fundal cald, foarte deschis */
   --bg-accent: #ffe7d0;                 /* accent crem-piersică */
   --text-main: #623a2b;                 /* maro cald, moale */
 
@@ -14,7 +14,7 @@ body.theme-warm {
   --header-bg: #fcb896;                /* fond cald piersică-roz */
   --header-text: #40271b;
 
-  --section-bg: #fdefe1;               /* crem foarte deschis */
+  --section-bg: #fbebdd;               /* crem foarte deschis */
   --section-text: #5a3627;
   --modal-background-color: var(--section-bg);
 
@@ -64,12 +64,12 @@ body.theme-warm {
   --modal-text-color: #4c2b20;
 
   --highlight-hover-color: #ffd8c0;
-  --correct-option-color: #85cb76;       /* verde pastelat */
-  --wrong-option-color: #e15757;
+ --correct-option-color: #2e731e;
+  --wrong-option-color: #ea5a5a;
   --previous-mistake-color: #ffb4a6;
 
   --input-background-color: #fff5ee;
-  --input-placeholder-color:#fdefe5;
+  --input-placeholder-color:#fcf6f1;
   --feedback-color: #d64c4c;
 
   --option-background-color: var(--highlight-background-color);
@@ -78,7 +78,7 @@ body.theme-warm {
 
   --audio-background-color: #fef6f2;
 
-  --svg-pattern-opacity: 0.1;
+  --svg-pattern-opacity: 0.15;
   --background-pattern: url('/assets/backgrounds/peach-fluff.png');
 
   
@@ -105,4 +105,7 @@ body.theme-warm {
       rgba(255, 245, 230, 0.4) 55%,
       rgba(255, 245, 230, 0) 100%
     );
+    --check-next-button:#9b4e39;
+    --check-next-button-hover:#8a361e ;
+
 }

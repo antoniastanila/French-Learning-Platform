@@ -112,25 +112,49 @@ router.delete('/:exerciseId', async (req, res) => {
 // 🔹 Returnează un set random de exerciții pentru testul de nivel
 router.get('/placement-test/:level', async (req, res) => {
   const level = req.params.level;
-  let ExerciseModel;
-
-  if (level === 'intermediate') {
-    ExerciseModel = IntermediateExercise;
-  } else if (level === 'advanced') {
-    ExerciseModel = AdvancedExercise;
-  } else {
-    ExerciseModel = BeginnerExercise;
-  }
 
   try {
-    const all = await ExerciseModel.find({});
-    const allExercises = all.flatMap(e => e.exercises);
+    let allExercises = [];
+
+    if (level === 'intermediate') {
+      // 🔹 1. Exerciții din toate lecțiile intermediate
+      const intermediateDocs = await IntermediateExercise.find({});
+      const intermediateExercises = intermediateDocs.flatMap(doc => doc.exercises);
+
+      // 🔹 2. Exerciții din ultimele 5 lecții beginner
+      const last5BeginnerDocs = await BeginnerExercise.find({})
+        .sort({ _id: -1 }) // sau { lessonId: -1 } dacă vrei pe bază de lecție
+        .limit(5);
+      const beginnerTailExercises = last5BeginnerDocs.flatMap(doc => doc.exercises);
+
+      // 🔹 3. Combinare
+      allExercises = [...intermediateExercises, ...beginnerTailExercises];
+
+    } else if (level === 'advanced') {
+      const advancedDocs = await AdvancedExercise.find({});
+      allExercises = advancedDocs.flatMap(doc => doc.exercises);
+    } else if (level === 'advanced') {
+      const advancedDocs = await AdvancedExercise.find({});
+      const advancedExercises = advancedDocs.flatMap(doc => doc.exercises);
+    
+      const last5IntermediateDocs = await IntermediateExercise.find({})
+        .sort({ _id: -1 }) // sau lessonId dacă ai nevoie
+        .limit(5);
+      const intermediateTailExercises = last5IntermediateDocs.flatMap(doc => doc.exercises);
+    
+      allExercises = [...advancedExercises, ...intermediateTailExercises];
+    } else {
+      const beginnerDocs = await BeginnerExercise.find({});
+      allExercises = beginnerDocs.flatMap(doc => doc.exercises);
+    }
+    
 
     const shuffled = allExercises.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 10); // sau orice număr dorești
+    const selected = shuffled.slice(0, 4); // sau orice număr dorești
 
     res.json(selected);
   } catch (err) {
+    console.error('❌ Eroare la generarea testului:', err);
     res.status(500).json({ message: 'Eroare la generarea testului', error: err.message });
   }
 });

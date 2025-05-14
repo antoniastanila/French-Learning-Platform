@@ -1,5 +1,5 @@
 button{
-    background-color: #d72672;
+  background-color: var(--accent-color);
     padding: 10px 20px;
     border-radius: 15px;
     font-size: 16px;
@@ -8,16 +8,30 @@ button{
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
     color: white;
-    margin-top: 10px;
+    /* margin-top: 10px; */
+      margin-bottom: 10px;
+
   }
   
   button:hover{
-    background-color: #b10f2e;
+    background-color: var(--accent-hover-color);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
     transform: scale(1.05);
   }
   .selected-answer {
-    background-color: yellow !important;
-    color: black !important;
-}
+    background-color: var(--accent-hover-color);
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  }
+  
+  /* .correct-answer {
+    background-color: #2e7d32 !important; 
+    color: white !important;
+  }
+  
+  .wrong-answer {
+    background-color: #c62828 !important; 
+    color: white !important;
+  } */
+
   

@@ -55,13 +55,13 @@ body.theme-dark {
   --example-text-color: #ffffff;
 
   --accent-color: #9f8cff;
-  --accent-hover-color: #7f6ade;
+  --accent-hover-color: #6850d7;
 
   --modal-text-color: #e0def4;
 
   --highlight-hover-color: #4d4870;
-  --correct-option-color: #30c96e;        /* verde neon stelar */
-  --wrong-option-color: #ff5555;
+  --correct-option-color: #3fa34d;
+  --wrong-option-color: #f86e6e;
   --previous-mistake-color: #ff6f91;
 
   --input-background-color: #35304a;
@@ -120,4 +120,8 @@ body.theme-dark {
 
   /* opțional, dar util dacă ai hover pe buton: */
   --profile-btn-hover: #a07eea;
+
+  --check-next-button:#6248e4;
+--check-next-button-hover:#462fbb ;
+
 }

@@ -11,7 +11,8 @@ import { ListeningQuestionComponent } from '../../components/listening-question/
 import { ReadingComprehensionComponent } from '../../components/reading-comprehension/reading-comprehension.component';
 import { catchError, of, forkJoin } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-
+import { PlacementTestService } from '../../services/placement-test.service'; // ✅ import nou
+import { Renderer2 } from '@angular/core';
 @Component({
   selector: 'app-intermediate-test',
   standalone: true,
@@ -36,18 +37,57 @@ export class IntermediateTestComponent implements OnInit {
   selectedAnswer: string | null = null;
   feedbackMessage: string = '';
   isCorrect: boolean | null = null;
+fireworks: { x?: string; y: string; color: string; delay: string; left?: number }[] = [];
 
   constructor(
     private quizService: QuizService,
     private router: Router,
     private authService: AuthService,
-    private lessonService: LessonService
+    private lessonService: LessonService,
+    private placementTestService: PlacementTestService,
+    private renderer: Renderer2,
   ) {}
 
   ngOnInit(): void {
-    this.questions = this.quizService.getQuestions('intermediate');
-    this.totalQuestions = this.quizService.getTotalQuestions('intermediate');
+    const savedTheme = localStorage.getItem('selectedTheme') || 'theme-light';
+    this.renderer.setAttribute(document.body, 'class', savedTheme);
+    this.placementTestService.getTestQuestions('intermediate').subscribe({
+      next: (data) => {
+        this.questions = data;
+        this.totalQuestions = data.length;
+        console.log('✅ Întrebări intermediate + ultimele 5 beginner:', data.map(q => q.questionType));
+      },
+      error: (err) => {
+        console.error('❌ Eroare la încărcarea întrebărilor pentru testul intermediar:', err);
+      }
+    });
   }
+  
+  generateFireworks() {
+  this.fireworks = [];
+  const colors = ['red', 'blue', 'yellow', 'magenta', 'lime', 'cyan', 'orange'];
+
+  const launcherConfigs = [
+    { left: 90, directionX: 1 },   // launcher stânga
+    { left: 580, directionX: -1 }  // launcher dreapta
+  ];
+
+  launcherConfigs.forEach(launcher => {
+    for (let i = 0; i < 15; i++) {
+      const horizontalSpread = launcher.directionX * (Math.random() * 60 + 10); // ±70px
+      const verticalHeight = -(Math.random() * 140 + 100); // până la -240px
+      const offsetLeft = Math.floor(Math.random() * 20 - 10); // ±10px pentru plecare
+
+      this.fireworks.push({
+        x: `${horizontalSpread}px`,
+        y: `${verticalHeight}px`,
+        delay: `${(Math.random() * 1.2).toFixed(2)}s`,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        left: launcher.left + offsetLeft
+      });
+    }
+  });
+}
 
   onAnswerSelected(selectedOption: string) {
     this.selectedAnswer = selectedOption;
@@ -79,6 +119,7 @@ export class IntermediateTestComponent implements OnInit {
       this.currentQuestionIndex++;
     } else {
       this.showResult = true;
+      this.generateFireworks();
       this.determineLesson();
     }
   }
@@ -160,13 +201,4 @@ export class IntermediateTestComponent implements OnInit {
     this.router.navigate(['/intermediate-main-page']);
   }
 
-  resetQuiz() {
-    this.currentQuestionIndex = 0;
-    this.score = 0;
-    this.showResult = false;
-    this.feedbackMessage = '';
-    this.isCorrect = null;
-    this.selectedAnswer = null;
-    this.isAnswered = false;
-  }
 }

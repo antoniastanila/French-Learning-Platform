@@ -11,14 +11,18 @@ import { CommonModule } from '@angular/common';
 export class MultipleChoiceQuestionComponent {
   @Input() question: string = '';
   @Input() options: string[] = [];
-  @Input() isAnswered: boolean = false; 
+  @Input() correctAnswer: string = ''; 
+  @Input() isAnswered: boolean = false;
   @Output() answerSelected = new EventEmitter<string>();
+  
   selectedOption: string | null = null;
 
   selectAnswer(option: string) {
-    if (!this.isAnswered) { 
-      this.selectedOption = option; 
+    if (!this.isAnswered) {
+      this.selectedOption = option;
       this.answerSelected.emit(option);
     }
   }
+
+  
 }

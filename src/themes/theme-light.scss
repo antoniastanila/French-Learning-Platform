@@ -1,5 +1,5 @@
 body.theme-light {
-  --bg-main: #fff4f1;               /* fundal general: roz foarte pal */
+  --bg-main: #fce7e1;               /* fundal general: roz foarte pal */
   --bg-accent: #fffdfd;             /* alb cald */
   --text-main: #413535;             /* maro prăfuit, folosit pentru text */
 
@@ -14,7 +14,7 @@ body.theme-light {
   --header-bg: #e29c90;             /* păstrat conform cerinței */
   --header-text: #3c2c33;
 
-  --section-bg: #ffeae5;
+  --section-bg: #fee2db;
   --section-text: #3c2c33;
 
   --progress-bg: #f7d8cf;           /* fundal bară progres */
@@ -63,12 +63,12 @@ body.theme-light {
   --modal-text-color: #2c2c2c;
 
   --highlight-hover-color: #f8c6bd;
-  --correct-option-color: #8bc79f;
+ --correct-option-color: #2e731e;
   --wrong-option-color: #ea5a5a;
   --previous-mistake-color: #e895a7;
 
   --input-background-color: #ffffff;
-  --input-placeholder-color:#feefef;
+  --input-placeholder-color:#fcf5f5;
   --feedback-color: #ef5350;
 
   --option-background-color: var(--highlight-background-color);
@@ -76,7 +76,7 @@ body.theme-light {
   --option-hover-color: #fdebe8;
 
   --audio-background-color: #fdf3f1;
-  --svg-pattern-opacity: 0.08;
+  --svg-pattern-opacity: 0.15;
 
   --header-gradient: linear-gradient(to top, #e29c90, #f9bdb1);
   --header-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), inset 0 6px 8px rgba(255, 255, 255, 0.4);
@@ -109,4 +109,7 @@ body.theme-light {
 );
 
 --modal-button-hover: #e79591;
+--check-next-button:#9e695a;
+--check-next-button-hover:#8a5243 ;
+
 }
