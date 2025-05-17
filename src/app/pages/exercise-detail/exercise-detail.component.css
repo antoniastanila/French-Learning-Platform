@@ -16,7 +16,7 @@ body {
   background-color: var(--card-background-color);
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px var(--shadow-card);
+  box-shadow: 0px 20px 20px var(--shadow-card);
   text-align: left;
   border: 3px solid var(--card-border-color);
   width: 100%;
@@ -54,6 +54,8 @@ label:not(.selected-option):hover {
 
 /* Butonul de trimitere a răspunsului */
 .exercise-container button {
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+
   background-color: var(--accent-color);
   color: white;
   padding: 12px;
@@ -80,6 +82,7 @@ label:not(.selected-option):hover {
   font-weight: bold;
   margin-top: 10px;
   color: var(--feedback-color);
+  text-align: center;
 }
 
 /* Containerul butoanelor finale */
@@ -109,10 +112,6 @@ input[type="radio"] {
   transition: background-color 0.3s ease, padding 0.3s ease;
 }
 
-/* Hover peste opțiune selectată */
-.selected-option:hover {
-  background-color: var(--accent-hover-color); /* un highlight mai intens când selectezi și dai hover */
-}
 
 .selected-correct-option {
   background-color: var(--correct-option-color);
@@ -215,8 +214,6 @@ input[type="radio"] {
   border-color: var(--accent-color);
   box-shadow: 0 0 5px rgba(187, 90, 90, 0.5);
 }
-
-/* Banner de review */
 .review-banner {
   background-color: var(--input-background-color);
   color: var(--text-main);
@@ -228,16 +225,23 @@ input[type="radio"] {
   max-width: 500px;
   box-shadow: 0 4px 10px var(--shadow-card);
   opacity: 0;
-  transition: opacity 1.5s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 1.5s ease-in-out, max-height 0.5s ease-in-out;
 }
 
+/* când e activat */
 .fade-in {
   opacity: 1;
+  max-height: 80px; /* sau cât are bannerul tău complet */
 }
 
+/* când se ascunde */
 .fade-out {
   opacity: 0;
+  max-height: 0;
 }
+
 
 /* Fireworks */
 .firework {
@@ -295,3 +299,66 @@ input[type="radio"] {
   opacity: 1;
   transform: scale(1);
 }
+
+.exit-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInOverlay 0.3s ease forwards;
+}
+
+.modal-content {
+  background-color: var(--background-color);
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--accent-color);
+  transform: translateY(100px); /* ✅ starea inițială */
+  opacity: 0;                   /* ✅ starea inițială */
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+  animation: slideIn 0.4s ease-out forwards;
+
+}
+/* 
+.modal-content.animate-in {
+  transform: translateY(0);    
+  opacity: 1;
+} */
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.5s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+
+}
+.modal-content button:hover {
+  background-color: var(--accent-hover-color);
+    transform: scale(1.05);
+
+}
+

@@ -150,7 +150,7 @@ router.get('/placement-test/:level', async (req, res) => {
     
 
     const shuffled = allExercises.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 4); // sau orice număr dorești
+    const selected = shuffled.slice(0, 30); // sau orice număr dorești
 
     res.json(selected);
   } catch (err) {

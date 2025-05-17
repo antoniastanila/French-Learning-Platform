@@ -132,5 +132,8 @@ export class LoginPageComponent implements AfterViewInit{
     });
   }
  
+  navigateToSignUp() {
+  this.router.navigate(['/signup']);
+}
   
 }

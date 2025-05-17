@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { QuizService } from '../../services/quiz.service';
@@ -39,16 +39,31 @@ export class AdvancedTestComponent implements OnInit {
   isCorrect: boolean | null = null;
 fireworks: { x?: string; y: string; color: string; delay: string; left?: number }[] = [];
 
+showLeaveWarning = false;
+  private ignoreNavigation = false;
+
   constructor(
     private quizService: QuizService,
     private router: Router,
     private authService: AuthService,
     private lessonService: LessonService,
+    private renderer: Renderer2,
+
     private placementTestService: PlacementTestService
 
   ) {}
-
+  @HostListener('window:beforeunload', ['$event'])
+handleBeforeUnload(event: BeforeUnloadEvent) {
+    if (!this.showResult) {
+      event.preventDefault();
+      event.returnValue = ''; // necesar pentru unele browsere
+    }
+  }
   ngOnInit(): void {
+   //history.pushState(null, '', location.href);
+
+    window.addEventListener('popstate', this.handleBrowserBack);
+
     this.placementTestService.getTestQuestions('advanced').subscribe({
       next: (data) => {
         this.questions = data;
@@ -59,10 +74,62 @@ fireworks: { x?: string; y: string; color: string; delay: string; left?: number 
         console.error('❌ Eroare la încărcarea întrebărilor pentru testul advanced:', err);
       }
     });
+     const savedTheme = localStorage.getItem('selectedTheme') || 'theme-light';
+    this.renderer.setAttribute(document.body, 'class', savedTheme);
+   
     
   }
 
-    
+  
+canDeactivate(): Promise<boolean> {
+  if (this.showResult) return Promise.resolve(true);
+
+  this.showLeaveWarning = true;
+
+  return new Promise((resolve) => {
+    this.confirmationResolver = resolve;
+  });
+}
+
+
+confirmationResolver: ((confirmed: boolean) => void) | null = null;
+
+handleBrowserBack = (event: PopStateEvent) => {
+  if (!this.ignoreNavigation && !this.showResult) {
+    this.showLeaveWarning = true;
+
+    // pushState din nou ca să păstrezi utilizatorul pe pagină
+    history.pushState(null, '', location.href);
+  }
+};
+
+
+confirmExit() {
+  this.ignoreNavigation = true;            
+  this.showLeaveWarning = false;
+  this.confirmationResolver?.(true);       
+  history.back();  
+}
+
+
+stayOnPage() {
+  this.showLeaveWarning = false;
+  this.confirmationResolver?.(false);
+}
+
+ngOnDestroy(): void {
+  window.removeEventListener('popstate', this.handleBrowserBack);
+}
+
+    normalizeText(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')              // descompune caracterele cu diacritice
+    .replace(/[\u0300-\u036f]/g, '') // elimină diacriticele
+    .replace(/\s+/g, ' ')          // normalizează spațiile multiple
+    .trim();                       // elimină spațiile de la început/sfârșit
+}
+
 generateFireworks() {
   this.fireworks = [];
   const colors = ['red', 'blue', 'yellow', 'magenta', 'lime', 'cyan', 'orange'];
@@ -97,14 +164,15 @@ generateFireworks() {
     if (this.selectedAnswer === null) return;
 
     const currentQuestion = this.questions[this.currentQuestionIndex];
-    if (this.selectedAnswer === currentQuestion.correctAnswer) {
-      this.score++;
-      this.feedbackMessage = 'Correct!';
-      this.isCorrect = true;
-    } else {
-      this.feedbackMessage = `Incorrect! The correct answer is: ${currentQuestion.correctAnswer}`;
-      this.isCorrect = false;
-    }
+   if (this.normalizeText(this.selectedAnswer) === this.normalizeText(currentQuestion.correctAnswer)) {
+  this.score++;
+  this.feedbackMessage = 'Correct!';
+  this.isCorrect = true;
+} else {
+  this.feedbackMessage = `Incorrect! The correct answer is: ${currentQuestion.correctAnswer}`;
+  this.isCorrect = false;
+}
+
 
     this.isAnswered = true;
   }

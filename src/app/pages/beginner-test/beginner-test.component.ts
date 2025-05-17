@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, HostListener  } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuizService } from '../../services/quiz.service';
 import { CommonModule } from '@angular/common';
@@ -30,8 +30,10 @@ export class BeginnerTestComponent implements OnInit {
   lessonId: string = '';
   feedbackMessage: string = '';
   isCorrect: boolean | null = null;
-fireworks: { x?: string; y: string; color: string; delay: string; left?: number }[] = [];
+  fireworks: { x?: string; y: string; color: string; delay: string; left?: number }[] = [];
 
+  showLeaveWarning = false;
+  private ignoreNavigation = false;
 
   constructor(private quizService: QuizService, 
               private router: Router, 
@@ -40,12 +42,23 @@ fireworks: { x?: string; y: string; color: string; delay: string; left?: number 
               private renderer: Renderer2,
               private placementTestService: PlacementTestService) {}
 
+    
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: BeforeUnloadEvent) {
+    if (!this.showResult) {
+      event.preventDefault();
+      event.returnValue = ''; // necesar pentru unele browsere
+    }
+  }
   ngOnInit(): void {
+   // history.pushState(null, '', location.href);
+
+    window.addEventListener('popstate', this.handleBrowserBack);
+
     this.placementTestService.getTestQuestions('beginner').subscribe({
       next: (data) => {
         this.questions = data;
         this.totalQuestions = data.length;
-  
         console.log("📌 Întrebări primite din MongoDB:", data);
         console.log("📊 Tipuri de întrebări:", this.questions.map(q => q.questionType));
       },
@@ -54,12 +67,64 @@ fireworks: { x?: string; y: string; color: string; delay: string; left?: number 
       }
     });
   
-    if (this.showResult) {
-    this.generateFireworks();
-  }
+  //   if (this.showResult) {
+  //   this.generateFireworks(); 
+  // }
     const savedTheme = localStorage.getItem('selectedTheme') || 'theme-light';
     this.renderer.setAttribute(document.body, 'class', savedTheme);
+   // window.addEventListener('popstate', this.handleBrowserBack);
+
   }
+
+canDeactivate(): Promise<boolean> {
+  if (this.showResult) return Promise.resolve(true);
+
+  this.showLeaveWarning = true;
+
+  return new Promise((resolve) => {
+    this.confirmationResolver = resolve;
+  });
+}
+
+
+confirmationResolver: ((confirmed: boolean) => void) | null = null;
+
+handleBrowserBack = (event: PopStateEvent) => {
+  if (!this.ignoreNavigation && !this.showResult) {
+    this.showLeaveWarning = true;
+
+    // pushState din nou ca să păstrezi utilizatorul pe pagină
+    history.pushState(null, '', location.href);
+  }
+};
+
+confirmExit() {
+  this.ignoreNavigation = true;            
+  this.showLeaveWarning = false;
+  this.confirmationResolver?.(true);       
+  history.back();                          
+}
+
+
+stayOnPage() {
+  this.showLeaveWarning = false;
+  this.confirmationResolver?.(false);
+}
+
+ngOnDestroy(): void {
+  window.removeEventListener('popstate', this.handleBrowserBack);
+}
+
+
+  normalizeText(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')              // descompune caracterele cu diacritice
+    .replace(/[\u0300-\u036f]/g, '') // elimină diacriticele
+    .replace(/\s+/g, ' ')          // normalizează spațiile multiple
+    .trim();                       // elimină spațiile de la început/sfârșit
+}
+
   
 generateFireworks() {
   this.fireworks = [];
@@ -95,7 +160,7 @@ generateFireworks() {
   checkAnswer() {
     if (!this.selectedAnswer) return;
     const current = this.questions[this.currentQuestionIndex];
-    this.isCorrect = this.selectedAnswer === current.correctAnswer;
+    this.isCorrect = this.normalizeText(this.selectedAnswer) === this.normalizeText(current.correctAnswer);
     this.feedbackMessage = this.isCorrect ? 'Correct!' : `Incorrect! The correct answer is: ${current.correctAnswer}`;
     if (this.isCorrect) this.score++;
     this.isAnswered = true;

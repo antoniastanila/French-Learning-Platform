@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./exercise-detail.component.css'],
   imports: [CommonModule, FormsModule]
 })
-export class ExerciseDetailComponent implements OnInit {
+export class ExerciseDetailComponent implements OnInit, OnDestroy {
   exercises: any[] = [];
   lessonId: string | null = null;
   selectedAnswer: string = ""; 
@@ -34,8 +34,14 @@ export class ExerciseDetailComponent implements OnInit {
   showReviewMessage: boolean = false;
   reviewFadeClass: string = ''; 
 
+  showLeaveWarning = false;
+  private ignoreNavigation = false;
+  
+  confirmationResolver: ((confirmed: boolean) => void) | null = null;
+
   constructor(private route: ActivatedRoute, private http: HttpClient, private exerciseService: ExerciseService,  private router: Router, private authService: AuthService) {}
 
+  
  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
         this.lessonId = params.get('lessonId');
@@ -62,7 +68,53 @@ export class ExerciseDetailComponent implements OnInit {
             }
         });
     });
- }
+    window.addEventListener('popstate', this.handleBrowserBack);
+  }
+
+ 
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: BeforeUnloadEvent) {
+    if (!this.allExercisesCompleted) {
+      event.preventDefault();
+      event.returnValue = ''; // necesar pentru unele browsere
+    }
+  }
+
+ handleBrowserBack = (event: PopStateEvent) => {
+  if (!this.ignoreNavigation && !this.allExercisesCompleted && !this.showLeaveWarning) {
+    this.showLeaveWarning = true;
+
+    // Adăugăm un nou entry în istoric doar o dată, la prima interceptare
+    history.pushState(null, '', location.href);
+  }
+};
+
+  confirmExit() {
+    this.ignoreNavigation = true;
+    this.showLeaveWarning = false;
+    this.confirmationResolver?.(true);
+    history.back(); 
+  }
+
+  stayOnPage() {
+    this.showLeaveWarning = false;
+    this.confirmationResolver?.(false);
+  }
+
+  canDeactivate(): Promise<boolean> {
+      console.log('🛑 Interceptare canDeactivate');
+
+    if (this.allExercisesCompleted) return Promise.resolve(true);
+    this.showLeaveWarning = true;
+    return new Promise((resolve) => {
+      this.confirmationResolver = resolve;
+    });
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('popstate', this.handleBrowserBack);
+  }
+
 
  getRandomExercises(array: any[], count: number): any[] {
     const copied = [...array]; // 🔸 Copie locală ca să nu afectăm originalul
@@ -102,6 +154,7 @@ export class ExerciseDetailComponent implements OnInit {
           
             // ✅ Afișăm mesajul animat pentru revizuire
             this.showReviewMessage = true;
+
             this.reviewFadeClass = 'fade-in';
           
             setTimeout(() => {
@@ -153,7 +206,7 @@ export class ExerciseDetailComponent implements OnInit {
     const normalizedCorrectAnswer = this.normalizeText(currentExercise.correctAnswer);
     
     if (normalizedUserAnswer === normalizedCorrectAnswer) { 
-        this.feedbackMessage = "✅ Răspuns corect!";
+        this.feedbackMessage = "Correct!  ";
         this.wasAnswerCorrect = true;
         const wrongIndex = this.wrongExercisesIndexes.indexOf(this.currentExerciseIndex);
         if (wrongIndex !== -1) {
@@ -161,7 +214,7 @@ export class ExerciseDetailComponent implements OnInit {
         }
 
     } else {
-        this.feedbackMessage = `❌ Răspuns greșit. Corect: ${currentExercise.correctAnswer}`;
+        this.feedbackMessage = `Incorrect! Correct solution: ${currentExercise.correctAnswer}`;
         this.wasAnswerCorrect = false;
         if (!this.wrongExercisesIndexes.includes(this.currentExerciseIndex)) { 
             this.wrongExercisesIndexes.push(this.currentExerciseIndex);

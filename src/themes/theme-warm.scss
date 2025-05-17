@@ -9,7 +9,7 @@ body.theme-warm {
 
   --bg-card: #ffe2cc;                   /* card pastel cald */
   --text-card: #4d2d1d;
-  --shadow-card: rgba(253, 167, 126, 0.15);
+  --shadow-card: rgba(0, 0, 0, 0.4);
 
   --header-bg: #fcb896;                /* fond cald piersică-roz */
   --header-text: #40271b;
@@ -63,18 +63,19 @@ body.theme-warm {
 
   --modal-text-color: #4c2b20;
 
-  --highlight-hover-color: #ffd8c0;
- --correct-option-color: #2e731e;
-  --wrong-option-color: #ea5a5a;
+  --highlight-hover-color: #fcc5a3;
+ --correct-option-color: #63965b;
+  --wrong-option-color: #ea6464;
   --previous-mistake-color: #ffb4a6;
 
   --input-background-color: #fff5ee;
   --input-placeholder-color:#fcf6f1;
-  --feedback-color: #d64c4c;
+    --feedback-color: var(--modal-text-color);
+
 
   --option-background-color: var(--highlight-background-color);
   --option-selected-color: var(--highlight-hover-color);
-  --option-hover-color: #fff0e4;
+  --option-hover-color: #ffd8c0;
 
   --audio-background-color: #fef6f2;
 

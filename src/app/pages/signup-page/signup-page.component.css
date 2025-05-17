@@ -86,3 +86,19 @@ input {
   justify-content: center;
   margin-top: 12px;
 }
+
+.login-redirect {
+  margin-top: 20px;
+  text-align: center;
+  color: var(--text-main);
+
+  .login-link {
+    color: var(--btn-primary);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .login-link:hover {
+    text-decoration: underline;
+  }
+}

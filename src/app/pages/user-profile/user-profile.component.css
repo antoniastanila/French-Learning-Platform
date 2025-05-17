@@ -48,6 +48,14 @@
   transition: background-color 0.3s ease, transform 0.3s ease;
   transform: scale(1);
 }
+.test-action-buttons {
+  display: flex;
+  gap: 16px; /* spațiu între butoane */
+  justify-content: center; /* opțional: centrează-le orizontal */
+  flex-wrap: wrap; /* opțional: pentru mobile, ca să nu se suprapună */
+  margin-top: 12px;
+}
+
 
 .card button:hover {
   background-color: var(--btn-hover);
@@ -218,11 +226,11 @@
 }
 
 .clickable-lesson:hover {
-  background-color: #f0f0f0; /* hover gri deschis */
+  background-color: var(--btn-hover); /* hover gri deschis */
 }
 
 .selected {
-  background-color: #6B0A2E; /* visiniu */
+  background-color: var(--btn-primary);
   color: #fff;
 }
 

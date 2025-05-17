@@ -23,5 +23,11 @@
     </form>
 
     <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+    <div class="login-redirect">
+  <p>Already have an account?
+    <span class="login-link" (click)="navigateToLogin()">Log in</span>
+  </p>
+</div>
+
   </div>
 </div>

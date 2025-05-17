@@ -11,7 +11,7 @@ body.theme-earth {
 
   --bg-card: #3a2821;
   --text-card: #f3e2d0;
-  --shadow-card: rgba(42, 28, 22, 0.15); /* difuz, cald */
+  --shadow-card: rgba(0, 0, 0, 0.9);
 
   --header-bg: #34241c;
   --header-text: #fceee0;
@@ -64,15 +64,15 @@ body.theme-earth {
   --modal-text-color: var(--description-color);
 
   --highlight-hover-color: #5b3c2e;
-  --correct-option-color: #3fa34d;
-  --wrong-option-color: #f7513f;
+  --correct-option-color: #1c5124;
+  --wrong-option-color: #631910;
   --previous-mistake-color: #f96d59;
   --input-background-color: #493227;
   --input-placeholder-color:#a96f4f;
     --input-placeholder-border-color:#67a94f;
 
 
-  --feedback-color: #f96d59;
+  --feedback-color: var(--modal-text-color);
 
   --option-background-color: var(--highlight-background-color);
   --option-selected-color: var(--highlight-hover-color);

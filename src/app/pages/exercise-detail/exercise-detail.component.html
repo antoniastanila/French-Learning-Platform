@@ -101,10 +101,10 @@
   </button>
   
 </div>
-
-<div *ngIf="showReviewMessage" class="review-banner" [ngClass]="reviewFadeClass">
+<div class="review-banner" [ngClass]="reviewFadeClass">
   Let's get to the previous mistakes
 </div>
+
 
 <!-- Pagina de felicitare apare doar când toate exercițiile sunt finalizate -->
 <div *ngIf="allExercisesCompleted" class="congratulations-container">
@@ -132,3 +132,12 @@
     <button (click)="goToMainPage()">Go to Main Page</button>
 </div>
 </div>
+
+<div class="exit-modal" *ngIf="showLeaveWarning">
+  <div class="modal-content animate-in">
+    <p>Are you sure you want to quit? You will lose all the progress on this exercise.</p>
+    <button (click)="confirmExit()">QUIT!</button>
+    <button (click)="stayOnPage()">Stay on this page</button>
+  </div>
+</div>
+

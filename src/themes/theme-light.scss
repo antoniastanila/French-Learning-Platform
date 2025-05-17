@@ -9,7 +9,7 @@ body.theme-light {
 
   --bg-card: #ffeae5;               /* fundal carduri: roz piersică deschis */
   --text-card: #413535;
-  --shadow-card: rgba(0, 0, 0, 0.06);
+  --shadow-card: rgba(0, 0, 0, 0.4);
 
   --header-bg: #e29c90;             /* păstrat conform cerinței */
   --header-text: #3c2c33;
@@ -63,17 +63,18 @@ body.theme-light {
   --modal-text-color: #2c2c2c;
 
   --highlight-hover-color: #f8c6bd;
- --correct-option-color: #2e731e;
-  --wrong-option-color: #ea5a5a;
+ --correct-option-color: #63965b;
+  --wrong-option-color: #ea6464;
   --previous-mistake-color: #e895a7;
 
   --input-background-color: #ffffff;
   --input-placeholder-color:#fcf5f5;
-  --feedback-color: #ef5350;
+   --feedback-color: var(--modal-text-color);
+
 
   --option-background-color: var(--highlight-background-color);
   --option-selected-color: var(--highlight-hover-color);
-  --option-hover-color: #fdebe8;
+  --option-hover-color: #f7ccc5;
 
   --audio-background-color: #fdf3f1;
   --svg-pattern-opacity: 0.15;

@@ -66,5 +66,9 @@ export class SignupPageComponent implements OnInit {
     });
 }
 
+navigateToLogin() {
+  this.router.navigate(['/login']);
+}
+
 }
 

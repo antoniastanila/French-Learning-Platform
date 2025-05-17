@@ -2,7 +2,7 @@
 <div class="profile-container">
   <!-- CARD PROFIL -->
   <div class="card">
-    <h2>Profil utilizator</h2>
+    <h2>User profile</h2>
     
     <img [src]="profilePicUrl" alt="Profile Picture" class="profile-pic clickable" />
     <p><strong>First Name:</strong> {{ firstName }}</p>
@@ -11,26 +11,31 @@
     <p><strong>Email:</strong> {{ email }}</p>
     <p><strong>Registered on:</strong> {{ createdAt | date: 'longDate' }}</p>
 
-    <button (click)="openEditModal()">Editează profil</button>
+    <button (click)="openEditModal()">Edit profile</button>
   </div>
 
   <!-- CARD LECȚII -->
   <div class="card">
-    <h3>Lecții completate</h3>
+    <h3>Completed lessons:</h3>
     <p class="test-info">
-      Vrei să generezi un test cu lecțiile pe care nu le stăpânești atât de bine?
+      Would you like to generate a test with the lessons you don't quite master yet?
       <br />
-      Click pe butonul de mai jos!
+      Click on the button below!
     </p>
 
     <!-- Butoane acțiune -->
     <div class="button-group">
       <button *ngIf="!selectMode" (click)="selectLessonsForTest()" class="test-button">
-        Selectează lecții pentru test
+        Select lessons for the test
       </button>
       <div *ngIf="selectMode" class="test-action-buttons">
-        <button (click)="generateTest()" class="test-button confirm">Generează test</button>
-        <button class="test-button cancel">Renunță</button>
+ <button 
+    *ngIf="selectedLessons.size > 0" 
+    (click)="generateTest()" 
+    class="test-button confirm">
+    Generate test
+  </button>
+          <button (click)="cancelSelection()" class="test-button cancel">Cancel</button>
       </div>
     </div>
 
@@ -81,11 +86,11 @@
     <input type="text" [(ngModel)]="tempUsername" (blur)="checkUsernameAvailability()" />
     <div class="error" *ngIf="usernameError">{{ usernameError }}</div>
 
-    <label for="theme-modal-select"><strong>Tema aplicației:</strong></label>
+    <label for="theme-modal-select"><strong>App theme:</strong></label>
     <select id="theme-modal-select" [(ngModel)]="tempTheme" (ngModelChange)="applyTempTheme()">
       <option value="theme-light">🌸 Paris Breeze</option>
       <option value="theme-warm">🍑 Peach Fluff</option>
-      <option value="theme-earth">🍫 Chocolate Cappuccino</option>  
+      <option value="theme-earth">🍫 Melted Chocolate </option>  
       <option value="theme-dark">🌙 Midnight Moon</option>
     </select>
     

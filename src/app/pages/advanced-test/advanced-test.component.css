@@ -44,7 +44,7 @@ body {
   background-color: var(--section-bg);
 
   border: 2px solid var(--card-border-color);
-  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 20px var(--shadow-card);
 
  padding: 20px 20px 20px 20px;  
  margin: 0px auto;
@@ -275,4 +275,79 @@ body {
     transform: translate(var(--x), var(--y)) scale(0.5);
     opacity: 0;
   }
+}
+
+
+.exit-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px); /* 🔵 blur pe fundal */
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInOverlay 0.3s ease forwards;
+}
+
+.modal-content {
+  background-color: var(--background-color);
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--accent-color); /* 🔵 bordură accentuată */
+  animation: slideUp 0.4s ease-out forwards; /* 🔵 anim slide in */
+  transform: translateY(100px); /* inițial jos */
+  opacity: 0;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.5s ease;
+}
+
+.modal-content button:hover {
+  background-color: var(--accent-hover-color);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap; /* ca să arate ok și pe mobil */
+}
+
+.modal-buttons button {
+  width: auto !important;
+  flex: 1 1 auto;
+  max-width: 180px;
 }

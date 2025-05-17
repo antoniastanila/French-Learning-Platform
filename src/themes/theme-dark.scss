@@ -10,7 +10,7 @@ body.theme-dark {
 
   --bg-card: #2a263b;                    /* fundal stelar */
   --text-card: #f5f4fa;
-  --shadow-card: rgba(0, 0, 0, 0.3);
+  --shadow-card: rgba(0, 0, 0, 0.9);
 
   --header-bg: #192343;                  /* cer în amurg */
   --header-text: #fafafa;
@@ -60,12 +60,12 @@ body.theme-dark {
   --modal-text-color: #e0def4;
 
   --highlight-hover-color: #4d4870;
-  --correct-option-color: #3fa34d;
-  --wrong-option-color: #f86e6e;
+  --correct-option-color: #245f2d;
+  --wrong-option-color: #883025;
   --previous-mistake-color: #ff6f91;
 
   --input-background-color: #35304a;
-  --feedback-color: #f6687c;
+  --feedback-color: var(--modal-text-color);
 
   --option-background-color: var(--highlight-background-color);
   --option-selected-color: var(--highlight-hover-color);

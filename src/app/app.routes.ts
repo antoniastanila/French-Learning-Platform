@@ -20,6 +20,8 @@ import { AdvancedMainPageComponent } from './pages/advanced-main-page/advanced-m
 import { FacebookCallbackComponent } from './pages/facebook-callback/facebook-callback.component';
 import { GeneratedTestComponent } from './pages/generated-test/generated-test.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { ConfirmExitGuard } from './guards/confirm-exit.guard';
+
 
 export const appRoutes: Routes = [
   {
@@ -32,18 +34,18 @@ export const appRoutes: Routes = [
   { path: 'signup', component: SignupPageComponent },
   { path: 'start-page', component: StartPageComponent}, 
   { path: 'beginner', component: BeginnerComponent, canActivate: [AuthGuard]  },
-  { path: 'beginner-test', component: BeginnerTestComponent },
+  { path: 'beginner-test', component: BeginnerTestComponent, canDeactivate: [ConfirmExitGuard] },
   { path: 'intermediate', component: IntermediateComponent, canActivate: [AuthGuard]  },
-  { path: 'intermediate-test', component: IntermediateTestComponent },
+  { path: 'intermediate-test', component: IntermediateTestComponent, canDeactivate: [ConfirmExitGuard]  },
   { path: 'advanced', component: AdvancedComponent, canActivate: [AuthGuard]  },
   { path: 'lessons', component: LessonListComponent },
   //{ path: '', component: LessonListComponent },
   { path: 'lesson/:level/:id', component: LessonDetailComponent },
   { path: 'beginner-main-page', component: BeginnerMainPageComponent, canActivate: [AuthGuard] },
-  { path: 'exercises/:lessonId', component: ExerciseDetailComponent, canActivate: [AuthGuard]  },
+  { path: 'exercises/:lessonId', component: ExerciseDetailComponent, canActivate: [AuthGuard], canDeactivate: [ConfirmExitGuard]  },
   { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'intermediate-main-page', component: IntermediateMainPageComponent },
-  { path: 'advanced-test', component: AdvancedTestComponent},
+  { path: 'advanced-test', component: AdvancedTestComponent, canDeactivate: [ConfirmExitGuard] },
   { path: 'advanced-main-page', component: AdvancedMainPageComponent},
   { path: 'auth/facebook/callback', component: FacebookCallbackComponent },
   { path: 'generated-test', component: GeneratedTestComponent },
