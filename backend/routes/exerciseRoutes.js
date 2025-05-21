@@ -37,23 +37,27 @@ router.get('/:lessonId', async (req, res) => {
 });
 
 // 🔹 Endpoint pentru validarea răspunsului la exerciții
+// În exerciseRoutes.js
 router.post('/:exerciseId/validate', async (req, res) => {
   try {
-    const { userAnswer } = req.body;
+    const { userAnswer, index = 0 } = req.body;
+
     const exercise =
       (await BeginnerExercise.findById(req.params.exerciseId)) ||
       (await IntermediateExercise.findById(req.params.exerciseId)) ||
       (await AdvancedExercise.findById(req.params.exerciseId));
 
-    if (!exercise) {
+    if (!exercise || !exercise.exercises?.[index]) {
       return res.status(404).json({ message: 'Exercițiul nu a fost găsit.' });
     }
 
-    const isCorrect = exercise.correctAnswer === userAnswer;
+    const actual = exercise.exercises[index];
+    const isCorrect = actual.correctAnswer === userAnswer;
+
     res.json({
       isCorrect,
-      correctAnswer: exercise.correctAnswer,
-      message: isCorrect ? 'Răspuns corect!' : `Răspuns greșit. Corect: ${exercise.correctAnswer}`
+      correctAnswer: actual.correctAnswer,
+      message: isCorrect ? 'Răspuns corect!' : `Răspuns greșit. Corect: ${actual.correctAnswer}`
     });
   } catch (error) {
     res.status(500).json({ message: 'Eroare la validarea răspunsului.', error });
@@ -150,7 +154,7 @@ router.get('/placement-test/:level', async (req, res) => {
     
 
     const shuffled = allExercises.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 30); // sau orice număr dorești
+    const selected = shuffled.slice(0, 3); // sau orice număr dorești
 
     res.json(selected);
   } catch (err) {

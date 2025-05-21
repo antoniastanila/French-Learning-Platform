@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// 🔹 Schema pentru un singur exercițiu (fără lessonId individual)
 const SingleExerciseSchema = new mongoose.Schema({
   question: { type: String, required: true },
   questionType: {
@@ -15,7 +14,7 @@ const SingleExerciseSchema = new mongoose.Schema({
   audioUrl: { type: String, required: false }
 });
 
-// 🔹 Schema principală, unde `lessonId` este la nivel de document
+
 const ExerciseSchema = new mongoose.Schema({
   lessonId: { type: mongoose.Schema.Types.ObjectId, required: true, refPath: 'lessonRef' },
   lessonRef: {

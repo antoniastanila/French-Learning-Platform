@@ -21,6 +21,15 @@
         {{ option }}
       </label>
     </div>
+      <!-- Adaugă DOAR în development -->
+<p 
+    *ngIf="!environment.production && currentExercise.correctAnswer"
+    style="display: none;" 
+    class="correct-answer"
+    [attr.data-correct-answer]="currentExercise.correctAnswer">
+  </p>
+
+    
   </div>
   
 
@@ -30,6 +39,12 @@
             type="text" 
             [(ngModel)]="selectedAnswer" 
             placeholder="Completează răspunsul" />
+    <p 
+    *ngIf="!environment.production && currentExercise.correctAnswer"
+    style="display: none;" 
+    class="correct-answer"
+    [attr.data-correct-answer]="currentExercise.correctAnswer">
+  </p>
     </div>
 
     <!-- Reading Comprehension -->
@@ -49,6 +64,12 @@
                 {{ option }}
             </label>
         </div>
+         <p 
+    *ngIf="!environment.production && currentExercise.correctAnswer"
+    style="display: none;" 
+    class="correct-answer"
+    [attr.data-correct-answer]="currentExercise.correctAnswer">
+  </p>
     </div>
 
     <!-- Listening -->
@@ -77,6 +98,12 @@
           {{ option }}
         </label>
       </div>
+       <p 
+    *ngIf="!environment.production && currentExercise.correctAnswer"
+    style="display: none;" 
+    class="correct-answer"
+    [attr.data-correct-answer]="currentExercise.correctAnswer">
+  </p>
     </div>
     
 

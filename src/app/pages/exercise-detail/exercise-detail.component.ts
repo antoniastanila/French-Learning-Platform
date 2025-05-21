@@ -6,6 +6,7 @@ import { ExerciseService } from '../../services/exercise.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-exercise-detail',
@@ -15,6 +16,8 @@ import { AuthService } from '../../services/auth.service';
   imports: [CommonModule, FormsModule]
 })
 export class ExerciseDetailComponent implements OnInit, OnDestroy {
+  public environment = environment;
+
   exercises: any[] = [];
   lessonId: string | null = null;
   selectedAnswer: string = ""; 
