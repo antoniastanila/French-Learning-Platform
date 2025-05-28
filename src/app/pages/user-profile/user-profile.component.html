@@ -77,13 +77,13 @@
     <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
 
     <label>Prenume:</label>
-    <input type="text" [(ngModel)]="tempFirstName" />
+    <input type="text" id="first-name-input" [(ngModel)]="tempFirstName" />
 
     <label>Nume:</label>
-    <input type="text" [(ngModel)]="tempLastName" />
+    <input type="text" id="last-name-input" [(ngModel)]="tempLastName" />
 
     <label>Username:</label>
-    <input type="text" [(ngModel)]="tempUsername" (blur)="checkUsernameAvailability()" />
+    <input type="text" id="username-input" [(ngModel)]="tempUsername" (blur)="checkUsernameAvailability()" />
     <div class="error" *ngIf="usernameError">{{ usernameError }}</div>
 
     <label for="theme-modal-select"><strong>App theme:</strong></label>
