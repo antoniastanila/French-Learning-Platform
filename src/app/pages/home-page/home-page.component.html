@@ -1,14 +1,12 @@
 <app-background-illustration></app-background-illustration>
 
 <div class="home-modern">
-  <!-- Logo-ul rămâne permanent sus stânga -->
 <div class="loader-text-wrapper">
   <h1 class="loader-text-type">Baguette Talk</h1>
 </div>
 
 <ng-container *ngIf="isLoading; else content">
   <div class="loader-container">
-    <!-- poți lăsa spinnerul dacă mai vrei -->
     <div class="loader"></div>
   </div>
 </ng-container>
@@ -17,7 +15,7 @@
   <ng-template #content>
     <div class="overlay-glass" [@fadeIn]>
       <h1 class="welcome-text">Bienvenue dans votre application de français!</h1>
-      <p class="description">Învățați franceza într-un mod interactiv și distractiv!</p>
+      <p class="description">Learn French in a fun, efficient way!</p>
       <div class="button-group">
         <button class="btn login" (click)="navigateToLogin()">
           <i class="fas fa-sign-in-alt"></i> Login

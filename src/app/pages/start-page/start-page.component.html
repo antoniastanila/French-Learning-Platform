@@ -16,7 +16,6 @@
   </div>
 </header>
 
-<!-- ✅ Afișăm conținutul doar după ce totul e gata -->
 <div class="container" *ngIf="isReady">
   <div class="section">
     <h2>New to learning French? Start here!</h2>
@@ -37,7 +36,6 @@
   </div>
 </div>
 
-<!-- 🔄 Loader opțional -->
 <div *ngIf="!isReady" class="loading-placeholder">
   <p>Loading your learning journey...</p>
 </div>

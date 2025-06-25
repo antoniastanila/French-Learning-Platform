@@ -25,7 +25,6 @@ const ExerciseSchema = new mongoose.Schema({
   exercises: { type: [SingleExerciseSchema], required: true }
 });
 
-// 🔹 Modelele pentru fiecare colecție
 const BeginnerExercise = mongoose.model('BeginnerExercise', ExerciseSchema, 'beginner_exercises');
 const IntermediateExercise = mongoose.model('IntermediateExercise', ExerciseSchema, 'intermediate_exercises');
 const AdvancedExercise = mongoose.model('AdvancedExercise', ExerciseSchema, 'advanced_exercises');

@@ -4,7 +4,6 @@ import { BeginnerLesson, IntermediateLesson, AdvancedLesson } from '../models/le
 
 const router = express.Router();
 
-// 🔹 GET toate lecțiile (sau doar pe un anumit nivel)
 router.get('/', async (req, res) => {
   try {
     const { level } = req.query;
@@ -38,7 +37,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 🔹 POST - adaugă o lecție nouă
 router.post('/', async (req, res) => {
   try {
     const { title, description, content, level, difficulty } = req.body;
@@ -63,7 +61,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// 🔹 GET lecție după ID și nivel
 router.get('/:level/:id', async (req, res) => {
   try {
     const { level, id } = req.params;
@@ -91,7 +88,6 @@ router.get('/:level/:id', async (req, res) => {
   }
 });
 
-// 🔹 POST /api/lessons/by-ids
 router.post('/by-ids', async (req, res) => {
   const { ids } = req.body;
 

@@ -5,7 +5,6 @@ import { BeginnerLesson, IntermediateLesson, AdvancedLesson } from '../models/le
 
 const router = express.Router();
 
-// 🔹 Obține toate exercițiile pentru o lecție (în funcție de nivel)
 router.get('/:lessonId', async (req, res) => {
   try {
     const lessonId = new mongoose.Types.ObjectId(req.params.lessonId);
@@ -36,8 +35,6 @@ router.get('/:lessonId', async (req, res) => {
   }
 });
 
-// 🔹 Endpoint pentru validarea răspunsului la exerciții
-// În exerciseRoutes.js
 router.post('/:exerciseId/validate', async (req, res) => {
   try {
     const { userAnswer, index = 0 } = req.body;
@@ -64,7 +61,6 @@ router.post('/:exerciseId/validate', async (req, res) => {
   }
 });
 
-// 🔹 Adaugă un exercițiu nou în colecția corespunzătoare
 router.post('/', async (req, res) => {
   try {
     const { lessonId, question, options, correctAnswer, level } = req.body;
@@ -95,7 +91,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// 🔹 Șterge un exercițiu după ID
 router.delete('/:exerciseId', async (req, res) => {
   try {
     const deletedExercise =
@@ -113,7 +108,6 @@ router.delete('/:exerciseId', async (req, res) => {
   }
 });
 
-// 🔹 Returnează un set random de exerciții pentru testul de nivel
 router.get('/placement-test/:level', async (req, res) => {
   const level = req.params.level;
 
@@ -121,17 +115,14 @@ router.get('/placement-test/:level', async (req, res) => {
     let allExercises = [];
 
     if (level === 'intermediate') {
-      // 🔹 1. Exerciții din toate lecțiile intermediate
       const intermediateDocs = await IntermediateExercise.find({});
       const intermediateExercises = intermediateDocs.flatMap(doc => doc.exercises);
 
-      // 🔹 2. Exerciții din ultimele 5 lecții beginner
       const last5BeginnerDocs = await BeginnerExercise.find({})
-        .sort({ _id: -1 }) // sau { lessonId: -1 } dacă vrei pe bază de lecție
+        .sort({ _id: -1 }) 
         .limit(5);
       const beginnerTailExercises = last5BeginnerDocs.flatMap(doc => doc.exercises);
 
-      // 🔹 3. Combinare
       allExercises = [...intermediateExercises, ...beginnerTailExercises];
 
     } else if (level === 'advanced') {
@@ -142,7 +133,7 @@ router.get('/placement-test/:level', async (req, res) => {
       const advancedExercises = advancedDocs.flatMap(doc => doc.exercises);
     
       const last5IntermediateDocs = await IntermediateExercise.find({})
-        .sort({ _id: -1 }) // sau lessonId dacă ai nevoie
+        .sort({ _id: -1 }) 
         .limit(5);
       const intermediateTailExercises = last5IntermediateDocs.flatMap(doc => doc.exercises);
     
@@ -154,7 +145,7 @@ router.get('/placement-test/:level', async (req, res) => {
     
 
     const shuffled = allExercises.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 3); // sau orice număr dorești
+    const selected = shuffled.slice(0, 30); 
 
     res.json(selected);
   } catch (err) {

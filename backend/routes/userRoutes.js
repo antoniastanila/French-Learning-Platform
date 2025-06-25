@@ -13,7 +13,6 @@ const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
 const client = new OAuth2Client("555078852596-a4cmrg9dcrru8m3p714ct642o45lhi6o.apps.googleusercontent.com");
 
-// 🔹 Înregistrare
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password, firstName, lastName } = req.body;
@@ -80,7 +79,6 @@ router.patch('/:userId/update-level', async (req, res) => {
   }
 });
 
-// 🔹 Login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;

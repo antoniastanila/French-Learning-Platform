@@ -13,4 +13,3 @@ export interface UserResponse {
         theme?: string;
     };
 }
-  

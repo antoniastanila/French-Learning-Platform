@@ -1,78 +1,53 @@
 <div class="exercise-detail-background"></div>
 <div class="exercise-detail">
-<div class="exercise-container" *ngIf="!allExercisesCompleted && getCurrentExercise() as currentExercise">
+  <div class="exercise-container" *ngIf="!allExercisesCompleted && getCurrentExercise() as currentExercise">
     <h3>{{ currentExercise.question }}</h3>
     <p *ngIf="reviewingWrongExercises" class="previous-mistake-label">previous mistake</p>
 
-    <!-- Multiple Choice -->
-<div *ngIf="currentExercise.questionType === 'multipleChoice'">
-    <div *ngFor="let option of currentExercise.options">
-      <label [ngClass]="{
+    <div *ngIf="currentExercise.questionType === 'multipleChoice'">
+      <div *ngFor="let option of currentExercise.options">
+        <label [ngClass]="{
         'selected-option': !isAnswered && option === selectedAnswer,
         'selected-correct-option': isAnswered && option === selectedAnswer && wasAnswerCorrect,
         'selected-wrong-option': isAnswered && option === selectedAnswer && wasAnswerCorrect === false
       }">
-        <input 
-          type="radio" 
-          name="answer" 
-          [value]="option" 
-          [(ngModel)]="selectedAnswer"
-          [disabled]="isAnswered"/>
-        {{ option }}
-      </label>
+          <input type="radio" name="answer" [value]="option" [(ngModel)]="selectedAnswer" [disabled]="isAnswered" />
+          {{ option }}
+        </label>
+      </div>
+      <p *ngIf="!environment.production && currentExercise.correctAnswer" style="display: none;" class="correct-answer"
+        [attr.data-correct-answer]="currentExercise.correctAnswer">
+      </p>
+
+
     </div>
-      <!-- Adaugă DOAR în development -->
-<p 
-    *ngIf="!environment.production && currentExercise.correctAnswer"
-    style="display: none;" 
-    class="correct-answer"
-    [attr.data-correct-answer]="currentExercise.correctAnswer">
-  </p>
+
 
     
-  </div>
-  
-
-    <!-- Fill in the Blank -->
     <div *ngIf="currentExercise.questionType === 'fillInTheBlank'">
-        <input 
-            type="text" 
-            [(ngModel)]="selectedAnswer" 
-            placeholder="Completează răspunsul" />
-    <p 
-    *ngIf="!environment.production && currentExercise.correctAnswer"
-    style="display: none;" 
-    class="correct-answer"
-    [attr.data-correct-answer]="currentExercise.correctAnswer">
-  </p>
+      <input type="text" [(ngModel)]="selectedAnswer" placeholder="Fill in the blank" />
+      <p *ngIf="!environment.production && currentExercise.correctAnswer" style="display: none;" class="correct-answer"
+        [attr.data-correct-answer]="currentExercise.correctAnswer">
+      </p>
     </div>
 
-    <!-- Reading Comprehension -->
     <div *ngIf="currentExercise.questionType === 'readingComprehension'">
-        <p>{{ currentExercise.passage }}</p>
-        <div *ngFor="let option of currentExercise.options">
-            <label [ngClass]="{
+      <p>{{ currentExercise.passage }}</p>
+      <div *ngFor="let option of currentExercise.options">
+        <label [ngClass]="{
                 'selected-option': !isAnswered && option === selectedAnswer,
                 'selected-correct-option': isAnswered && option === selectedAnswer && wasAnswerCorrect,
                 'selected-wrong-option': isAnswered && option === selectedAnswer && wasAnswerCorrect === false
               }">
-                <input 
-                    type="radio" 
-                    name="answer" 
-                    [value]="option" 
-                    [(ngModel)]="selectedAnswer" />
-                {{ option }}
-            </label>
-        </div>
-         <p 
-    *ngIf="!environment.production && currentExercise.correctAnswer"
-    style="display: none;" 
-    class="correct-answer"
-    [attr.data-correct-answer]="currentExercise.correctAnswer">
-  </p>
+          <input type="radio" name="answer" [value]="option" [(ngModel)]="selectedAnswer" />
+          {{ option }}
+        </label>
+      </div>
+      <p *ngIf="!environment.production && currentExercise.correctAnswer" style="display: none;" class="correct-answer"
+        [attr.data-correct-answer]="currentExercise.correctAnswer">
+      </p>
     </div>
 
-    <!-- Listening -->
     <div *ngIf="currentExercise.questionType === 'listening'" class="listening-exercise">
       <div class="custom-audio-wrapper">
         <audio controls>
@@ -80,84 +55,67 @@
           Your browser does not support the audio element.
         </audio>
       </div>
-    
+
       <div class="options">
-        <label *ngFor="let option of currentExercise.options"
-               [ngClass]="{
+        <label *ngFor="let option of currentExercise.options" [ngClass]="{
                  'selected-option': !isAnswered && option === selectedAnswer,
                  'selected-correct-option': isAnswered && option === selectedAnswer && wasAnswerCorrect,
                  'selected-wrong-option': isAnswered && option === selectedAnswer && wasAnswerCorrect === false
                }">
-          <input 
-            type="radio" 
-            name="answer" 
-            [value]="option" 
-            [(ngModel)]="selectedAnswer" 
-            [disabled]="isAnswered"
-          />
+          <input type="radio" name="answer" [value]="option" [(ngModel)]="selectedAnswer" [disabled]="isAnswered" />
           {{ option }}
         </label>
       </div>
-       <p 
-    *ngIf="!environment.production && currentExercise.correctAnswer"
-    style="display: none;" 
-    class="correct-answer"
-    [attr.data-correct-answer]="currentExercise.correctAnswer">
-  </p>
+      <p *ngIf="!environment.production && currentExercise.correctAnswer" style="display: none;" class="correct-answer"
+        [attr.data-correct-answer]="currentExercise.correctAnswer">
+      </p>
     </div>
-    
 
-    <!-- Trimite răspunsul -->
-<button 
-  *ngIf="!isAnswered && selectedAnswer && selectedAnswer.toString().trim() !== ''" 
-  (click)="validateAnswer()"
->
-  Check
-</button>
+
+    <button *ngIf="!isAnswered && selectedAnswer && selectedAnswer.toString().trim() !== ''" (click)="validateAnswer()">
+      Check
+    </button>
 
     <p class="feedback-message" *ngIf="feedbackMessage">{{ feedbackMessage }}</p>
 
     <button *ngIf="shouldShowFinishLessonButton()" (click)="finishLesson()">
       Finish lesson
     </button>
-    <button 
-    *ngIf="feedbackMessage && !allExercisesCompleted && !shouldShowFinishLessonButton()"
-    (click)="nextExercise()"
-  >
-    Next exercise
-  </button>
-  
-</div>
-<div class="review-banner" [ngClass]="reviewFadeClass">
-  Let's get to the previous mistakes
-</div>
+    <button *ngIf="feedbackMessage && !allExercisesCompleted && !shouldShowFinishLessonButton()"
+      (click)="nextExercise()">
+      Next exercise
+    </button>
+
+  </div>
+  <div class="review-banner" [ngClass]="reviewFadeClass">
+    Let's get to the previous mistakes
+  </div>
 
 
-<!-- Pagina de felicitare apare doar când toate exercițiile sunt finalizate -->
-<div *ngIf="allExercisesCompleted" class="congratulations-container">
-  <div class="firework"></div>
-<div class="firework"></div>
-<div class="firework"></div>
-<div class="firework"></div>
+  <div *ngIf="allExercisesCompleted" class="congratulations-container">
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
     <h2>🎉 Congratulations! 🎉</h2>
 
-<div class="firework"></div>
-<div class="firework"></div>
-<div class="firework"></div>
-<div class="firework"></div>
-<div class="firework"></div>
-<div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
 
 
     <p>You finished all the exercises!</p>
     <div class="firework"></div>
-<div class="firework"></div>
-<div class="firework"></div>
-<div class="firework"></div>
-<div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
     <button (click)="goToNextLesson()">Go to Next Lesson</button>
     <button (click)="goToMainPage()">Go to Main Page</button>
-</div>
+  </div>
 </div>
 
 <div class="exit-modal" *ngIf="showLeaveWarning">
@@ -167,4 +125,3 @@
     <button (click)="stayOnPage()">Stay on this page</button>
   </div>
 </div>
-

@@ -5,7 +5,7 @@ export async function generateTestWithGemini(lessons) {
   console.log("📦 Lessons trimise la Gemini:", lessons);
   console.log("🔐 GEMINI_API_KEY:", process.env.GEMINI_API_KEY);
 
-  const prompt = `You are a French language tutor. Based on the following lessons, generate an A1/A2 level test with a mix of multiple choice and fill-in-the-blank exercises. Each question should be clear and educational.
+  const prompt = `You are a French language tutor. Based on the following lessons, generate a test with a mix of multiple choice and fill-in-the-blank exercises. Each question should be clear and educational.
 
   First, list all the questions without showing the correct answers.
   

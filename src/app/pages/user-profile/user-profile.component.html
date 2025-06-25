@@ -1,6 +1,5 @@
 <div class="user-profile-background"></div>
 <div class="profile-container">
-  <!-- CARD PROFIL -->
   <div class="card">
     <h2>User profile</h2>
     
@@ -14,7 +13,6 @@
     <button (click)="openEditModal()">Edit profile</button>
   </div>
 
-  <!-- CARD LECȚII -->
   <div class="card">
     <h3>Completed lessons:</h3>
     <p class="test-info">
@@ -23,7 +21,6 @@
       Click on the button below!
     </p>
 
-    <!-- Butoane acțiune -->
     <div class="button-group">
       <button *ngIf="!selectMode" (click)="selectLessonsForTest()" class="test-button">
         Select lessons for the test
@@ -39,7 +36,6 @@
       </div>
     </div>
 
-    <!-- Scroll lecții -->
     <div class="card-lessons-scroll">
       <div *ngFor="let level of ['beginner', 'intermediate', 'advanced']">
         <h4>{{ level | titlecase }} Level</h4>
@@ -63,7 +59,6 @@
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" *ngIf="showModal">
   <div class="modal">
     <h3>Editare Profil</h3>

@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// 🔹 Hash-uim parola înainte de a salva utilizatorul
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
@@ -31,11 +30,9 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-// 🔹 Metodă pentru a compara parola introdusă cu cea hash-uită
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-// 🔹 Exportăm modelul
 const User = mongoose.model('User', userSchema);
 export default User;

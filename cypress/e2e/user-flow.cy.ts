@@ -9,26 +9,19 @@ describe('E2E User Flow - Login → Lesson → Exercise', () => {
     cy.get('input[name="password"]').type('111111');
     cy.get('button[type="submit"]').click();
 
-    // Așteaptă redirecționare către /start-page
     cy.url().should('include', '/start-page');
     cy.contains('Continue Learning').click();
 
-    // Verificăm că suntem pe pagina de lecții
     cy.url().should('match', /\/(beginner|intermediate|advanced)-main-page$/);
-
-    // Apasă pe ultima lecție deblocată
     cy.get('.lesson-card:not(.locked)').last().click();
 
-    // Verificăm că am ajuns pe pagina lecției
     cy.get('h2').should('exist');
 
-    // Mergem către exerciții
     cy.contains('Go to exercises').click();
     cy.url().should('include', '/exercises');
 
-    // ⚡ Parcurgem toate exercițiile (max 10)
  function answerCurrentExercise(): void {
-  cy.get('.correct-answer')
+    cy.get('.correct-answer')
     .invoke('attr', 'data-correct-answer')
     .then((correctAnswer: string) => {
       cy.document().then((d) => {
@@ -40,7 +33,7 @@ describe('E2E User Flow - Login → Lesson → Exercise', () => {
         if (radioInputs.length > 0) {
           const labels = Array.from(doc.querySelectorAll('label'));
           for (const lbl of labels) {
-            const label = lbl as HTMLLabelElement; // 👈 Fix pentru TS
+            const label = lbl as HTMLLabelElement; 
             if (label.textContent?.trim() === correctAnswer.trim()) {
               const input = label.querySelector('input[type="radio"]') as HTMLInputElement | null;
               if (input) {
