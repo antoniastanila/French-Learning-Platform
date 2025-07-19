@@ -36,4 +36,6 @@ export class GeneratedTestComponent implements OnInit {
       this.isLoading = false;
     }
   }
+
+  
 }

@@ -61,6 +61,8 @@ router.post('/:exerciseId/validate', async (req, res) => {
   }
 });
 
+
+//neutilizata
 router.post('/', async (req, res) => {
   try {
     const { lessonId, question, options, correctAnswer, level } = req.body;
@@ -90,7 +92,7 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: 'Eroare la salvarea exercițiului.', error });
   }
 });
-
+//neutilizata
 router.delete('/:exerciseId', async (req, res) => {
   try {
     const deletedExercise =

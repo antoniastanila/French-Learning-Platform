@@ -89,6 +89,7 @@ router.get('/:level/:id', async (req, res) => {
 });
 
 router.post('/by-ids', async (req, res) => {
+  console.log("a fost accesat post by ids din lesson routes!!!");
   const { ids } = req.body;
 
   if (!Array.isArray(ids) || ids.length === 0) {

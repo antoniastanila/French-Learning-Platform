@@ -20,7 +20,7 @@ export class StartPageComponent implements OnInit {
   intermediateButtonText = 'Jump here';
   advancedButtonText = 'Jump here';
 
-  globalProgress: number = 0; // ✅ progres total
+  globalProgress: number = 0; 
   allLessons: string[] = [];
 
   isReady: boolean = false;

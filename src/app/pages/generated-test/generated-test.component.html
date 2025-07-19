@@ -1,11 +1,11 @@
 <div *ngIf="isLoading" class="loading-container">
-    <p>⏳ Generating your test... Please wait.</p>
-    <div class="spinner"></div>
-  </div>
-  
-  <div *ngIf="!isLoading">
-    <h2>Here's a test generated based on your chosen lessons. Good luck!</h2>
+  <p>⏳ Generating your test... Please wait.</p>
+  <div class="spinner"></div>
+</div>
+
+<div *ngIf="!isLoading" class="test-container">
+  <h2>Here's a test generated based on your chosen lessons. Good luck!</h2>
+  <div class="test-box">
     <pre>{{ testText }}</pre>
-    <button routerLink="/user-profile">Back to profile page</button>
   </div>
-  
+</div>
