@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './advanced.component.html',
   styleUrls: ['./advanced.component.css']
 })
+
 export class AdvancedComponent implements OnInit {
 
   constructor(private router: Router, private renderer: Renderer2) {}
@@ -19,10 +20,11 @@ export class AdvancedComponent implements OnInit {
   }
 
   navigateToAdvancedTest() {
-    this.router.navigate(['/advanced-test']); 
+    this.router.navigate(['/advanced-test']);    
   }
 
   navigateBackToStart() {
     this.router.navigate(['/start-page']); 
   }
+
 }

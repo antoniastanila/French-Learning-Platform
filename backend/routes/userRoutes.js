@@ -261,7 +261,6 @@ router.patch('/:userId/update-profile', async (req, res) => {
     if (lastName !== undefined) user.lastName = lastName;
     if (profilePic !== undefined) user.profilePicUrl = profilePic;
 
-    // 🔥 Adăugat protecție și pentru temă
     if (theme) {
       user.theme = theme;
     }

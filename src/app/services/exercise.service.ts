@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ExerciseService {
-  private apiUrl = 'https://localhost:5000/api/exercises'; // 🔹 URL-ul backend-ului
+  private apiUrl = 'https://localhost:5000/api/exercises'; 
 
   constructor(private http: HttpClient) {}
 

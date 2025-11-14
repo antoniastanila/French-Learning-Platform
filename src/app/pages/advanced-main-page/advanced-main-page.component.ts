@@ -42,7 +42,6 @@ export class AdvancedMainPageComponent implements OnInit {
 
         let storedCurrentLesson = localStorage.getItem(`currentLesson_${userId}`);
 
-        // ✅ Construim lista lecțiilor și stabilim progresul
         this.lessons = data.map((lesson: any, index: number) => ({
           ...lesson,
           isCompleted: completedLessons.includes(lesson._id),
@@ -50,16 +49,12 @@ export class AdvancedMainPageComponent implements OnInit {
           level: lesson.level ?? 'advanced'
         }));
 
-        // ✅ Găsim prima lecție necompletată
         const firstIncompleteLesson = this.lessons.find(lesson => !lesson.isCompleted);
 
-        // ✅ Setăm lecția curentă
         if (!firstIncompleteLesson) {
-          // Toate lecțiile sunt completate
           this.currentLessonId = null;
           localStorage.removeItem(`currentLesson_${userId}`);
         } else {
-          // Există lecții necompletate → setăm prima lecție necompletată ca fiind curentă
           this.currentLessonId = firstIncompleteLesson._id;
           localStorage.setItem(`currentLesson_${userId}`, this.currentLessonId);
         }
@@ -80,7 +75,6 @@ export class AdvancedMainPageComponent implements OnInit {
   updateLessonsState(): void {
     const allCompleted = this.completedLessons.length === this.totalLessons;
 
-    // ✅ Găsim prima lecție necompletată
     const firstIncompleteLesson = this.lessons.find(lesson => !this.completedLessons.includes(lesson._id));
 
     // ✅ Dacă există lecții nefinalizate, aceasta devine curentă

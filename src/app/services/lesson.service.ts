@@ -19,11 +19,11 @@ export class LessonService {
   }
 
   getLessonById(lessonId: string, level: string) {
-    let collection = 'beginner_lessons'; // Default la beginner
+    let collection = 'beginner_lessons'; 
 
     if (level === 'intermediate') {
         collection = 'intermediate_lessons';
-    } else if (level === 'advanced') { // ✅ Adăugat suport pentru advanced
+    } else if (level === 'advanced') {
         collection = 'advanced_lessons';
     }
 
