@@ -35,7 +35,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/French-Learning-Platform/",
+              "baseHref": "/",
               "budgets": [
                 {
                   "type": "initial",
@@ -84,7 +84,7 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
-           "assets": [
+            "assets": [
               {
                 "glob": "**/*",
                 "input": "public",
