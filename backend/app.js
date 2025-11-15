@@ -34,4 +34,8 @@ app.get("/api/lessons", async (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('🥖 Baguette Talk backend is running and connected to MongoDB Atlas!');
+});
+
 export default app;
