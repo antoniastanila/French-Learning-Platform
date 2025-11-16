@@ -88,6 +88,7 @@ export class LoginPageComponent implements AfterViewInit {
   }
 
   onSubmit(form: NgForm): void {
+    console.log('✅ onSubmit called', form.value); // DEBUG
     if (form.invalid) {
       this.errorMessage = 'Please enter a valid email and password.';
       return;
