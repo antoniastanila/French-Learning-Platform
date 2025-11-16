@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LessonService {
-  private apiUrl = 'https://localhost:5000/api/lessons';
+  private apiUrl = `${environment.apiUrl}/api/lessons`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getLessons(): Observable<any> {
     return this.http.get(this.apiUrl);
@@ -19,21 +20,21 @@ export class LessonService {
   }
 
   getLessonById(lessonId: string, level: string) {
-    let collection = 'beginner_lessons'; 
+    let collection = 'beginner_lessons';
 
     if (level === 'intermediate') {
-        collection = 'intermediate_lessons';
+      collection = 'intermediate_lessons';
     } else if (level === 'advanced') {
-        collection = 'advanced_lessons';
+      collection = 'advanced_lessons';
     }
 
     console.log(`Fetching from: ${this.apiUrl}/${collection}/${lessonId}`);
     return this.http.get(`${this.apiUrl}/${level}/${lessonId}`);
   }
 
-getLessonsByLevel(level: string): Observable<any> {
-  return this.http.get(`${this.apiUrl}?level=${level}`);
-}
+  getLessonsByLevel(level: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}?level=${level}`);
+  }
 
 
 }

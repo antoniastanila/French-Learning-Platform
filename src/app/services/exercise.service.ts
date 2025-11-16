@@ -6,17 +6,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ExerciseService {
-  private apiUrl = 'https://localhost:5000/api/exercises'; 
+  private apiUrl = 'https:///api/exercises';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getExercisesByLessonId(lessonId: string, level: string): Observable<any> {
     console.log(`🔍 Fetching exercises for lesson ${lessonId} at level: ${level}`);
     return this.http.get(`/api/exercises/${lessonId}?level=${level}`);
-}
+  }
 
-getLessonsByLevel(level: string): Observable<any> {
-  return this.http.get(`/api/lessons?level=${level}`);
-}
+  getLessonsByLevel(level: string): Observable<any> {
+    return this.http.get(`/api/lessons?level=${level}`);
+  }
 
 }

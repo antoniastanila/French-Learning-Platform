@@ -66,8 +66,9 @@ export class AuthService {
 
   setUserLevel(level: string) {
     const userId = localStorage.getItem('userId');
-    return this.http.patch(`https://localhost:5000/api/users/${userId}/update-level`, { level });
+    return this.http.patch(`${environment.apiUrl}/api/users/${userId}/update-level`, { level });
   }
+
 
   login(credentials: any): Observable<any> {
     return this.http.post<{ token: string; user: any }>(`${this.apiUrl}/login`, credentials).pipe(
