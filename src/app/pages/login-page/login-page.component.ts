@@ -24,7 +24,7 @@ import { AfterViewInit } from '@angular/core';
     ])
   ]
 })
-export class LoginPageComponent implements AfterViewInit{
+export class LoginPageComponent implements AfterViewInit {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
@@ -32,23 +32,23 @@ export class LoginPageComponent implements AfterViewInit{
   showForgotModal: boolean = false;
   forgotEmail: string = '';
   forgotSuccessMessage: string = '';
-  forgotErrorMessage: string = '';  
+  forgotErrorMessage: string = '';
 
-  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
+  constructor(private authService: AuthService, private router: Router, private http: HttpClient) { }
 
   ngAfterViewInit(): void {
-    const clientId = '555078852596-a4cmrg9dcrru8m3p714ct642o45lhi6o.apps.googleusercontent.com';
-  
+    const clientId = '596657709262-5i5u1htr50lmd3gbfaqflh0ihsb4f4ds.apps.googleusercontent.com';
+
     setTimeout(() => {
       const g = (window as any).google;
       const target = document.getElementById('g_id_signin');
-  
+
       if (g?.accounts?.id && target) {
         g.accounts.id.initialize({
           client_id: clientId,
           callback: this.handleGoogleResponse.bind(this),
         });
-  
+
         g.accounts.id.renderButton(target, {
           theme: 'outline',
           size: 'large',
@@ -59,7 +59,7 @@ export class LoginPageComponent implements AfterViewInit{
       }
     }, 100); // 100ms delay pentru siguranță
   }
-  
+
   handleGoogleResponse(response: any): void {
     const idToken = response.credential;
     this.authService.loginWithGoogle(idToken).subscribe({
@@ -74,10 +74,10 @@ export class LoginPageComponent implements AfterViewInit{
         localStorage.setItem('firstName', res.user.firstName || '');
         localStorage.setItem('lastName', res.user.lastName || '');
         localStorage.setItem('createdAt', res.user.createdAt || '');
-  
+
         // ⬇️ Asta lipsea! Trebuie setat manual aici pentru a merge profilul
         this.authService.updateUserProfile(res.user);
-  
+
         this.router.navigate(['/start-page']);
       },
       error: (err) => {
@@ -86,13 +86,13 @@ export class LoginPageComponent implements AfterViewInit{
       }
     });
   }
-  
+
   onSubmit(form: NgForm): void {
     if (form.invalid) {
       this.errorMessage = 'Please enter a valid email and password.';
       return;
     }
-  
+
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
@@ -104,10 +104,10 @@ export class LoginPageComponent implements AfterViewInit{
         localStorage.setItem('firstName', res.user.firstName || '');
         localStorage.setItem('lastName', res.user.lastName || '');
         localStorage.setItem('createdAt', res.user.createdAt || '');
-  
+
         // 🔥 CRUCIAL: fără asta, userProfile$ rămâne null până la refresh
         this.authService.updateUserProfile(res.user);
-  
+
         this.router.navigate(['/start-page']);
       },
       error: () => {
@@ -115,11 +115,11 @@ export class LoginPageComponent implements AfterViewInit{
       }
     });
   }
-  
+
   sendResetLink(): void {
     this.forgotSuccessMessage = '';
     this.forgotErrorMessage = '';
-  
+
     this.http.post('/api/users/forgot-password', { email: this.forgotEmail }).subscribe({
       next: () => {
         this.forgotSuccessMessage = 'Reset link sent! Check your email.';
@@ -131,9 +131,9 @@ export class LoginPageComponent implements AfterViewInit{
       }
     });
   }
- 
+
   navigateToSignUp() {
-  this.router.navigate(['/signup']);
-}
-  
+    this.router.navigate(['/signup']);
+  }
+
 }

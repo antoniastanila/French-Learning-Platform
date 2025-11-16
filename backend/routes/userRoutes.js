@@ -11,7 +11,7 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
-const client = new OAuth2Client("555078852596-a4cmrg9dcrru8m3p714ct642o45lhi6o.apps.googleusercontent.com");
+const client = new OAuth2Client("596657709262-5i5u1htr50lmd3gbfaqflh0ihsb4f4ds.apps.googleusercontent.com");
 
 router.post('/register', async (req, res) => {
   try {
