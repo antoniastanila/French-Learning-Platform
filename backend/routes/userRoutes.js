@@ -170,7 +170,7 @@ router.post('/google-login', async (req, res) => {
     const { idToken } = req.body;
     const ticket = await client.verifyIdToken({
       idToken,
-      audience: "555078852596-a4cmrg9dcrru8m3p714ct642o45lhi6o.apps.googleusercontent.com"
+      audience: "596657709262-5i5u1htr50lmd3gbfaqflh0ihsb4f4ds.apps.googleusercontent.com"
     });
 
     const payload = ticket.getPayload();
