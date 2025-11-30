@@ -121,7 +121,7 @@ router.get('/placement-test/:level', async (req, res) => {
       const intermediateExercises = intermediateDocs.flatMap(doc => doc.exercises);
 
       const last5BeginnerDocs = await BeginnerExercise.find({})
-        .sort({ _id: -1 }) 
+        .sort({ _id: -1 })
         .limit(5);
       const beginnerTailExercises = last5BeginnerDocs.flatMap(doc => doc.exercises);
 
@@ -133,21 +133,21 @@ router.get('/placement-test/:level', async (req, res) => {
     } else if (level === 'advanced') {
       const advancedDocs = await AdvancedExercise.find({});
       const advancedExercises = advancedDocs.flatMap(doc => doc.exercises);
-    
+
       const last5IntermediateDocs = await IntermediateExercise.find({})
-        .sort({ _id: -1 }) 
+        .sort({ _id: -1 })
         .limit(5);
       const intermediateTailExercises = last5IntermediateDocs.flatMap(doc => doc.exercises);
-    
+
       allExercises = [...advancedExercises, ...intermediateTailExercises];
     } else {
       const beginnerDocs = await BeginnerExercise.find({});
       allExercises = beginnerDocs.flatMap(doc => doc.exercises);
     }
-    
+
 
     const shuffled = allExercises.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 30); 
+    const selected = shuffled.slice(0, 4);
 
     res.json(selected);
   } catch (err) {

@@ -81,6 +81,7 @@ router.patch('/:userId/update-level', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
+    console.log('🟢 /api/users/login hit, body:', req.body);
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: 'Utilizatorul nu a fost găsit.' });
