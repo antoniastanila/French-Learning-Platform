@@ -4,12 +4,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+// detectăm dacă suntem pe frontend-ul de pe Render
+const isRenderFrontend =
+  typeof window !== 'undefined' &&
+  window.location.hostname.includes('baguette-talk-frontend.onrender.com');
+
 @Injectable({
   providedIn: 'root',
 })
 export class ExerciseService {
-  // baza pentru API: '' local (merge cu proxy), backend URL în producție
-  private apiBaseUrl = environment.apiUrl || '';
+  /**
+   * Local:
+   *   - hostname = localhost -> isRenderFrontend = false
+   *   - apiBaseUrl = environment.apiUrl (care e '') -> folosim /api/... prin proxy.
+   *
+   * Render (frontend live):
+   *   - hostname conține 'baguette-talk-frontend.onrender.com'
+   *   - apiBaseUrl = 'https://baguette-talk-backend.onrender.com'
+   */
+  private apiBaseUrl = isRenderFrontend
+    ? 'https://baguette-talk-backend.onrender.com'
+    : (environment.apiUrl || '');
 
   constructor(private http: HttpClient) { }
 
@@ -21,6 +36,7 @@ export class ExerciseService {
 
   getLessonsByLevel(level: string): Observable<any> {
     const url = `${this.apiBaseUrl}/api/lessons?level=${level}`;
+    console.log(`🔍 Fetching lessons from: ${url}`);
     return this.http.get(url);
   }
 }
